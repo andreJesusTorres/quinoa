@@ -1562,6 +1562,42 @@ section {
   }
 }
 
+.header .btn-book-a-table,
+.header .btn-book-a-table:focus,
+.form-signin .btn-book-a-table {
+  font-size: 14px;
+  color: #fff;
+  background: var(--color-primary);
+  padding: 8px 20px;
+  margin-left: 30px;
+  border-radius: 50px;
+  transition: 0.3s;
+}
+
+.header .btn-book-a-table:hover,
+.header .btn-book-a-table:focus:hover,
+.form-signin .btn-book-a-table:hover {
+  color: #fff;
+  background: rgba(206, 18, 18, 0.8);
+}
+
+.form-signin .btn-book-a-table {
+  width: 100%; 
+  text-align: center;
+  margin-top: 20px;
+}
+
+.form-signin label {
+  position: relative;
+}
+
+.form-signin label span {
+  color: red;
+  margin-left: 5px;
+}
+
+
+
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
@@ -1651,3 +1687,5 @@ section {
 .footer .credits a {
   color: #fff;
 }
+
+
