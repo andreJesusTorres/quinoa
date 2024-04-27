@@ -72,7 +72,7 @@
             <div class="section-title">
               <h2>Inicia Sesión - Consulta tus reservas</h2>
             </div>
-            <form action="login.php" method="post" class="form-signin">
+            <form action="consultas.php" method="post" class="form-signin">
               <div class="mb-3">
                 <label for="username" class="form-label">Nombre de cliente:<span>*</span></label>
                 <input type="text" class="form-control" id="username" name="username" required>
@@ -81,11 +81,11 @@
                 <label for="password" class="form-label">Clave:<span>*</span></label>
                 <input type="password" class="form-control" id="password" name="pass" required>
               </div>
-              <button type="submit" class="btn-book-a-table btn btn-primary">Iniciar Sesión</button>
+              <button type="submit" class="btn-book-a-table btn btn-primary" name="login">Iniciar Sesión</button>
             </form>
             
             
-            <p class="mt-3 text-center">¿Nuevo cliente? <a href="registrocliente.html">Regístrate aquí</a>.</p>
+            <p class="mt-3 text-center">¿Nuevo cliente? <a href="registrocliente.php">Regístrate aquí</a>.</p>
           </div>
         </div>
       </div>

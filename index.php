@@ -43,30 +43,11 @@
           <li><a href="#about">Sobre Nosotros</a></li>
           <li><a href="#menu">La Carta</a></li>
           <li><a href="reserva.html">Reserva</a></li>
-
-          <!--<li><a href="#gallery">Gallery</a></li>-->
-          <!--<li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
-            <ul>
-              <li><a href="#">Drop Down 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
-                <ul>
-                  <li><a href="#">Deep Drop Down 1</a></li>
-                  <li><a href="#">Deep Drop Down 2</a></li>
-                  <li><a href="#">Deep Drop Down 3</a></li>
-                  <li><a href="#">Deep Drop Down 4</a></li>
-                  <li><a href="#">Deep Drop Down 5</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Drop Down 2</a></li>
-              <li><a href="#">Drop Down 3</a></li>
-              <li><a href="#">Drop Down 4</a></li>
-            </ul>
-          </li>-->
           <li><a href="#contact">Contacto</a></li>
         </ul>
       </nav><!-- .navbar -->
 
-      <a class="btn-book-a-table" href="iniciosesion.html">Inicia Sesión</a>
+      <a class="btn-book-a-table" href="iniciosesion.php">Inicia Sesión</a>
       <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
       <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
 
@@ -82,7 +63,7 @@
           <br>100% Ecológico.</h2>
           <p data-aos="fade-up" data-aos-delay="100">Desde hace más de 10 años</p>
           <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
-            <a href="#book-a-table" class="btn-book-a-table">Reserva una mesa</a>
+            <a href="reserva.html" class="btn-book-a-table">Reserva una mesa</a>
           <!--  <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>-->
           </div>
         </div>
