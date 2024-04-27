@@ -49,3 +49,30 @@ if (isset($_POST["registro"])) {
     mysqli_close($conexion);
 }
 
+if (isset($_POST["login"])) {
+
+
+    $name = $_POST["name"];
+    $pass = $_POST["pass"];
+    $conexion = conectar();
+
+    if (!$conexion) {
+        die("Error en la conexión: " . mysqli_connect_error());
+    }
+
+    $login = "SELECT * FROM users WHERE name = '$name' AND pass = '$pass'";
+    $login_result = mysqli_query($conexion, $login);
+
+    if ($login_result && mysqli_num_rows($login_result) > 0) {
+        $login_result = mysqli_fetch_assoc($login_result);
+
+        mysqli_close($conexion);
+        session_start();
+        header("Location:index.php");
+
+        exit();
+    } else {
+        $login_error = "error";
+    }
+}
+

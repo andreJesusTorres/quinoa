@@ -75,7 +75,7 @@ require_once ("consultas.php");
           </div>
           <form method="post" class="form-signin">
             <div class="mb-3">
-              <label for="username" class="form-label">Nombre:<span>*</span></label>
+              <label for="username" class="form-label">Nombre y apellido:<span>*</span></label>
               <input type="text" class="form-control" id="username" name="name" required>
             </div>
             <div class="mb-3 php-email-form">
