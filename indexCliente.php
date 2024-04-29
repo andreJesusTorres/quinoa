@@ -48,15 +48,15 @@ if (!isset($_SESSION["login"])) {
 
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a href="index.html#hero">Inicio</a></li>
+                    <li><a href="indexCliente.php#hero">Inicio</a></li>
                     <li><a href="#about">Sobre Nosotros</a></li>
                     <li><a href="#menu">La Carta</a></li>
-                    <li><a href="reserva.html">Reserva</a></li>
+                    <li><a href="reservaCliente.php">Reserva</a></li>
                     <li><a href="#contact">Contacto</a></li>
                 </ul>
             </nav>
 
-            <a class="btn-book-a-table" href="cerrar_sesion.php">Cerrar Sesión</a> <!-- Cambio de texto en el botón -->
+            <a class="btn-book-a-table" href="cerrar_sesion.php">Cerrar Sesión</a> 
 
             <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
             <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
@@ -74,7 +74,7 @@ if (!isset($_SESSION["login"])) {
                     </h2>
                     <p data-aos="fade-up" data-aos-delay="100">Desde hace más de 10 años</p>
                     <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
-                        <a href="reserva.html" class="btn-book-a-table">Reserva una mesa</a>
+                        <a href="reservaCliente.php" class="btn-book-a-table">Reserva una mesa</a>
                     </div>
                 </div>
                 <div class="col-lg-5 order-1 order-lg-2 text-center text-lg-start">
