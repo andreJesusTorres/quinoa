@@ -15,7 +15,8 @@ function conectar()
     return $conexion;
 }
 
-if (isset($_POST["registro"])) {
+if (isset($_POST["registro"])) 
+{
 
     $name = $_POST["name"];
     $pass = $_POST["pass"];
@@ -49,7 +50,8 @@ if (isset($_POST["registro"])) {
     mysqli_close($conexion);
 }
 
-if (isset($_POST["login"])) {
+if (isset($_POST["login"])) 
+{
     $name = $_POST["name"];
     $pass = $_POST["pass"];
     $conexion = conectar();
@@ -76,7 +78,8 @@ if (isset($_POST["login"])) {
     }
 }    
 
-if(isset($_POST["logout"])){
+if(isset($_POST["logout"]))
+{
     session_destroy();
-    exit()
+    exit();
 }
