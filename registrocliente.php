@@ -208,7 +208,7 @@ require_once ("consultas.php");
 
     document.addEventListener("DOMContentLoaded", function () {
       if (document.getElementById("successAlert")) {
-        showAlertAndRedirect("successAlert", "index.php");
+        showAlertAndRedirect("successAlert", "indexCliente.php");
       }
       if (document.getElementById("errorAlert")) {
         showAlertAndRedirect("errorAlert", "registrocliente.php");

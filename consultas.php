@@ -75,3 +75,8 @@ if (isset($_POST["login"])) {
         header("Location: iniciosesion.php");
     }
 }    
+
+if(isset($_POST["logout"])){
+    session_destroy();
+    exit()
+}
