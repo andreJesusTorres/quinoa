@@ -1,3 +1,6 @@
+<?php
+require_once ("consultas.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,13 +36,13 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="container d-flex align-items-center justify-content-between">
 
-      <a href="index.html" class="logo d-flex align-items-center me-auto me-lg-0">
+      <a href="index.php" class="logo d-flex align-items-center me-auto me-lg-0">
         <h1>Quinoa<span>.</span></h1>
       </a>
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a href="index.html">Inicio</a></li>
+          <li><a href="index.php">Inicio</a></li>
           <li><a href="#about">Sobre Nosotros</a></li>
           <li><a href="#menu">La Carta</a></li>
           <li><a href="reserva.html">Reserva</a></li>
@@ -59,7 +62,7 @@
 
         <div class="d-flex justify-content-between align-items-center">
           <ol>
-            <li><a href="index.html">Home</a></li>
+            <li><a href="index.php">Home</a></li>
             <li>Iniciar Sesión</li>
           </ol>
         </div>
@@ -73,6 +76,7 @@
             <h2>Inicia Sesión - Consulta tus reservas</h2>
           </div>
           <form action="consultas.php" method="post" class="form-signin">
+
             <div class="mb-3">
               <label for="username" class="form-label">Nombre de cliente:<span>*</span></label>
               <input type="text" class="form-control" id="username" name="name" required>

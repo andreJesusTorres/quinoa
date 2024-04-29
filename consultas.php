@@ -50,8 +50,6 @@ if (isset($_POST["registro"])) {
 }
 
 if (isset($_POST["login"])) {
-
-
     $name = $_POST["name"];
     $pass = $_POST["pass"];
     $conexion = conectar();
@@ -64,15 +62,16 @@ if (isset($_POST["login"])) {
     $login_result = mysqli_query($conexion, $login);
 
     if ($login_result && mysqli_num_rows($login_result) > 0) {
-        $login_result = mysqli_fetch_assoc($login_result);
-
+        $name = mysqli_fetch_assoc($login_result);
         mysqli_close($conexion);
         session_start();
-        header("Location:index.php");
 
+        $_SESSION["login"] = [
+            "name" => $name['name'],
+        ];
+        header("Location: indexCliente.php");
         exit();
     } else {
-        $login_error = "error";
+        header("Location: iniciosesion.php");
     }
-}
-
+}    

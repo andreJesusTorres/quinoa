@@ -185,7 +185,7 @@ require_once ("consultas.php");
 
   <?php if (isset($error_conexion)): ?>
     <div id="connectionErrorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
-      <strong>Error:</strong> Hubo un problema con la conexión.
+      <strong>Error!</strong> Hubo un problema con la conexión.
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   <?php endif; ?>
