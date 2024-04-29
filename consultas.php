@@ -15,6 +15,28 @@ function conectar()
     return $conexion;
 }
 
+function reservar($name, $mail, $phone, $date, $time, $people, $msg)
+{
+    $conexion = conectar();
+
+    if (!$conexion) {
+        die("Error en la conexión: " . mysqli_connect_error());
+    }
+
+    $insert_query = "INSERT INTO reserves (name, mail, phone, date, time, people, msg) 
+                     VALUES ('$name', '$mail', '$phone', '$date', '$time', '$people', '$msg')";
+
+    if (mysqli_query($conexion, $insert_query)) {
+        mysqli_close($conexion);
+        $sent_message = "Su reserva fue enviada.";
+        return true;
+    } else {
+        mysqli_close($conexion);
+        $error_message = "Error al enviar la reserva. Por favor, inténtelo de nuevo más tarde.";
+        return false;
+    }
+}
+
 if (isset($_POST["registro"])) 
 {
 
@@ -64,20 +86,30 @@ if (isset($_POST["login"]))
     $login_result = mysqli_query($conexion, $login);
 
     if ($login_result && mysqli_num_rows($login_result) > 0) {
-        $name = mysqli_fetch_assoc($login_result);
+        $user = mysqli_fetch_assoc($login_result);
         mysqli_close($conexion);
         session_start();
 
-        $_SESSION["login"] = [
-            "name" => $name['name'],
-        ];
-        header("Location: indexCliente.php");
-        exit();
+        if ($user['name'] === 'Admin') {
+            $_SESSION["login"] = [
+                "name" => $user['name'],
+                "role" => "admin"
+            ];
+            header("Location: indexAdmin.php");
+            exit();
+        } else {
+            $_SESSION["login"] = [
+                "name" => $user['name'],
+                "role" => "cliente"
+            ];
+            header("Location: indexCliente.php");
+            exit();
+        }
     } else {
         header("Location: iniciosesion.php");
     }
-}    
-
+}
+   
 if(isset($_POST["logout"]))
 {
     session_destroy();

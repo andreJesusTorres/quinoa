@@ -49,10 +49,9 @@ if (!isset($_SESSION["login"])) {
             <nav id="navbar" class="navbar">
                 <ul>
                     <li><a href="indexCliente.php#hero">Inicio</a></li>
-                    <li><a href="#about">Sobre Nosotros</a></li>
-                    <li><a href="#menu">La Carta</a></li>
-                    <li><a href="reservaCliente.php">Reserva</a></li>
-                    <li><a href="#contact">Contacto</a></li>
+                    <li><a href="#about">Gestionar usuarios</a></li>
+                    <li><a href="#menu">Gestionar reservas</a></li>
+                    <li><a href="reservaCliente.php">Gestionar menú</a></li>
                 </ul>
             </nav>
 
@@ -69,55 +68,6 @@ if (!isset($_SESSION["login"])) {
     ?>
 
     <footer id="footer" class="footer">
-
-        <div class="container">
-            <div class="row gy-3">
-                <div class="col-lg-3 col-md-6 d-flex">
-                    <i class="bi bi-geo-alt icon"></i>
-                    <div>
-                        <h4>Dirección</h4>
-                        <p>
-                            Elche <br>
-                            Alicante<br>
-                        </p>
-                    </div>
-
-                </div>
-
-                <div class="col-lg-3 col-md-6 footer-links d-flex">
-                    <i class="bi bi-telephone icon"></i>
-                    <div>
-                        <h4>Reservas</h4>
-                        <p>
-                            <strong>Teléfono:</strong> +34 666000111<br>
-                            <strong>Email:</strong> quinoa@quinoa.com<br>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6 footer-links d-flex">
-                    <i class="bi bi-clock icon"></i>
-                    <div>
-                        <h4>Horario</h4>
-                        <p>
-                            <strong>Lunes a Sábado de 13:00 a 16:00</strong><br>
-                            Domingos: Cerrado
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-lg-3 col-md-6 footer-links">
-                    <h4>Síguenos</h4>
-                    <div class="social-links d-flex">
-                        <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-                        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-                    </div>
-                </div>
-
-            </div>
-        </div>
 
         <div class="container">
             <div class="copyright">
