@@ -56,7 +56,7 @@ if (!isset($_SESSION["login"])) {
                 </ul>
             </nav>
 
-            <a class="btn-book-a-table" href="index.php" name="logout">Cerrar Sesión</a>
+            <a class="btn-book-a-table" href="cerrar_sesion.php">Cerrar Sesión</a> 
 
             <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
             <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>

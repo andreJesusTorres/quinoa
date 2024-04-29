@@ -41,9 +41,9 @@ if (!isset($_SESSION["login"])) {
   <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="container d-flex align-items-center justify-content-between">
 
-      <a href="indexCliente.php" class="logo d-flex align-items-center me-auto me-lg-0">
-        <h1>Bienvenido, <?php echo $_SESSION["login"]["name"]; ?><span>.</span></h1>
-      </a>
+    <a href="indexCliente.php" class="logo d-flex align-items-center me-auto me-lg-0">
+                <h1>Bienvenido, <?php echo $_SESSION["login"]["name"]; ?><span>.</span></h1>
+            </a>
 
       <nav id="navbar" class="navbar">
         <ul>
@@ -55,7 +55,7 @@ if (!isset($_SESSION["login"])) {
 
       </nav>
 
-      <a class="btn-book-a-table" href="index.php" name="logout">Cerrar Sesión</a>
+      <a class="btn-book-a-table" href="cerrar_sesion.php" name="logout">Cerrar Sesión</a> 
       <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
       <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
 
