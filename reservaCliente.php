@@ -50,12 +50,12 @@ if (!isset($_SESSION["login"])) {
           <li><a href="indexCliente.php">Inicio</a></li>
           <li><a href="#about">Sobre Nosotros</a></li>
           <li><a href="#menu">La Carta</a></li>
-          <li><a href="reserva.html">Reserva</a></li>
+          <li><a href="reservaCliente.php">Reserva</a></li>
           <li><a href="#contact">Contacto</a></li>
 
       </nav>
 
-      <a class="btn-book-a-table" href="cerrar_sesion.php" name="logout">Cerrar Sesión</a> 
+      <a class="btn-book-a-table" href="index.php" name="logout">Cerrar Sesión</a> 
       <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
       <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
 
@@ -70,7 +70,7 @@ if (!isset($_SESSION["login"])) {
         <div class="d-flex justify-content-between align-items-center">
 
           <ol>
-            <li><a href="index.html">Home</a></li>
+            <li><a href="index.php">Home</a></li>
             <li>Reserva</li>
           </ol>
         </div>
