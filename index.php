@@ -64,7 +64,7 @@
           </h2>
           <p data-aos="fade-up" data-aos-delay="100">Desde hace más de 10 años</p>
           <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
-            <a href="reserva.html" class="btn-book-a-table">Reserva una mesa</a>
+            <a href="reserva.php" class="btn-book-a-table">Reserva una mesa</a>
           </div>
         </div>
         <div class="col-lg-5 order-1 order-lg-2 text-center text-lg-start">

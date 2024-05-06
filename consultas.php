@@ -23,8 +23,25 @@ function reservar($name, $mail, $phone, $date, $time, $people, $msg)
         die("Error en la conexión: " . mysqli_connect_error());
     }
 
-    $insert_query = "INSERT INTO reserves (name, mail, phone, date, time, people, msg) 
-                     VALUES ('$name', '$mail', '$phone', '$date', '$time', '$people', '$msg')";
+    $check_user_query = "SELECT * FROM users WHERE name = '$name' AND mail = '$mail'";
+    $check_user_result = mysqli_query($conexion, $check_user_query);
+
+    if ($check_user_result && mysqli_num_rows($check_user_result) > 0) {
+
+        echo "<script>
+        if (confirm('¡Eres un cliente registrado!')) {
+            window.location.href = 'inicioSesion.php';
+        }
+      </script>";
+        exit();
+
+    } else {
+        $type = 'Invitado';
+    }
+
+
+    $insert_query = "INSERT INTO reserves (name, mail, phone, date, time, people, msg, type) 
+                     VALUES ('$name', '$mail', '$phone', '$date', '$time', '$people', '$msg', '$type')";
 
     if (mysqli_query($conexion, $insert_query)) {
         mysqli_close($conexion);
@@ -37,8 +54,32 @@ function reservar($name, $mail, $phone, $date, $time, $people, $msg)
     }
 }
 
-if (isset($_POST["registro"])) 
+function reservarCliente($name, $mail, $phone, $date, $time, $people, $msg)
 {
+    $conexion = conectar();
+
+    if (!$conexion) {
+        die("Error en la conexión: " . mysqli_connect_error());
+    }
+
+    $type = 'Cliente';
+
+
+    $insert_query = "INSERT INTO reserves (name, mail, phone, date, time, people, msg, type) 
+                     VALUES ('$name', '$mail', '$phone', '$date', '$time', '$people', '$msg', '$type')";
+
+    if (mysqli_query($conexion, $insert_query)) {
+        mysqli_close($conexion);
+        $sent_message = "Su reserva fue enviada.";
+        return true;
+    } else {
+        mysqli_close($conexion);
+        $error_message = "Error al enviar la reserva. Por favor, inténtelo de nuevo más tarde.";
+        return false;
+    }
+}
+
+if (isset($_POST["registro"])) {
 
     $name = $_POST["name"];
     $pass = $_POST["pass"];
@@ -72,8 +113,7 @@ if (isset($_POST["registro"]))
     mysqli_close($conexion);
 }
 
-if (isset($_POST["login"])) 
-{
+if (isset($_POST["login"])) {
     $name = $_POST["name"];
     $pass = $_POST["pass"];
     $conexion = conectar();
@@ -109,9 +149,10 @@ if (isset($_POST["login"]))
         header("Location: iniciosesion.php");
     }
 }
-   
-if(isset($_POST["logout"]))
-{
+
+if (isset($_POST["logout"])) {
     session_destroy();
+    header("Location: iniciosesion.php");
     exit();
 }
+

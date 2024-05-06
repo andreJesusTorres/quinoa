@@ -1,20 +1,20 @@
 <?php
-require_once("consultas.php");
+require_once ("consultas.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $_POST["name"];
-    $mail = $_POST["mail"];
-    $phone = $_POST["phone"];
-    $date = $_POST["date"];
-    $time = $_POST["time"];
-    $people = $_POST["people"];
-    $msg = $_POST["msg"];
+  $name = $_POST["name"];
+  $mail = $_POST["mail"];
+  $phone = $_POST["phone"];
+  $date = $_POST["date"];
+  $time = $_POST["time"];
+  $people = $_POST["people"];
+  $msg = $_POST["msg"];
 
-    if (reservar($name, $mail, $phone, $date, $time, $people, $msg)) {
-        $sent_message = 'prueba';
-    } else {
-      $error_message = 'prueba 1';
-    }
+  if (reservar($name, $mail, $phone, $date, $time, $people, $msg)) {
+    $sent_message = 'prueba';
+  } else {
+    $error_message = 'prueba 1';
+  }
 }
 ?>
 
@@ -106,13 +106,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <div class="col-lg-4 reservation-img" style="background-image: url(assets/img/reservation.jpg);"
                 data-aos="zoom-out" data-aos-delay="200"></div>
 
-                <div class="col-lg-8 d-flex align-items-center reservation-form-bg">
-                <form method="post" role="form" class="php-email-form" data-aos="fade-up"
-                  data-aos-delay="100">
+              <div class="col-lg-8 d-flex align-items-center reservation-form-bg">
+                <form method="post" role="form" class="php-email-form" data-aos="fade-up" data-aos-delay="100">
                   <div class="row gy-4">
                     <div class="col-lg-4 col-md-6">
-                      <input type="text" name="name" class="form-control" id="name" placeholder="Nombre" data-rule="minlen:4"
-                        data-msg="Please enter at least 4 chars">
+                      <input type="text" name="name" class="form-control" id="name" placeholder="Nombre"
+                        data-rule="minlen:4" data-msg="Please enter at least 4 chars">
                       <div class="validate"></div>
                     </div>
                     <div class="col-lg-4 col-md-6">
@@ -126,20 +125,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                       <div class="validate"></div>
                     </div>
                     <div class="col-lg-4 col-md-6">
-                      <input type="date" name="date" class="form-control" id="date" placeholder="Fecha" data-rule="minlen:4"
-                        data-msg="Please enter at least 4 chars">
+                      <input type="date" name="date" class="form-control" id="date" placeholder="Fecha"
+                        data-rule="minlen:4" data-msg="Please enter at least 4 chars">
                       <div class="validate"></div>
                     </div>
                     <div class="col-lg-4 col-md-6">
-                      <input type="text" class="form-control" name="time" id="time" placeholder="Hora" data-rule="minlen:4"
-                        data-msg="Please enter at least 4 chars">
+                      <select class="form-select" name="time" id="time" aria-label="Seleccione la hora">
+                        <option value="" selected>Seleccione la hora</option>
+                        <option value="13:00 - 14:00">13:00 - 14:00</option>
+                        <option value="14:00 - 15:00">14:00 - 15:00</option>
+                        <option value="15:00 - 16:00">15:00 - 16:00</option>
+                      </select>
                       <div class="validate"></div>
                     </div>
+
                     <div class="col-lg-4 col-md-6">
-                      <input type="number" class="form-control" name="people" id="people" placeholder="Cantidad de personas"
-                        data-rule="minlen:1" data-msg="Please enter at least 1 chars">
+                      <select class="form-select" name="people" id="people"
+                        aria-label="Seleccione la cantidad de personas">
+                        <option value="" selected>Seleccione la cantidad de personas</option>
+                        <option value="1">1 persona</option>
+                        <option value="2">2 personas</option>
+                        <option value="3">3 personas</option>
+                        <option value="4">4 personas</option>
+                        <option value="5">5 personas</option>
+                        <option value="6">6 personas</option>
+                        <option value="7">7 personas</option>
+                        <option value="8">8 personas</option>
+                      </select>
                       <div class="validate"></div>
                     </div>
+
                   </div>
                   <div class="form-group mt-3">
                     <textarea class="form-control" name="msg" rows="5" placeholder="Mensaje"></textarea>
@@ -230,21 +245,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <script src="assets/js/main.js"></script>
 
-  <?php if (!empty($sent_message)) : ?>
-      <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <?php echo $sent_message; ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    <?php endif; ?>
+  <?php if (!empty($sent_message)): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <?php echo $sent_message; ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif; ?>
 
-    <?php if (!empty($error_message)) : ?>
-      <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <?php echo $error_message; ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    <?php endif; ?>
+  <?php if (!empty($error_message)): ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <?php echo $error_message; ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif; ?>
 
-    <script>
+  <script>
     function showAlertAndRedirect(alertId, redirectUrl) {
       var alertElement = document.getElementById(alertId);
       if (alertElement) {
@@ -254,11 +269,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     document.addEventListener("DOMContentLoaded", function () {
-      <?php if (!empty($sent_message)) : ?>
+      <?php if (!empty($sent_message)): ?>
         showAlertAndRedirect("successAlert", "indexCliente.php");
       <?php endif; ?>
 
-      <?php if (!empty($error_message)) : ?>
+      <?php if (!empty($error_message)): ?>
         showAlertAndRedirect("errorAlert", "registrocliente.php");
       <?php endif; ?>
     });
