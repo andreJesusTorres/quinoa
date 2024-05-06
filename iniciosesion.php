@@ -167,6 +167,39 @@ require_once ("consultas.php");
 
   <script src="assets/js/main.js"></script>
 
+  <?php if (isset($success_login)): ?>
+    <div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Inicio exitoso!</strong> Se inició correctamente sesión.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif; ?>
+
+  <?php if (isset($error_login)): ?>
+    <div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error!</strong> Usuario o contraseña incorrectos.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif; ?>
+
+  <script>
+    function showAlertAndRedirect(alertId, redirectUrl) {
+      var alertElement = document.getElementById(alertId);
+      if (alertElement) {
+        alert(alertElement.textContent.trim());
+        window.location.href = redirectUrl;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      if (document.getElementById("successAlert")) {
+        showAlertAndRedirect("successAlert", "indexCliente.php");
+      }
+      if (document.getElementById("errorAlert")) {
+        showAlertAndRedirect("errorAlert", "iniciosesion.php");
+      }
+    });
+  </script>
+
 </body>
 
 </html>

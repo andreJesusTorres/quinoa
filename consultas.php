@@ -93,10 +93,11 @@ if (isset($_POST["registro"])) {
     }
 
     if (strlen($name) >= 5 && strlen($name) <= 15 && strlen($pass) >= 5 && strlen($pass) <= 15) {
+        $type = 'Cliente';
         if ($phone !== null) {
-            $register = "INSERT INTO users (name, pass, mail, phone) VALUES ('$name', '$pass', '$mail', '$phone')";
+            $register = "INSERT INTO users (name, pass, mail, phone,type) VALUES ('$name', '$pass', '$mail', '$phone', '$type')";
         } else {
-            $register = "INSERT INTO users (name, pass, mail) VALUES ('$name', '$pass', '$mail')";
+            $register = "INSERT INTO users (name, pass, mail) VALUES ('$name', '$pass', '$mail','$type')";
         }
 
         $register_result = mysqli_query($conexion, $register);
@@ -135,18 +136,16 @@ if (isset($_POST["login"])) {
                 "name" => $user['name'],
                 "role" => "admin"
             ];
-            header("Location: indexAdmin.php");
-            exit();
+            $success_login = 'exito';
         } else {
             $_SESSION["login"] = [
                 "name" => $user['name'],
                 "role" => "cliente"
             ];
-            header("Location: indexCliente.php");
-            exit();
+            $success_login = 'exito';
         }
     } else {
-        header("Location: iniciosesion.php");
+        $error_login = 'error';
     }
 }
 
