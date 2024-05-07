@@ -39,7 +39,6 @@ function reservar($name, $mail, $phone, $date, $time, $people, $msg)
         $type = 'Invitado';
     }
 
-
     $insert_query = "INSERT INTO reserves (name, mail, phone, date, time, people, msg, type) 
                      VALUES ('$name', '$mail', '$phone', '$date', '$time', '$people', '$msg', '$type')";
 
@@ -53,7 +52,6 @@ function reservar($name, $mail, $phone, $date, $time, $people, $msg)
         return false;
     }
 }
-
 function reservarCliente($name, $mail, $phone, $date, $time, $people, $msg)
 {
     $conexion = conectar();
@@ -77,6 +75,26 @@ function reservarCliente($name, $mail, $phone, $date, $time, $people, $msg)
         $error_message = "Error al enviar la reserva. Por favor, inténtelo de nuevo más tarde.";
         return false;
     }
+}
+function getReservasCliente($mail) {
+    
+    $conexion = conectar();
+    if (!$conexion) {
+        die("Error en la conexión: " . mysqli_connect_error());
+    }
+
+    $query = "SELECT * FROM reserves WHERE mail = '$mail'";
+    $result = mysqli_query($conexion, $query);
+
+    $reservas = [];
+    if ($result && mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $reservas[] = $row;
+        }
+    }
+
+    mysqli_close($conexion);
+    return $reservas;
 }
 
 if (isset($_POST["registro"])) {
@@ -115,7 +133,7 @@ if (isset($_POST["registro"])) {
 }
 
 if (isset($_POST["login"])) {
-    $name = $_POST["name"];
+    $mail = $_POST["mail"];
     $pass = $_POST["pass"];
     $conexion = conectar();
 
@@ -123,29 +141,18 @@ if (isset($_POST["login"])) {
         die("Error en la conexión: " . mysqli_connect_error());
     }
 
-    $login = "SELECT * FROM users WHERE name = '$name' AND pass = '$pass'";
+    $login = "SELECT * FROM users WHERE mail = '$mail' AND pass = '$pass'";
     $login_result = mysqli_query($conexion, $login);
 
     if ($login_result && mysqli_num_rows($login_result) > 0) {
         $user = mysqli_fetch_assoc($login_result);
         mysqli_close($conexion);
         session_start();
-
-        if ($user['name'] === 'Admin') {
-            $_SESSION["login"] = [
-                "name" => $user['name'],
-                "role" => "admin"
-            ];
-            $success_login = 'exito';
-        } else {
-            $_SESSION["login"] = [
-                "name" => $user['name'],
-                "role" => "cliente"
-            ];
-            $success_login = 'exito';
-        }
+        $_SESSION["login"] = $user; 
+        header("Location: indexCliente.php");
+        exit(); 
     } else {
-        $error_login = 'error';
+        $error_login = 'error'; 
     }
 }
 
@@ -154,4 +161,5 @@ if (isset($_POST["logout"])) {
     header("Location: iniciosesion.php");
     exit();
 }
+
 

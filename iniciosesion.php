@@ -78,10 +78,10 @@ require_once ("consultas.php");
           <form action="consultas.php" method="post" class="form-signin">
 
             <div class="mb-3">
-              <label for="username" class="form-label">Nombre de cliente:<span>*</span></label>
-              <input type="text" class="form-control" id="username" name="name" required>
+              <label for="email" class="form-label">Email:<span>*</span></label>
+              <input type="email" class="form-control" id="email" name="mail" required>
             </div>
-            <div class="mb-3 php-email-form">
+            <div class="mb-3">
               <label for="password" class="form-label">Clave:<span>*</span></label>
               <input type="password" class="form-control" id="password" name="pass" required>
             </div>
@@ -166,39 +166,6 @@ require_once ("consultas.php");
   <script src="assets/vendor/php-email-form/validate.js"></script>
 
   <script src="assets/js/main.js"></script>
-
-  <?php if (isset($success_login)): ?>
-    <div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
-      <strong>Inicio exitoso!</strong> Se inició correctamente sesión.
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  <?php endif; ?>
-
-  <?php if (isset($error_login)): ?>
-    <div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
-      <strong>Error!</strong> Usuario o contraseña incorrectos.
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  <?php endif; ?>
-
-  <script>
-    function showAlertAndRedirect(alertId, redirectUrl) {
-      var alertElement = document.getElementById(alertId);
-      if (alertElement) {
-        alert(alertElement.textContent.trim());
-        window.location.href = redirectUrl;
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-      if (document.getElementById("successAlert")) {
-        showAlertAndRedirect("successAlert", "indexCliente.php");
-      }
-      if (document.getElementById("errorAlert")) {
-        showAlertAndRedirect("errorAlert", "iniciosesion.php");
-      }
-    });
-  </script>
 
 </body>
 

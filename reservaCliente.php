@@ -2,21 +2,9 @@
 require_once ("consultas.php");
 session_start();
 
-$sent_message = "";
-$error_message = "";
-
 if (!isset($_SESSION["login"])) {
   header("location: iniciosesion.php");
   exit();
-} else {
-  $name = $_SESSION["login"]["name"];
-  $conexion = conectar();
-  $list = "SELECT * FROM users WHERE name='$name'";
-  $list_result = mysqli_query($conexion, $list);
-  if (mysqli_num_rows($list_result) > 0) {
-    $user = mysqli_fetch_assoc($list_result);
-  }
-  mysqli_close($conexion);
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -26,15 +14,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $date = $_POST["date"];
   $time = $_POST["time"];
   $people = $_POST["people"];
-  $msg = $_POST["message"];
+  $msg = $_POST["msg"];
 
   if (reservarCliente($name, $mail, $phone, $date, $time, $people, $msg)) {
-    $sent_message = 'Su reserva fue enviada.';
+    $sent_message = 'prueba';
   } else {
-    $error_message = 'Error al enviar la reserva. Por favor, inténtelo de nuevo más tarde.';
+    $error_message = 'prueba 1';
   }
 }
+
+
+$reservas = getReservasCliente($_SESSION["login"]["mail"]);
+
+if (isset($_GET['id'])) {
+  $id = $_GET['id'];
+
+  // Conectar a la base de datos y ejecutar la consulta DELETE
+  $conexion = conectar();
+  if (!$conexion) {
+    die("Error en la conexión: " . mysqli_connect_error());
+  }
+
+  $query = "DELETE FROM reserves WHERE id = $id";
+  $result = mysqli_query($conexion, $query);
+
+  mysqli_close($conexion);
+
+  // Redireccionar de nuevo a la página de reservas después de eliminar
+  header("Location: reservaCliente.php");
+  exit();
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -55,6 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Amatic+SC:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
     rel="stylesheet">
 
+
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="assets/vendor/aos/aos.css" rel="stylesheet">
@@ -62,6 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
   <link href="assets/css/main.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -78,14 +91,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <li><a href="indexCliente.php">Inicio</a></li>
           <li><a href="#about">Sobre Nosotros</a></li>
           <li><a href="#menu">La Carta</a></li>
-          <li><a href="reservaCliente.php">Reserva</a></li>
+          <li><a href="reserva.php">Reserva</a></li>
           <li><a href="#contact">Contacto</a></li>
 
-      </nav>
 
-      <a class="btn-book-a-table" href="index.php" name="logout">Cerrar Sesión</a>
-      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
-      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+          <a class="btn-book-a-table" href="iniciosesion.php">Inicia sesión</a>
+          <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+          <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
 
     </div>
   </header>
@@ -98,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="d-flex justify-content-between align-items-center">
 
           <ol>
-            <li><a href="index.php">Home</a></li>
+            <li><a href="indexCliente.php">Home</a></li>
             <li>Reserva</li>
           </ol>
         </div>
@@ -106,93 +118,131 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
     </div>
 
-    <section class="sample-page">
+    <section id="my-reservations" class="my-reservations">
       <div class="container" data-aos="fade-up">
+        <div class="section-header">
+          <h2>Mis Reservas</h2>
+          <p>Aquí puedes ver tus reservas existentes.</p>
+        </div>
 
-        <section id="book-a-table" class="book-a-table">
+        <?php if (empty($reservas)): ?>
+          <p>No tienes reservas actualmente.</p>
+        <?php else: ?>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Personas</th>
+                <th>Acciones</th> <!-- Nueva columna para botones -->
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($reservas as $reserva): ?>
+                <tr>
+                  <td><?php echo $reserva['date']; ?></td>
+                  <td><?php echo $reserva['time']; ?></td>
+                  <td><?php echo $reserva['people']; ?></td>
+                  <td>
+                    <!-- Botones de modificar y eliminar -->
+                    <a href="modificarReserva.php?id=<?php echo $reserva['id']; ?>"
+                      class="btn btn-primary btn-sm">Modificar</a>
+                    <a href="reservaCliente.php?id=<?php echo $reserva['id']; ?>" class="btn btn-danger btn-sm"
+                      onclick="return confirm('¿Estás seguro de que deseas eliminar esta reserva?')">Eliminar</a>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        <?php endif; ?>
+      </div>
+    </section>
+
+
+    <section id="book-a-table" class="book-a-table" style="margin-top: -120px">
           <div class="container" data-aos="fade-up">
             <div class="section-header">
               <h2>Estás reservando como cliente.</h2>
               <p> <span>Reserva una Mesa</span> </p>
             </div>
 
-            <div class="row g-0">
+          <div class="row g-0">
+            <div class="col-lg-4 reservation-img" style="background-image: url(assets/img/reservation.jpg);"
+              data-aos="zoom-out" data-aos-delay="200"></div>
 
-              <div class="col-lg-4 reservation-img" style="background-image: url(assets/img/reservation.jpg);"
-                data-aos="zoom-out" data-aos-delay="200"></div>
-
-              <div class="col-lg-8 d-flex align-items-center reservation-form-bg">
-                <form method="post" role="form" class="php-email-form" data-aos="fade-up" data-aos-delay="100">
-                  <div class="row gy-4">
-                    <div class="col-lg-4 col-md-6">
-                      <input type="text" name="name" class="form-control" id="name" placeholder="Nombre"
-                        data-rule="minlen:4" data-msg="Please enter at least 4 chars"
-                        value="<?php echo $user["name"]; ?>">
-                      <div class="validate"></div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                      <input type="email" class="form-control" name="mail" id="email" placeholder="Email"
-                        data-rule="email" data-msg="Please enter a valid email" value="<?php echo $user["mail"]; ?>">
-                      <div class="validate"></div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                      <input type="text" class="form-control" name="phone" id="phone" placeholder="Teléfono"
-                        data-rule="minlen:4" data-msg="Please enter at least 4 chars"
-                        value="<?php echo $user["phone"]; ?>">
-                      <div class="validate"></div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                      <input type="date" name="date" class="form-control" id="date" placeholder="Fecha"
-                        data-rule="minlen:4" data-msg="Please enter at least 4 chars">
-                      <div class="validate"></div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                      <select class="form-select" name="time" id="time" aria-label="Seleccione la hora">
-                        <option value="" selected>Seleccione la hora</option>
-                        <option value="13:00 - 14:00">13:00 - 14:00</option>
-                        <option value="14:00 - 15:00">14:00 - 15:00</option>
-                        <option value="15:00 - 16:00">15:00 - 16:00</option>
-                      </select>
-                      <div class="validate"></div>
-                    </div>
-
-                    <div class="col-lg-4 col-md-6">
-                      <select class="form-select" name="people" id="people"
-                        aria-label="Seleccione la cantidad de personas">
-                        <option value="" selected>Seleccione la cantidad de personas</option>
-                        <option value="1">1 persona</option>
-                        <option value="2">2 personas</option>
-                        <option value="3">3 personas</option>
-                        <option value="4">4 personas</option>
-                        <option value="5">5 personas</option>
-                        <option value="6">6 personas</option>
-                        <option value="7">7 personas</option>
-                        <option value="8">8 personas</option>
-                      </select>
-                      <div class="validate"></div>
-                    </div>
-
-                  </div>
-                  <div class="form-group mt-3">
-                    <textarea class="form-control" name="message" rows="5" placeholder="Mensaje"></textarea>
+            <div class="col-lg-8 d-flex align-items-center reservation-form-bg">
+              <form method="post" role="form" class="php-email-form" data-aos="fade-up" data-aos-delay="100">
+                <div class="row gy-4">
+                  <div class="col-lg-4 col-md-6">
+                    <input type="text" name="name" class="form-control" id="name" placeholder="Nombre"
+                      data-rule="minlen:4" data-msg="Please enter at least 4 chars" required
+                      value="<?php echo isset($_SESSION['login']['name']) ? $_SESSION['login']['name'] : ''; ?>">
                     <div class="validate"></div>
                   </div>
-                  <div class="mb-3">
-                    <div class="loading">Cargando</div>
+                  <div class="col-lg-4 col-md-6">
+                    <input type="email" class="form-control" name="mail" id="mail" placeholder="Email" data-rule="email"
+                      data-msg="Please enter a valid email" required
+                      value="<?php echo isset($_SESSION['login']['mail']) ? $_SESSION['login']['mail'] : ''; ?>">
+                    <div class="validate"></div>
                   </div>
-                  <div class="text-center"><button type="submit" name="reservarCliente">Reserva</button></div>
-                </form>
-              </div>
+                  <div class="col-lg-4 col-md-6">
+                    <input type="text" class="form-control" name="phone" id="phone" placeholder="Teléfono"
+                      data-rule="minlen:4" data-msg="Please enter at least 4 chars"
+                      value="<?php echo isset($_SESSION['login']['phone']) ? $_SESSION['login']['phone'] : ''; ?>">
+                    <div class="validate"></div>
+                  </div>
+                  <div class="col-lg-4 col-md-6">
+                    <input type="date" name="date" class="form-control" id="date" placeholder="Fecha"
+                      data-rule="minlen:4" data-msg="Please enter at least 4 chars" required>
+                    <div class="validate"></div>
+                  </div>
+                  <div class="col-lg-4 col-md-6">
+                    <select class="form-select" name="time" id="time" aria-label="Seleccione la hora" required>
+                      <option value="" selected>Seleccione la hora</option>
+                      <option value="13:00 - 14:00">13:00 - 14:00</option>
+                      <option value="14:00 - 15:00">14:00 - 15:00</option>
+                      <option value="15:00 - 16:00">15:00 - 16:00</option>
+                    </select>
+                    <div class="validate"></div>
+                  </div>
+
+                  <div class="col-lg-4 col-md-6">
+                    <select class="form-select" name="people" id="people"
+                      aria-label="Seleccione la cantidad de personas" required>
+                      <option value="" selected>Seleccione la cantidad de personas</option>
+                      <option value="1">1 persona</option>
+                      <option value="2">2 personas</option>
+                      <option value="3">3 personas</option>
+                      <option value="4">4 personas</option>
+                      <option value="5">5 personas</option>
+                      <option value="6">6 personas</option>
+                      <option value="7">7 personas</option>
+                      <option value="8">8 personas</option>
+                    </select>
+                    <div class="validate"></div>
+                  </div>
+
+                </div>
+                <div class="form-group mt-3">
+                  <textarea class="form-control" name="msg" rows="5" placeholder="Mensaje"></textarea>
+                  <div class="validate"></div>
+                </div>
+                <div class="mb-3">
+                  <div class="loading">Cargando</div>
+                </div>
+                <div class="text-center"><button type="submit">Reserva como cliente</button></div>
+              </form>
 
             </div>
 
           </div>
-        </section>
-
       </div>
+    </section>
+    </div>
     </section>
 
   </main>
+
   <footer id="footer" class="footer">
 
     <div class="container">
@@ -261,9 +311,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
   <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
 
   <script src="assets/js/main.js"></script>
+
+  <?php if (!empty($sent_message)): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <?php echo $sent_message; ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif; ?>
+
+  <?php if (!empty($error_message)): ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <?php echo $error_message; ?>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <?php endif; ?>
+
+  <script>
+    function showAlertAndRedirect(alertId, redirectUrl) {
+      var alertElement = document.getElementById(alertId);
+      if (alertElement) {
+        alert(alertElement.textContent.trim());
+        window.location.href = redirectUrl;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      <?php if (!empty($sent_message)): ?>
+        showAlertAndRedirect("successAlert", "indexCliente.php");
+      <?php endif; ?>
+
+      <?php if (!empty($error_message)): ?>
+        showAlertAndRedirect("errorAlert", "registrocliente.php");
+      <?php endif; ?>
+    });
+  </script>
 
 </body>
 

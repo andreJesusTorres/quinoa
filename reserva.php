@@ -18,7 +18,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Regístrate</title>
+  <title>Reserva</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -111,12 +110,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <div class="row gy-4">
                     <div class="col-lg-4 col-md-6">
                       <input type="text" name="name" class="form-control" id="name" placeholder="Nombre"
-                        data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+                        data-rule="minlen:4" data-msg="Please enter at least 4 chars" required>
                       <div class="validate"></div>
                     </div>
                     <div class="col-lg-4 col-md-6">
                       <input type="email" class="form-control" name="mail" id="mail" placeholder="Email"
-                        data-rule="email" data-msg="Please enter a valid email">
+                        data-rule="email" data-msg="Please enter a valid email" required>
                       <div class="validate"></div>
                     </div>
                     <div class="col-lg-4 col-md-6">
@@ -126,11 +125,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="col-lg-4 col-md-6">
                       <input type="date" name="date" class="form-control" id="date" placeholder="Fecha"
-                        data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+                        data-rule="minlen:4" data-msg="Please enter at least 4 chars" required>
                       <div class="validate"></div>
                     </div>
                     <div class="col-lg-4 col-md-6">
-                      <select class="form-select" name="time" id="time" aria-label="Seleccione la hora">
+                      <select class="form-select" name="time" id="time" aria-label="Seleccione la hora" required>
                         <option value="" selected>Seleccione la hora</option>
                         <option value="13:00 - 14:00">13:00 - 14:00</option>
                         <option value="14:00 - 15:00">14:00 - 15:00</option>
@@ -141,7 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     <div class="col-lg-4 col-md-6">
                       <select class="form-select" name="people" id="people"
-                        aria-label="Seleccione la cantidad de personas">
+                        aria-label="Seleccione la cantidad de personas" required>
                         <option value="" selected>Seleccione la cantidad de personas</option>
                         <option value="1">1 persona</option>
                         <option value="2">2 personas</option>
@@ -165,6 +164,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   </div>
                   <div class="text-center"><button type="submit">Reserva como invitado</button></div>
                 </form>
+
               </div>
             </div>
           </div>
