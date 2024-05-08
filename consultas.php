@@ -157,9 +157,29 @@ if (isset($_POST["login"])) {
 }
 
 if (isset($_POST["logout"])) {
+    
     session_destroy();
     header("Location: iniciosesion.php");
     exit();
 }
+
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+  
+    $conexion = conectar();
+    if (!$conexion) {
+      die("Error en la conexión: " . mysqli_connect_error());
+    }
+  
+    $query = "DELETE FROM reserves WHERE id = $id";
+    if (mysqli_query($conexion, $query)) {
+      header("Location: indexCliente.php");
+      exit();
+    } else {
+      $error_message = "Error al eliminar la reserva: " . mysqli_error($conexion);
+    }
+  
+    mysqli_close($conexion);
+  }
 
 

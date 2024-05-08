@@ -1,14 +1,12 @@
 <?php
-require_once("consultas.php");
+require_once ("consultas.php");
 session_start();
 
-// Verificar si el usuario está logueado
 if (!isset($_SESSION["login"])) {
   header("location: iniciosesion.php");
   exit();
 }
 
-// Procesamiento del formulario de reserva
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $name = $_POST["name"];
   $mail = $_POST["mail"];
@@ -18,7 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $people = $_POST["people"];
   $msg = $_POST["msg"];
 
-  // Intentar realizar la reserva
   if (reservarCliente($name, $mail, $phone, $date, $time, $people, $msg)) {
     $sent_message = 'Reserva realizada correctamente.';
   } else {
@@ -26,29 +23,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 }
 
-// Eliminar reserva existente directamente al hacer clic en el botón
-if (isset($_GET['id'])) {
-  $id = $_GET['id'];
-
-  // Conectar a la base de datos y ejecutar la consulta DELETE
-  $conexion = conectar();
-  if (!$conexion) {
-    die("Error en la conexión: " . mysqli_connect_error());
-  }
-
-  $query = "DELETE FROM reserves WHERE id = $id";
-  if (mysqli_query($conexion, $query)) {
-    // Redireccionar después de eliminar la reserva
-    header("Location: indexCliente.php");
-    exit();
-  } else {
-    $error_message = "Error al eliminar la reserva: " . mysqli_error($conexion);
-  }
-
-  mysqli_close($conexion);
-}
-
-// Obtener reservas del cliente
 $reservas = getReservasCliente($_SESSION["login"]["mail"]);
 ?>
 
@@ -122,8 +96,9 @@ $reservas = getReservasCliente($_SESSION["login"]["mail"]);
             <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
               <a href="reservaCliente.php" class="btn-book-a-table">Reserva una mesa</a>
             </div>
-            <p class="mt-3 text-center">¿Has reservado ya? <a href="#" data-bs-toggle="modal"
-                data-bs-target="#modalReservas">Mira aquí</a>.</p>
+            <p class="mt-3 text-center" data-aos="fade-up" data-aos-delay="200">
+              ¿Has reservado ya? <a href="#" data-bs-toggle="modal" data-bs-target="#modalReservas">Mira aquí</a>.
+            </p>
           </div>
           <div class="col-lg-5 order-1 order-lg-2 text-center text-lg-start">
             <img src="assets/img/hero-img.png" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="300">
