@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <li><a href="index.php">Inicio</a></li>
           <li><a href="#about">Sobre Nosotros</a></li>
           <li><a href="#menu">La Carta</a></li>
-          <li><a href="reserva.php">Reserva</a></li>
+          <li><a href="reserva.php">Reservar</a></li>
           <li><a href="#contact">Contacto</a></li>
 
 

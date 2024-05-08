@@ -45,7 +45,7 @@ require_once ("consultas.php");
           <li><a href="index.html">Inicio</a></li>
           <li><a href="#about">Sobre Nosotros</a></li>
           <li><a href="#menu">La Carta</a></li>
-          <li><a href="reserva.html">Reserva</a></li>
+          <li><a href="reserva.html">Reservar</a></li>
           <li><a href="#contact">Contacto</a></li>
 
       </nav>
