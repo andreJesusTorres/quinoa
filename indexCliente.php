@@ -66,7 +66,7 @@ $reservas = getReservasCliente($_SESSION["login"]["mail"]);
           <li><a href="#contact">Contacto</a></li>
         </ul>
       </nav>
-      <a class="btn-book-a-table" href="index.php" name="logout">Cerrar Sesión</a>
+      <a class="btn-book-a-table" href="iniciosesion.php" name="logout">Cerrar Sesión</a>
       <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
       <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
     </div>
@@ -135,13 +135,12 @@ $reservas = getReservasCliente($_SESSION["login"]["mail"]);
                       <td>
                         <a href="modificarReserva.php?id=<?php echo $reserva['id']; ?>" class="btn btn-primary btn-sm"
                           style="display: inline-block;"><i class="bi bi-pencil-square"></i></a>
-                        <a href="reservaCliente.php?id=<?php echo $reserva['id']; ?>" class="btn btn-danger btn-sm"
-                          style="display: inline-block;"><i class="bi bi-trash"></i></a>
+                        <a href="reservaCliente.php?eliminar_reserva&id=<?php echo $reserva['id']; ?>"
+                          class="btn btn-danger btn-sm" style="display: inline-block;"><i class="bi bi-trash"></i></a>
                       </td>
                     </tr>
                   <?php endforeach; ?>
                 </tbody>
-
               </table>
             <?php endif; ?>
           </div>
@@ -210,7 +209,6 @@ $reservas = getReservasCliente($_SESSION["login"]["mail"]);
 
     </footer>
 
-    <!-- Scripts -->
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="assets/vendor/aos/aos.js"></script>
     <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>

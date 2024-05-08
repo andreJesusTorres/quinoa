@@ -8,31 +8,15 @@ if (!isset($_SESSION["login"])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Manejar la actualización de la reserva aquí
-    // Obtener los datos del formulario enviado por POST
     $id = $_POST["id"];
     $date = $_POST["date"];
     $time = $_POST["time"];
     $people = $_POST["people"];
-
-    // Llamar a la función para actualizar la reserva en la base de datos
-    if (actualizarReserva($id, $date, $time, $people)) {
-        $success_message = 'Reserva actualizada exitosamente.';
-    } else {
-        $error_message = 'Error al actualizar la reserva.';
-    }
 }
 
-// Obtener los detalles de la reserva a partir del ID pasado por GET
-$id = $_GET["id"];
-$reserva = getReservaPorId($id);
+$id_reserva = $_GET["id"];
+$reserva = getReservaClientePorId($id_reserva);
 
-// Verificar si la reserva existe
-if (!$reserva) {
-    // Redireccionar si la reserva no existe o no pertenece al usuario actual
-    header("location: indexCliente.php");
-    exit();
-}
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +39,6 @@ if (!$reserva) {
         href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Amatic+SC:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
         rel="stylesheet">
 
-
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="assets/vendor/aos/aos.css" rel="stylesheet">
@@ -70,44 +53,40 @@ if (!$reserva) {
 
     <header id="header" class="header fixed-top d-flex align-items-center">
         <div class="container d-flex align-items-center justify-content-between">
-
             <a href="indexCliente.php" class="logo d-flex align-items-center me-auto me-lg-0">
-                <h1>Bienvenido, <?php echo $_SESSION["login"]["name"]; ?><span>.</span></h1>
+                <h1>Quinoa<span>.</span></h1>
             </a>
-
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a href="indexCliente.php">Inicio</a></li>
+                    <li><a href="indexCliente.php#hero">Inicio</a></li>
                     <li><a href="#about">Sobre Nosotros</a></li>
                     <li><a href="#menu">La Carta</a></li>
-                    <li><a href="reserva.php">Reserva</a></li>
+                    <li><a href="reservaCliente.php">Reservar</a></li>
                     <li><a href="#contact">Contacto</a></li>
-
-
-                    <a class="btn-book-a-table" href="iniciosesion.php">Inicia sesión</a>
-                    <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
-                    <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
-
+                </ul>
+            </nav>
+            <a class="btn-book-a-table" href="iniciosesion.php" name="logout">Cerrar Sesión</a>
+            <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+            <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
         </div>
     </header>
 
     <main id="main">
-    <div class="breadcrumbs">
-      <div class="container">
-
-        <div class="d-flex justify-content-between align-items-center">
-
-          <ol>
-            <li><a href="indexCliente.php">Home</a></li>
-            <li>Modifica tu reserva</li>
-          </ol>
+        <div class="breadcrumbs">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <ol>
+                        <li><a href="indexCliente.php">Home</a></li>
+                        <li>Bienvenido, <?php echo $_SESSION["login"]["name"]; ?></li>
+                    </ol>
+                </div>
+            </div>
         </div>
 
-      </div>
-    </div>
-        <div class="container">
+        <section id="book-a-table" class="book-a-table">
             <div class="section-header">
-                <h2>Modificar Reserva</h2>
+                <h2>Estás reservando como cliente.</h2>
+                <p> <span>Modifica tu reserva</span> </p>
             </div>
 
             <?php if (isset($success_message)): ?>
@@ -117,33 +96,118 @@ if (!$reserva) {
                 <div class="alert alert-danger"><?php echo $error_message; ?></div>
             <?php endif; ?>
 
-            <form action="" method="post">
-                <input type="hidden" name="id" value="<?php echo $reserva['id']; ?>">
+            <form method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="100">
+                <input type="hidden" name="id" value="<?php echo $id_reserva; ?>">
                 <div class="mb-3">
                     <label for="date" class="form-label">Fecha</label>
                     <input type="date" class="form-control" id="date" name="date"
                         value="<?php echo $reserva['date']; ?>">
                 </div>
-                <div class="mb-3">
-                    <label for="time" class="form-label">Hora</label>
-                    <input type="time" class="form-control" id="time" name="time"
-                        value="<?php echo $reserva['time']; ?>">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="time" class="form-label">Hora</label>
+                        <select class="form-select" name="time" id="time" aria-label="Seleccione la hora" required>
+                            <option value="" selected>Seleccione la hora</option>
+                            <?php
+                            $times = array("13:00 - 14:00", "14:00 - 15:00", "15:00 - 16:00");
+                            foreach ($times as $option) {
+                                $selected = ($option == $reserva['time']) ? 'selected' : '';
+                                echo "<option value='$option' $selected>$option</option>";
+                            }
+                            ?>
+                        </select>
+                        <div class="validate"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="people" class="form-label">Personas</label>
+                        <select class="form-select" name="people" id="people"
+                            aria-label="Seleccione la cantidad de personas" required>
+                            <option value="" selected>Seleccione la cantidad de personas</option>
+                            <?php
+                            $max_personas = 8;
+                            for ($i = 1; $i <= $max_personas; $i++) {
+                                $selected = ($i == $reserva['people']) ? 'selected' : '';
+                                echo "<option value='$i' $selected>$i persona" . ($i > 1 ? 's' : '') . "</option>";
+                            }
+                            ?>
+                        </select>
+                        <div class="validate"></div>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="people" class="form-label">Personas</label>
-                    <input type="number" class="form-control" id="people" name="people"
-                        value="<?php echo $reserva['people']; ?>">
+                <div class="text-center mb-3">
+                    <button type="submit" name="modificar_reserva">Actualizar
+                        Reserva</button>
                 </div>
-                <button type="submit" class="btn btn-primary">Actualizar Reserva</button>
             </form>
-        </div>
+            </div>
+        </section>
     </main>
 
     <footer id="footer" class="footer">
-        <!-- Pie de página de la página -->
+
+        <div class="container">
+            <div class="row gy-3">
+                <div class="col-lg-3 col-md-6 d-flex">
+                    <i class="bi bi-geo-alt icon"></i>
+                    <div>
+                        <h4>Dirección</h4>
+                        <p>
+                            Elche, Alicante<br>
+                            <br>
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3 col-md-6 footer-links d-flex">
+                    <i class="bi bi-telephone icon"></i>
+                    <div>
+                        <h4>Reservas</h4>
+                        <p>
+                            <strong>Teléfono:</strong> +34 666000111<br>
+                            <strong>Email:</strong> quinoa@quinoa.com<br>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 footer-links d-flex">
+                    <i class="bi bi-clock icon"></i>
+                    <div>
+                        <h4>Horario</h4>
+                        <p>
+                            <strong>Lunes a Sábado de 13:00 a 16:00</strong><br>
+                            Domingos: Cerrado
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 footer-links">
+                    <h4>Follow Us</h4>
+                    <div class="social-links d-flex">
+                        <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="copyright">
+                &copy; <strong><span>Quinoa</span></strong>.
+            </div>
+        </div>
+
     </footer>
 
-    <!-- Scripts JavaScript -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/aos/aos.js"></script>
+    <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+
+
 </body>
 
 </html>

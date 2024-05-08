@@ -14,7 +14,6 @@ function conectar()
     }
     return $conexion;
 }
-
 function reservar($name, $mail, $phone, $date, $time, $people, $msg)
 {
     $conexion = conectar();
@@ -76,8 +75,9 @@ function reservarCliente($name, $mail, $phone, $date, $time, $people, $msg)
         return false;
     }
 }
-function getReservasCliente($mail) {
-    
+function getReservasCliente($mail)
+{
+
     $conexion = conectar();
     if (!$conexion) {
         die("Error en la conexión: " . mysqli_connect_error());
@@ -95,6 +95,53 @@ function getReservasCliente($mail) {
 
     mysqli_close($conexion);
     return $reservas;
+}
+function getReservaClientePorId($id_reserva)
+{
+    $conexion = conectar();
+    if (!$conexion) {
+        die("Error en la conexión: " . mysqli_connect_error());
+    }
+
+    $query = "SELECT * FROM reserves WHERE id = '$id_reserva'";
+    $result = mysqli_query($conexion, $query);
+
+    $reserva = null;
+    if ($result && mysqli_num_rows($result) > 0) {
+        $reserva = mysqli_fetch_assoc($result);
+    }
+
+    mysqli_close($conexion);
+    return $reserva;
+}
+
+if (isset($_POST["modificar_reserva"])) {
+    $id = $_POST["id"];
+    $date = $_POST["date"];
+    $time = $_POST["time"];
+    $people = $_POST["people"];
+
+    $conexion = conectar();
+
+    if (!$conexion) {
+        die("Error en la conexión: " . mysqli_connect_error());
+    } else {
+        $sql = "UPDATE reserves SET date=?, time=?, people=? WHERE id=?";
+        $stmt = mysqli_prepare($conexion, $sql);
+
+        mysqli_stmt_bind_param($stmt, "sssi", $date, $time, $people, $id);
+
+        $modificar = mysqli_stmt_execute($stmt);
+
+        if (!$modificar) {
+            $usuarioNoModificado = "error";
+        } else {
+            $usuarioModificado = "exito";
+        }
+
+        mysqli_stmt_close($stmt);
+    }
+    mysqli_close($conexion);
 }
 
 if (isset($_POST["registro"])) {
@@ -148,38 +195,37 @@ if (isset($_POST["login"])) {
         $user = mysqli_fetch_assoc($login_result);
         mysqli_close($conexion);
         session_start();
-        $_SESSION["login"] = $user; 
+        $_SESSION["login"] = $user;
         header("Location: indexCliente.php");
-        exit(); 
+        exit();
     } else {
-        $error_login = 'error'; 
+        $error_login = 'error';
     }
 }
 
-if (isset($_POST["logout"])) {
-    
+if (isset($_GET["logout"])) {
     session_destroy();
     header("Location: iniciosesion.php");
     exit();
 }
 
-if (isset($_GET['id'])) {
+if (isset($_GET['eliminar_reserva'])) {
     $id = $_GET['id'];
-  
+
     $conexion = conectar();
     if (!$conexion) {
-      die("Error en la conexión: " . mysqli_connect_error());
+        die("Error en la conexión: " . mysqli_connect_error());
     }
-  
+
     $query = "DELETE FROM reserves WHERE id = $id";
     if (mysqli_query($conexion, $query)) {
-      header("Location: indexCliente.php");
-      exit();
+        header("Location: indexCliente.php");
+        exit();
     } else {
-      $error_message = "Error al eliminar la reserva: " . mysqli_error($conexion);
+        $error_message = "Error al eliminar la reserva: " . mysqli_error($conexion);
     }
-  
+
     mysqli_close($conexion);
-  }
+}
 
 

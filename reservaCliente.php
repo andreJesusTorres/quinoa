@@ -6,6 +6,22 @@ if (!isset($_SESSION["login"])) {
   header("location: iniciosesion.php");
   exit();
 }
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $name = $_POST["name"];
+  $mail = $_POST["mail"];
+  $phone = $_POST["phone"];
+  $date = $_POST["date"];
+  $time = $_POST["time"];
+  $people = $_POST["people"];
+  $msg = $_POST["msg"];
+
+  if (reservarCliente($name, $mail, $phone, $date, $time, $people, $msg)) {
+    $sent_message = 'prueba';
+  } else {
+    $error_message = 'prueba 1';
+  }
+}
 ?>
 
 <!DOCTYPE html>
@@ -43,11 +59,9 @@ if (!isset($_SESSION["login"])) {
 
   <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="container d-flex align-items-center justify-content-between">
-
       <a href="indexCliente.php" class="logo d-flex align-items-center me-auto me-lg-0">
         <h1>Quinoa<span>.</span></h1>
       </a>
-
       <nav id="navbar" class="navbar">
         <ul>
           <li><a href="indexCliente.php#hero">Inicio</a></li>
@@ -57,51 +71,21 @@ if (!isset($_SESSION["login"])) {
           <li><a href="#contact">Contacto</a></li>
         </ul>
       </nav>
-
-      <a class="btn-book-a-table" href="index.php" name="logout">Cerrar Sesión</a>
-
+      <a class="btn-book-a-table" href="iniciosesion.php" name="logout">Cerrar Sesión</a>
       <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
       <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
-
-    </div>
-  </header>
-
-  <header id="header" class="header fixed-top d-flex align-items-center">
-    <div class="container d-flex align-items-center justify-content-between">
-
-      <a href="indexCliente.php" class="logo d-flex align-items-center me-auto me-lg-0">
-        <h1>Quinoa<span>.</span></h1>
-      </a>
-
-      <nav id="navbar" class="navbar">
-        <ul>
-          <li><a href="indexCliente.php">Inicio</a></li>
-          <li><a href="#about">Sobre Nosotros</a></li>
-          <li><a href="#menu">La Carta</a></li>
-          <li><a href="reserva.php">Reserva</a></li>
-          <li><a href="#contact">Contacto</a></li>
-
-
-          <a class="btn-book-a-table" href="iniciosesion.php">Inicia sesión</a>
-          <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
-          <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
-
     </div>
   </header>
 
   <main id="main">
-
     <div class="breadcrumbs">
       <div class="container">
-
         <div class="d-flex justify-content-between align-items-center">
-
           <ol>
             <li><a href="indexCliente.php">Home</a></li>
             <li>Bienvenido, <?php echo $_SESSION["login"]["name"]; ?></li>
           </ol>
         </div>
-
       </div>
     </div>
 
@@ -186,42 +170,6 @@ if (!isset($_SESSION["login"])) {
     </section>
     </div>
     </section>
-
-    <!-- Modal de Éxito -->
-    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="successModalLabel">Éxito</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            Se ha registrado la reserva correctamente.
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal de Error -->
-    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="errorModalLabel">Error</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            No se pudo registrar la reserva.
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          </div>
-        </div>
-      </div>
-    </div>
   </main>
 
   <footer id="footer" class="footer">
