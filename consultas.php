@@ -250,8 +250,9 @@ if (isset($_POST["modificar_datos"])) {
             $usuarioNoModificado = "error";
         } else {
             $usuarioModificado = "exito";
-            header('Location:indexCliente.php');
-            exit();
+            session_destroy();
+    header("Location: iniciosesion.php");
+    exit();
         }
 
         mysqli_stmt_close($stmt);
