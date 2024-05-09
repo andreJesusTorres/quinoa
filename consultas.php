@@ -228,4 +228,37 @@ if (isset($_GET['eliminar_reserva'])) {
     mysqli_close($conexion);
 }
 
+if (isset($_POST["modificar_datos"])) {
+    $name = $_POST["name"];
+    $mail = $_POST["mail"];
+    $phone = $_POST["phone"];
+    $id = $_POST["id"];
+
+    $conexion = conectar();
+
+    if (!$conexion) {
+        die("Error en la conexión: " . mysqli_connect_error());
+    } else {
+        $sql = "UPDATE users SET name=?, mail=?, phone=? WHERE id=?";
+        $stmt = mysqli_prepare($conexion, $sql);
+
+        mysqli_stmt_bind_param($stmt, "sssi", $name, $mail, $phone, $id);
+
+        $modificar = mysqli_stmt_execute($stmt);
+
+        if (!$modificar) {
+            $usuarioNoModificado = "error";
+        } else {
+            $usuarioModificado = "exito";
+            header('Location:indexCliente.php');
+            exit();
+        }
+
+        mysqli_stmt_close($stmt);
+    }
+
+    mysqli_close($conexion);
+}
+
+
 

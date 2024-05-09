@@ -7,22 +7,6 @@ if (!isset($_SESSION["login"])) {
   exit();
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $name = $_POST["name"];
-  $mail = $_POST["mail"];
-  $phone = $_POST["phone"];
-  $date = $_POST["date"];
-  $time = $_POST["time"];
-  $people = $_POST["people"];
-  $msg = $_POST["msg"];
-
-  if (reservarCliente($name, $mail, $phone, $date, $time, $people, $msg)) {
-    $sent_message = 'Reserva realizada correctamente.';
-  } else {
-    $error_message = 'Error al realizar la reserva. Por favor, inténtelo de nuevo.';
-  }
-}
-
 $reservas = getReservasCliente($_SESSION["login"]["mail"]);
 ?>
 
@@ -73,16 +57,52 @@ $reservas = getReservasCliente($_SESSION["login"]["mail"]);
   </header>
 
   <main id="main">
-    <div class="breadcrumbs">
-      <div class="container">
+  <div class="breadcrumbs">
+    <div class="container">
         <div class="d-flex justify-content-between align-items-center">
-          <ol>
-            <li><a href="indexCliente.php">Home</a></li>
-            <li>Bienvenido, <?php echo $_SESSION["login"]["name"]; ?></li>
-          </ol>
+            <ol>
+                <li><a href="indexCliente.php">Home</a></li>
+                <li>
+                    Bienvenido, <?php echo $_SESSION["login"]["name"]; ?>
+                </li>
+            </ol>
+            <div class="dropdown book-a-table">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                    aria-haspopup="true" aria-expanded="false">
+                    <img src="img/usuario.png" alt="Perfil" width="30" height="30">
+                </a>
+                <div class="dropdown-menu dropdown-menu-end p-4" id="dropdownMenu"
+                    style="width: 300px;">
+                    <form method="POST" class="text-center php-email-form">
+                        <h5 class="mb-4">Modificar datos</h5>
+                        <div class="form-group mb-3">
+                        <input type="hidden" class="form-control" id="floatingNombre" name="id"
+                                placeholder="" value="<?php echo $_SESSION['login']['id']; ?>"
+                                required>
+                            <input type="text" class="form-control" id="floatingNombre" name="name"
+                                placeholder="Nombre de usuario" value="<?php echo $_SESSION['login']['name']; ?>"
+                                required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <input type="email" class="form-control" id="floatingEmail" name="mail"
+                                placeholder="Correo electrónico"
+                                value="<?php echo $_SESSION['login']['mail']; ?>" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" id="floatingPhone" name="phone"
+                                placeholder="Teléfono" value="<?php echo $_SESSION['login']['phone']; ?>"
+                                required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" name="modificar_datos">Guardar</button>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
+</div>
+
+
+
 
     <section id="hero" class="hero d-flex align-items-center section-bg">
       <div class="container">
@@ -214,7 +234,6 @@ $reservas = getReservasCliente($_SESSION["login"]["mail"]);
     <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
     <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
     <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-    <script src="assets/vendor/php-email-form/validate.js"></script>
     <script src="assets/js/main.js"></script>
 </body>
 
