@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 06-05-2024 a las 19:40:34
+-- Tiempo de generación: 10-05-2024 a las 10:31:15
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -24,19 +24,44 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `menu`
+--
+
+CREATE TABLE `menu` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `descrip` varchar(255) DEFAULT NULL,
+  `price` decimal(10,2) DEFAULT NULL,
+  `img` varchar(255) DEFAULT NULL,
+  `state` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `menu`
+--
+
+INSERT INTO `menu` (`id`, `name`, `descrip`, `price`, `img`, `state`) VALUES
+(1, 'Hamburguesa', 'Hamburguesa de carne con queso y lechuga', 8.99, 'img/hamburguesa.png', 1),
+(2, 'Pizza', 'Pizza de pepperoni con queso derretido', 10.99, 'img/pizza.png', 1),
+(3, 'Ensalada César', 'Ensalada fresca con aderezo César', 6.99, 'img/ensalada.png', 0),
+(4, 'Sushi', 'Rollos de sushi variados con salsa de soja', 12.99, 'img/sushi.png', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `reserves`
 --
 
 CREATE TABLE `reserves` (
   `id` int(11) NOT NULL,
-  `name` varchar(15) NOT NULL,
-  `mail` varchar(50) NOT NULL,
-  `phone` varchar(10) NOT NULL,
-  `date` date NOT NULL,
-  `time` varchar(20) NOT NULL,
-  `people` varchar(1) NOT NULL,
-  `msg` varchar(120) NOT NULL,
-  `type` varchar(10) NOT NULL
+  `name` varchar(255) DEFAULT NULL,
+  `mail` varchar(255) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  `time` varchar(255) DEFAULT NULL,
+  `people` int(11) DEFAULT NULL,
+  `msg` text DEFAULT NULL,
+  `type` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -44,7 +69,51 @@ CREATE TABLE `reserves` (
 --
 
 INSERT INTO `reserves` (`id`, `name`, `mail`, `phone`, `date`, `time`, `people`, `msg`, `type`) VALUES
-(1, 'Josefa Alfonzo', 'josealfon@gmail.com', '620778692', '2024-05-10', '14:00 - 15:00', '2', 'Soy celíaca', 'Invitado');
+(1, 'Juan', 'juan@example.com', '123456789', '2024-05-15', '14:00 - 15:00', 4, 'Sin preferencias', 'Invitado'),
+(2, 'María', 'maria@example.com', '987654321', '2024-05-16', '13:00 - 14:00', 2, 'Cerca de la ventana', 'Invitado'),
+(4, 'Ana', 'ana@example.com', '333444555', '2024-05-18', '15:00 - 16:00', 8, 'Cumpleaños', 'Invitado'),
+(5, 'Cliente1', 'cliente1@example.com', '333333333', '2024-05-12', '13:00 - 14:00', 2, 'Sin preferencias', 'Cliente');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tables`
+--
+
+CREATE TABLE `tables` (
+  `id` int(11) NOT NULL,
+  `sites` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tables`
+--
+
+INSERT INTO `tables` (`id`, `sites`) VALUES
+(1, 4),
+(2, 4),
+(3, 4),
+(4, 4),
+(5, 4),
+(6, 4),
+(7, 4),
+(8, 4),
+(9, 4),
+(10, 4),
+(11, 4),
+(12, 4),
+(13, 4),
+(14, 4),
+(15, 4),
+(16, 4),
+(17, 4),
+(18, 4),
+(19, 4),
+(20, 4),
+(21, 8),
+(22, 8),
+(23, 8),
+(24, 8);
 
 -- --------------------------------------------------------
 
@@ -54,11 +123,11 @@ INSERT INTO `reserves` (`id`, `name`, `mail`, `phone`, `date`, `time`, `people`,
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `name` varchar(30) NOT NULL,
-  `pass` varchar(10) NOT NULL,
-  `mail` varchar(30) NOT NULL,
-  `phone` varchar(10) NOT NULL,
-  `type` varchar(10) NOT NULL
+  `name` varchar(255) DEFAULT NULL,
+  `pass` varchar(255) DEFAULT NULL,
+  `mail` varchar(255) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `type` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -66,16 +135,31 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `pass`, `mail`, `phone`, `type`) VALUES
-(1, 'André Torres', '12345', 'andre.torres@outlook.com.ar', '623232323', 'Cliente');
+(1, 'Admin', 'adminpass', 'admin@example.com', '999888777', 'Administrador'),
+(2, 'Empleado1', 'emppass1', 'empleado1@example.com', '111111111', 'Empleado'),
+(3, 'Empleado2', 'emppass2', 'empleado2@example.com', '222222222', 'Empleado'),
+(4, 'Cliente1', 'clientepass1', 'cliente1@example.com', '333333333', 'Cliente');
 
 --
 -- Índices para tablas volcadas
 --
 
 --
+-- Indices de la tabla `menu`
+--
+ALTER TABLE `menu`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `reserves`
 --
 ALTER TABLE `reserves`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `tables`
+--
+ALTER TABLE `tables`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -89,16 +173,28 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `menu`
+--
+ALTER TABLE `menu`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT de la tabla `reserves`
 --
 ALTER TABLE `reserves`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `tables`
+--
+ALTER TABLE `tables`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
