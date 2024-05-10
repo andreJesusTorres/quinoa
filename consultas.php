@@ -180,29 +180,6 @@ function listarMenu()
     }
 }
 
-function listarMenuIndex()
-{
-    $conexion = conectar();
-    if ($conexion != null) {
-        $sql = "SELECT * FROM menu ORDER BY id ASC";
-        $consulta = mysqli_query($conexion, $sql);
-        if (mysqli_num_rows($consulta) > 0) {
-            while ($datos = mysqli_fetch_assoc($consulta)) {
-                echo '
-                    <div class="col-lg-4 menu-item">
-                        <a href="' . $datos["img"] . '" class="glightbox"><img src="' . $datos["img"] . '" class="menu-img img-fluid" alt=""></a>
-                        <h4>' . $datos["name"] . '</h4>
-                        <p class="ingredients">' . $datos["descrip"] . '</p>
-                        <p class="price">' . $datos["price"] . '</p>
-                    </div>
-                ';
-            }
-        }
-        mysqli_close($conexion);
-    }
-}
-
-
 function listarUsuarios()
 {
     $conexion = conectar();
@@ -514,6 +491,3 @@ if (isset($_POST["modificar_datos"])) {
 
     mysqli_close($conexion);
 }
-
-
-
