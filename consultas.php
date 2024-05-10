@@ -115,6 +115,28 @@ function getReservaClientePorId($id_reserva)
     return $reserva;
 }
 
+function listarMenuIndex()
+{
+    $conexion = conectar();
+    $menuItems = array();
+    
+    if ($conexion != null) {
+        $sql = "SELECT * FROM menu WHERE state = 1 ORDER BY id ASC";
+        $consulta = mysqli_query($conexion, $sql);
+        
+        if (mysqli_num_rows($consulta) > 0) {
+            while ($datos = mysqli_fetch_assoc($consulta)) {
+                $menuItems[] = $datos; // Agregar datos al array
+            }
+        }
+        
+        mysqli_close($conexion);
+    }
+    
+    return $menuItems;
+}
+
+
 function listarMesas()
 {
     $conexion = conectar();
