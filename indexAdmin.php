@@ -7,26 +7,53 @@ if (!isset($_SESSION["login"])) {
     exit();
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["modificarTipoUsuario"])) {
-    $idUsuario = $_POST["id"];
-    $nuevoTipo = $_POST["tipo_usuario"];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST["modificarTipoUsuario"])) {
+        $idUsuario = $_POST["id"];
+        $nuevoTipo = $_POST["tipo_usuario"];
 
-    if (modificarTipoUsuario($idUsuario, $nuevoTipo)) {
-        header("Location: indexAdmin.php");
-        exit();
-    } else {
-        echo "Error al modificar el tipo de usuario";
-    }
-}
+        if (modificarTipoUsuario($idUsuario, $nuevoTipo)) {
+            header("Location: indexAdmin.php");
+            exit();
+        } else {
+            echo "Error al modificar el tipo de usuario";
+        }
+    } elseif (isset($_POST["eliminarUsuario"])) {
+        $idUsuario = $_POST["id"];
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["botonEliminar"])) {
-    $idUsuario = $_POST["id"];
+        if (eliminarUsuario($idUsuario)) {
+            header("Location: indexAdmin.php");
+            exit();
+        } else {
+            echo "Error al eliminar el usuario";
+        }
+    } elseif (isset($_POST["eliminarMesa"])) {
+        $idMesa = $_POST["codigo"];
 
-    if (eliminarUsuario($idUsuario)) {
-        header("Location: indexAdmin.php");
-        exit();
-    } else {
-        echo "Error al eliminar el usuario";
+        if (eliminarMesa($idMesa)) {
+            header("Location: indexAdmin.php");
+            exit();
+        } else {
+            echo "Error al eliminar la mesa";
+        }
+    } elseif (isset($_POST["eliminarMenu"])) {
+        $idMenu = $_POST["id"];
+
+        if (eliminarMenu($idMenu)) {
+            header("Location: indexAdmin.php");
+            exit();
+        } else {
+            echo "Error al eliminar el menú";
+        }
+    } elseif (isset($_POST["eliminarReserva"])) {
+        $idReserva = $_POST["id"];
+
+        if (eliminarReserva($idReserva)) {
+            header("Location: indexAdmin.php");
+            exit();
+        } else {
+            echo "Error al eliminar la reserva";
+        }
     }
 }
 
@@ -132,7 +159,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["botonEliminar"])) {
                     <table class="table table-striped">
                         <thead class="thead-dark">
                             <tr>
-                                <th scope="col">Código</th>
+                                <th scope="col">Numero de mesa</th>
                                 <th scope="col">Sitios</th>
                                 <th scope="col">Acción</th>
                             </tr>

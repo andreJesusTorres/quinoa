@@ -130,7 +130,7 @@ function listarMesas()
                         <td>
                             <form method="POST">
                                 <input type="hidden" name="codigo" value="' . $datos["id"] . '">
-                                <button class="btn btn-sm btn-outline-danger" name="botonEliminar">Eliminar</button>
+                                <button class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminarMesa"></button>
                             </form>
                         </td>
                     </tr>
@@ -150,7 +150,7 @@ function listarMenu()
         if (mysqli_num_rows($consulta) > 0) {
             while ($datos = mysqli_fetch_assoc($consulta)) {
                 // Determinar el estado y seleccionar el icono correspondiente
-                $estado_icono = ($datos["state"] == 1) ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>';
+                $estado_icono = ($datos["state"] == 1) ? 'img/verde.png' : 'img/rojo.png';
                 
                 echo '
                     <tr>
@@ -159,11 +159,17 @@ function listarMenu()
                         <td>' . $datos["descrip"] . '</td>
                         <td>' . $datos["price"] . '</td>
                         <td><img src="' . $datos["img"] . '" alt="' . $datos["name"] . '" width="50" height="50"></td>
-                        <td>' . $estado_icono . '</td>
+                        <td><img src="' . $estado_icono . '" alt="' . $datos["name"] . '" width="20" height="20"></td>
                         <td>
                             <form method="POST">
                                 <input type="hidden" name="id" value="' . $datos["id"] . '">
-                                <button class="btn btn-sm btn-outline-danger" name="botonEliminar">Eliminar</button>
+                                <button class="btn btn-sm btn-outline-primary bi bi-pencil-square" name="modificarReserva"></button>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="POST">
+                                <input type="hidden" name="id" value="' . $datos["id"] . '">
+                                <button class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminarMenu"></button>
                             </form>
                         </td>
                     </tr>
@@ -189,21 +195,20 @@ function listarUsuarios()
                         <td>' . $datos["mail"] . '</td>
                         <td>' . $datos["phone"] . '</td>
                         <td>
-                        <form method="POST">
-                        <input type="hidden" name="id" value="' . $datos["id"] . '">
-                        <select name="tipo_usuario" class="form-select" aria-label="Tipo de Usuario">
-                            <option value="Cliente" ' . ($datos["type"] == "Cliente" ? "selected" : "") . '>Cliente</option>
-                            <option value="Empleado" ' . ($datos["type"] == "Empleado" ? "selected" : "") . '>Empleado</option>
-                            <option value="Administrador" ' . ($datos["type"] == "Administrador" ? "selected" : "") . '>Administrador</option>
-                        </select>
-                        <button type="submit" class="btn btn-sm btn-outline-primary" name="modificarTipoUsuario">Modificar</button>
-                    </form>
-                    
+                            <form method="POST" class="d-flex align-items-center">
+                                <input type="hidden" name="id" value="' . $datos["id"] . '">
+                                <select name="tipo_usuario" class="form-select me-2" aria-label="Tipo de Usuario">
+                                    <option value="Cliente" ' . ($datos["type"] == "Cliente" ? "selected" : "") . '>Cliente</option>
+                                    <option value="Empleado" ' . ($datos["type"] == "Empleado" ? "selected" : "") . '>Empleado</option>
+                                    <option value="Administrador" ' . ($datos["type"] == "Administrador" ? "selected" : "") . '>Administrador</option>
+                                </select>
+                                <button type="submit" class="btn btn-sm btn-outline-primary bi bi-pencil-square" name="modificarTipoUsuario"></button>
+                            </form>
                         </td>
                         <td>
-                            <form method="POST">
+                            <form method="POST" class="d-flex align-items-center">
                                 <input type="hidden" name="id" value="' . $datos["id"] . '">
-                                <button type="submit" class="btn btn-sm btn-outline-danger" name="botonEliminar">Eliminar</button>
+                                <button type="submit" class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminarUsuario"></button>
                             </form>
                         </td>
                     </tr>
@@ -213,6 +218,46 @@ function listarUsuarios()
         mysqli_close($conexion);
     }
 }
+
+function listarReservas()
+{
+    $conexion = conectar();
+    if ($conexion != null) {
+        $sql = "SELECT * FROM reserves ORDER BY id ASC";
+        $consulta = mysqli_query($conexion, $sql);
+        if (mysqli_num_rows($consulta) > 0) {
+            while ($datos = mysqli_fetch_assoc($consulta)) {
+                echo '
+                    <tr>
+                        <td>' . $datos["id"] . '</td>
+                        <td>' . $datos["name"] . '</td>
+                        <td>' . $datos["mail"] . '</td>
+                        <td>' . $datos["phone"] . '</td>
+                        <td>' . $datos["date"] . '</td>
+                        <td>' . $datos["time"] . '</td>
+                        <td>' . $datos["people"] . '</td>
+                        <td>' . $datos["msg"] . '</td>
+                        <td>' . $datos["type"] . '</td>
+                        <td>
+                            <form method="POST">
+                                <input type="hidden" name="id" value="' . $datos["id"] . '">
+                                <button class="btn btn-sm btn-outline-primary bi bi-pencil-square" name="modificarReserva"></button>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="POST">
+                                <input type="hidden" name="id" value="' . $datos["id"] . '">
+                                <button class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminarReserva"></button>
+                            </form>
+                        </td>
+                    </tr>
+                ';
+            }
+        }
+        mysqli_close($conexion);
+    }
+}
+
 
 function modificarTipoUsuario($idUsuario, $nuevoTipo)
 {
@@ -244,43 +289,49 @@ function eliminarUsuario($idUsuario)
     return false;
 }
 
-function listarReservas()
+function eliminarMenu($idMenu)
 {
     $conexion = conectar();
     if ($conexion != null) {
-        $sql = "SELECT * FROM reserves ORDER BY id ASC";
-        $consulta = mysqli_query($conexion, $sql);
-        if (mysqli_num_rows($consulta) > 0) {
-            while ($datos = mysqli_fetch_assoc($consulta)) {
-                echo '
-                    <tr>
-                        <td>' . $datos["id"] . '</td>
-                        <td>' . $datos["name"] . '</td>
-                        <td>' . $datos["mail"] . '</td>
-                        <td>' . $datos["phone"] . '</td>
-                        <td>' . $datos["date"] . '</td>
-                        <td>' . $datos["time"] . '</td>
-                        <td>' . $datos["people"] . '</td>
-                        <td>' . $datos["msg"] . '</td>
-                        <td>' . $datos["type"] . '</td>
-                        <td>
-                            <form method="POST">
-                                <input type="hidden" name="id" value="' . $datos["id"] . '">
-                                <button class="btn btn-sm btn-outline-primary" name="botonModificar">Modificar</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form method="POST">
-                                <input type="hidden" name="id" value="' . $datos["id"] . '">
-                                <button class="btn btn-sm btn-outline-danger" name="botonEliminar">Eliminar</button>
-                            </form>
-                        </td>
-                    </tr>
-                ';
-            }
-        }
+        $sql = "DELETE FROM menu WHERE id = ?";
+        $consulta = mysqli_prepare($conexion, $sql);
+        mysqli_stmt_bind_param($consulta, "i", $idMenu);
+        $resultado = mysqli_stmt_execute($consulta);
+        mysqli_stmt_close($consulta);
         mysqli_close($conexion);
+        return $resultado;
     }
+    return false;
+}
+
+function eliminarMesa($idMesa)
+{
+    $conexion = conectar();
+    if ($conexion != null) {
+        $sql = "DELETE FROM tables WHERE id = ?";
+        $consulta = mysqli_prepare($conexion, $sql);
+        mysqli_stmt_bind_param($consulta, "i", $idMesa);
+        $resultado = mysqli_stmt_execute($consulta);
+        mysqli_stmt_close($consulta);
+        mysqli_close($conexion);
+        return $resultado;
+    }
+    return false;
+}
+
+function eliminarReserva($idReserva)
+{
+    $conexion = conectar();
+    if ($conexion != null) {
+        $sql = "DELETE FROM reserves WHERE id = ?";
+        $consulta = mysqli_prepare($conexion, $sql);
+        mysqli_stmt_bind_param($consulta, "i", $idReserva);
+        $resultado = mysqli_stmt_execute($consulta);
+        mysqli_stmt_close($consulta);
+        mysqli_close($conexion);
+        return $resultado;
+    }
+    return false;
 }
 
 if (isset($_POST["modificar_reserva"])) {
@@ -364,11 +415,23 @@ if (isset($_POST["login"])) {
         mysqli_close($conexion);
         session_start();
         $_SESSION["login"] = $user;
-        header("Location: indexCliente.php");
+
+        // Redirigir según el tipo de usuario
+        if ($user['type'] == 'Administrador') {
+            header("Location: indexAdmin.php");
+        } elseif ($user['type'] == 'Empleado') {
+            header("Location: indexEmpleado.php");
+        } elseif ($user['type'] == 'Cliente') {
+            header("Location: indexCliente.php");
+        } else {
+            // Si el tipo de usuario no es ninguno de los esperados, redirigir a una página de error o manejarlo de otra manera
+            header("Location: error.html");
+        }
         exit();
     } else {
         $error_login = 'error';
     }
+
 }
 
 if (isset($_GET["logout"])) {
