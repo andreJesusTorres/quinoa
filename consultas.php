@@ -280,7 +280,6 @@ function listarReservas()
     }
 }
 
-
 function modificarTipoUsuario($idUsuario, $nuevoTipo)
 {
     $conexion = conectar();
@@ -355,6 +354,41 @@ function eliminarReserva($idReserva)
     }
     return false;
 }
+
+if (isset($_POST["agregar_menu"])) {
+    $name = $_POST["name"];
+    $descrip = $_POST["descrip"];
+    $price = $_POST["price"];
+    $img = $_FILES["img"]["name"];
+    $temporal_img = $_FILES["img"]["tmp_name"];
+    $state = ($_POST["state"] == "Disponible") ? 1 : 0; 
+
+    $rute = "img/food/" . $img;
+    move_uploaded_file($temporal_img, $rute);
+
+    $conexion = conectar();
+
+    if (!$conexion) {
+        die("Error en la conexión: " . mysqli_connect_error());
+    } else {
+        $sql = "INSERT INTO menu (name, descrip, price, img, state) VALUES (?, ?, ?, ?, ?)";
+        $stmt = mysqli_prepare($conexion, $sql);
+
+        mysqli_stmt_bind_param($stmt, "ssdis", $name, $descrip, $price, $rute, $state);
+
+        $result = mysqli_stmt_execute($stmt);
+
+        if (!$result) {
+            echo "Error al agregar el menú: " . mysqli_error($conexion);
+        } else {
+            echo "Menú agregado exitosamente.";
+        }
+
+        mysqli_stmt_close($stmt);
+        mysqli_close($conexion);
+    }
+}
+
 
 if (isset($_POST["modificar_reserva"])) {
     $id = $_POST["id"];

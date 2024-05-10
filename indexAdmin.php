@@ -202,38 +202,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 Agregar Menú
             </a>
             <div class="dropdown-menu dropdown-menu-end p-4" id="agregarMenuDropdown" style="width: 400px;">
-                <form action="procesarAgregarMenu.php" method="POST" enctype="multipart/form-data"
+                <form method="POST" enctype="multipart/form-data"
                     class="text-center php-email-form">
                     <h5 class="mb-4">Agregar Menú</h5>
                     <div class="form-group mb-3">
                         <label for="nombre">Nombre:</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                        <input type="text" class="form-control" id="nombre" name="name" required>
                     </div>
 
                     <div class="form-group mb-3">
                         <label for="descripcion">Descripción:</label>
-                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+                        <textarea class="form-control" id="descripcion" name="descrip" rows="3" required></textarea>
                     </div>
 
                     <div class="form-group mb-3">
                         <label for="precio">Precio:</label>
-                        <input type="number" class="form-control" id="precio" name="precio" required>
+                        <input type="number" class="form-control" id="precio" name="price" required>
                     </div>
 
                     <div class="form-group mb-3">
                         <label for="imagen">Imagen:</label>
-                        <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*" required>
+                        <input type="file" class="form-control" id="imagen" name="img" accept="image/*" required>
                     </div>
 
                     <div class="form-group mb-3">
                         <label for="estado">Estado:</label>
-                        <select class="form-control" id="estado" name="estado" required>
+                        <select class="form-control" id="estado" name="state" required>
                             <option value="Disponible">Disponible</option>
                             <option value="No Disponible">No Disponible</option>
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-danger btn-sm"><i></i>Agregar Menú</button>
+                    <button type="submit" class="btn btn-danger btn-sm" name="agregar_menu"><i></i>Agregar Menú</button>
                 </form>
             </div>
         </div>
