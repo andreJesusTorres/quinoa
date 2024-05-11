@@ -196,6 +196,39 @@ function listarMenu()
         mysqli_close($conexion);
     }
 }
+function listarMenuEmpleado()
+{
+    $conexion = conectar();
+    if ($conexion != null) {
+        $sql = "SELECT * FROM menu ORDER BY id ASC";
+        $consulta = mysqli_query($conexion, $sql);
+        if (mysqli_num_rows($consulta) > 0) {
+            while ($datos = mysqli_fetch_assoc($consulta)) {
+                $estado_icono = ($datos["state"] == 1) ? 'img/verde.png' : 'img/rojo.png';
+
+                echo '
+                    <tr>
+                        <td>' . $datos["id"] . '</td>
+                        <td>' . $datos["name"] . '</td>
+                        <td>' . $datos["descrip"] . '</td>
+                        <td>' . $datos["price"] . '</td>
+                        <td><img src="' . $datos["img"] . '" alt="' . $datos["name"] . '" width="50" height="50"></td>
+                        <td><img src="' . $estado_icono . '" alt="' . $datos["name"] . '" width="20" height="20"></td>
+                        <td>
+                        <div class="d-flex align-items-center">
+                            <form method="POST" action="modificarMenu.php">
+                                <input type="hidden" name="id" value="' . $datos["id"] . '">
+                                <button type="submit" class="btn btn-sm btn-outline-secondary bi bi-pencil"></button>
+                            </form>
+                            </div>
+                        </td>
+                    </tr>
+                ';
+            }
+        }
+        mysqli_close($conexion);
+    }
+}
 function listarUsuarios()
 {
     $conexion = conectar();
@@ -217,6 +250,37 @@ function listarUsuarios()
                             <input type="hidden" name="id" value="' . $datos["id"] . '">
                             <button type="submit" class="btn btn-sm btn-outline-secondary bi bi-pencil" name="modificarUsuario"></button>
                         </form>
+                        <form method="POST">
+                            <input type="hidden" name="id" value="' . $datos["id"] . '">
+                            <button type="submit" class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminarUsuario"></button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            
+                ';
+            }
+        }
+        mysqli_close($conexion);
+    }
+}
+function listarUsuariosEmpleado()
+{
+    $conexion = conectar();
+    if ($conexion != null) {
+        $sql = "SELECT * FROM users WHERE type = 'cliente' ORDER BY id ASC";
+        $consulta = mysqli_query($conexion, $sql);
+        if (mysqli_num_rows($consulta) > 0) {
+            while ($datos = mysqli_fetch_assoc($consulta)) {
+                echo '
+                <tr>
+                <td>' . $datos["id"] . '</td>
+                <td>' . $datos["name"] . '</td>
+                <td>' . $datos["mail"] . '</td>
+                <td>' . $datos["phone"] . '</td>
+                <td>' . $datos["type"] . ' </td>
+                <td>
+                    <div class="d-flex align-items-center">
                         <form method="POST">
                             <input type="hidden" name="id" value="' . $datos["id"] . '">
                             <button type="submit" class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminarUsuario"></button>
