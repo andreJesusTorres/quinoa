@@ -1,6 +1,6 @@
 <?php
 require_once ("consultas.php");
-$menuItems = listarMenuIndex(); // Obtener los datos del menú desde la base de datos
+$menuItems = listarMenuIndex();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -81,6 +81,50 @@ $menuItems = listarMenuIndex(); // Obtener los datos del menú desde la base de 
           <img src="assets/img/hero-img.png" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="300">
         </div>
       </div>
+    </div>
+  </section>
+
+  <section id="about" class="about">
+    <div class="container" data-aos="fade-up">
+
+      <div class="section-header">
+        <h2>Descubre Más</h2>
+        <p>Sobre Nosotros<span></span></p>
+      </div>
+
+      <div class="row gy-4">
+        <div class="col-lg-7 position-relative about-img" style="background-image: url(assets/img/about.jpg) ;"
+          data-aos="fade-up" data-aos-delay="150">
+          <div class="call-us position-absolute">
+            <h4>Reserva una mesa</h4>
+            <p>+1 5589 55488 55</p>
+          </div>
+        </div>
+        <div class="col-lg-5 d-flex align-items-end" data-aos="fade-up" data-aos-delay="300">
+          <div class="content ps-0 ps-lg-5">
+            <p class="fst-italic">
+              Nos enorgullecemos de ofrecer platos exquisitamente preparados que celebran lo mejor de la cocina local e
+              internacional. Desde nuestros ingredientes frescos y cuidadosamente seleccionados hasta nuestras técnicas
+              culinarias innovadoras, cada detalle se elabora con esmero para satisfacer tu paladar más exigente.
+            </p>
+            <ul>
+              <li><i class="bi bi-check2-all"></i> Nuestro equipo de chefs talentosos y apasionados.</li>
+              <li><i class="bi bi-check2-all"></i> Experiencia gastronómica excepcional.</li>
+              <li><i class="bi bi-check2-all"></i> Ambiente acogedor y elegante.</li>
+            </ul>
+            <p>
+              ¡Ven y únete a nosotros para una experiencia gastronómica que recordarás mucho después de haber terminado
+              tu última comida!
+            </p>
+
+            <div class="position-relative mt-4">
+              <img src="assets/img/about-2.jpg" class="img-fluid" alt="">
+              <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ" class="glightbox play-btn"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 

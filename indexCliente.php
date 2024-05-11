@@ -7,11 +7,25 @@ if (!isset($_SESSION["login"])) {
   exit();
 }
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $name = $_POST["name"];
+  $mail = $_POST["mail"];
+  $phone = $_POST["phone"];
+  $date = $_POST["date"];
+  $time = $_POST["time"];
+  $people = $_POST["people"];
+  $msg = $_POST["msg"];
+
+  if (reservar($name, $mail, $phone, $date, $time, $people, $msg)) {
+    $sent_message = 'prueba';
+  } else {
+    $error_message = 'prueba 1';
+  }
+}
+
 $reservas = getReservasCliente($_SESSION["login"]["mail"]);
-
-
+$menuItems = listarMenuIndex();
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -46,9 +60,8 @@ $reservas = getReservasCliente($_SESSION["login"]["mail"]);
       <nav id="navbar" class="navbar">
         <ul>
           <li><a href="indexCliente.php#hero">Inicio</a></li>
-          <li><a href="#about">Sobre Nosotros</a></li>
           <li><a href="#menu">La Carta</a></li>
-          <li><a href="reservaCliente.php">Reservar</a></li>
+          <li><a href="#reservar">Reservar</a></li>
           <li><a href="#contact">Contacto</a></li>
         </ul>
       </nav>
@@ -164,6 +177,205 @@ $reservas = getReservasCliente($_SESSION["login"]["mail"]);
         </div>
       </div>
     </div>
+
+    <section id="menu" class="menu">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-header">
+          <h2>Menu</h2>
+          <p>Nuestra <span>Carta</span></p>
+        </div>
+
+        <div class="tab-content" data-aos="fade-up" data-aos-delay="300">
+
+          <div class="tab-pane fade active show" id="menu-starters">
+
+            <div class="row gy-5 justify-content-center">
+              <?php foreach ($menuItems as $menuItem): ?>
+                <div class="col-lg-4 menu-item">
+                  <a href="<?php echo $menuItem['img']; ?>" class="glightbox">
+                    <img src="<?php echo $menuItem['img']; ?>" class="menu-img img-fluid" alt="">
+                  </a>
+                  <h4><?php echo $menuItem['name']; ?></h4>
+                  <p class="ingredients"><?php echo $menuItem['descrip']; ?></p>
+                  <p class="price">$<?php echo $menuItem['price']; ?></p>
+                </div>
+              <?php endforeach; ?>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      </div>
+    </section>
+
+    <section id="reservar"class="sample-page">
+      <div class="container" data-aos="fade-up">
+
+        <section id="book-a-table" class="book-a-table">
+          <div class="container" data-aos="fade-up">
+            <div class="section-header">
+              <h2>Estás reservando como invitado.</h2>
+              <p> <span>Reserva una Mesa</span> </p>
+            </div>
+
+            <div class="row g-0">
+
+              <div class="col-lg-4 reservation-img" style="background-image: url(assets/img/reservation.jpg);"
+                data-aos="zoom-out" data-aos-delay="200"></div>
+
+              <div class="col-lg-8 d-flex align-items-center reservation-form-bg">
+                <form method="post" role="form" class="php-email-form" data-aos="fade-up" data-aos-delay="100">
+                  <div class="row gy-4">
+                    <div class="col-lg-4 col-md-6">
+                      <input type="text" name="name" class="form-control" id="name" placeholder="Nombre"
+                        data-rule="minlen:4" data-msg="Please enter at least 4 chars" required>
+                      <div class="validate"></div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                      <input type="email" class="form-control" name="mail" id="mail" placeholder="Email"
+                        data-rule="email" data-msg="Please enter a valid email" required>
+                      <div class="validate"></div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                      <input type="text" class="form-control" name="phone" id="phone" placeholder="Teléfono"
+                        data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+                      <div class="validate"></div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                      <input type="date" name="date" class="form-control" id="date" placeholder="Fecha"
+                        data-rule="minlen:4" data-msg="Please enter at least 4 chars" required>
+                      <div class="validate"></div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                      <select class="form-select" name="time" id="time" aria-label="Seleccione la hora" required>
+                        <option value="" selected>Seleccione la hora</option>
+                        <option value="13:00 - 14:00">13:00 - 14:00</option>
+                        <option value="14:00 - 15:00">14:00 - 15:00</option>
+                        <option value="15:00 - 16:00">15:00 - 16:00</option>
+                      </select>
+                      <div class="validate"></div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6">
+                      <select class="form-select" name="people" id="people"
+                        aria-label="Seleccione la cantidad de personas" required>
+                        <option value="" selected>Seleccione la cantidad de personas</option>
+                        <option value="1">1 persona</option>
+                        <option value="2">2 personas</option>
+                        <option value="3">3 personas</option>
+                        <option value="4">4 personas</option>
+                        <option value="5">5 personas</option>
+                        <option value="6">6 personas</option>
+                        <option value="7">7 personas</option>
+                        <option value="8">8 personas</option>
+                      </select>
+                      <div class="validate"></div>
+                    </div>
+
+                  </div>
+                  <div class="form-group mt-3">
+                    <textarea class="form-control" name="msg" rows="5" placeholder="Mensaje"></textarea>
+                    <div class="validate"></div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="loading">Cargando</div>
+                  </div>
+                  <div class="text-center"><button type="submit">Reserva como invitado</button></div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-header">
+          <p> <span>Donde Estamos</span></p>
+        </div>
+
+        <div class="mb-3">
+          <iframe style="border:0; width: 100%; height: 350px;"
+            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621"
+            frameborder="0" allowfullscreen></iframe>
+        </div>
+
+        <div class="row gy-4">
+
+          <div class="col-md-6">
+            <div class="info-item  d-flex align-items-center">
+              <i class="icon bi bi-map flex-shrink-0"></i>
+              <div>
+                <h3>Dirección</h3>
+                <p>Elche, Alicante</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="info-item d-flex align-items-center">
+              <i class="icon bi bi-envelope flex-shrink-0"></i>
+              <div>
+                <h3>Email</h3>
+                <p>contacto@quinoa.com</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="info-item  d-flex align-items-center">
+              <i class="icon bi bi-telephone flex-shrink-0"></i>
+              <div>
+                <h3>Llámanos</h3>
+                <p>+34 600 123 123</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="info-item  d-flex align-items-center">
+              <i class="icon bi bi-share flex-shrink-0"></i>
+              <div>
+                <h3>Horario</h3>
+                <div><strong>Lunes a Sábado </strong> de 13:00 a 16:00
+                  <strong>Domingo:</strong> Cerrado
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <form action="forms/contact.php" method="post" role="form" class="php-email-form p-3 p-md-4">
+          <div class="row">
+            <div class="col-xl-6 form-group">
+              <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+            </div>
+            <div class="col-xl-6 form-group">
+              <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+          </div>
+          <div class="form-group">
+            <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+          </div>
+          <div class="my-3">
+            <div class="loading">Loading</div>
+            <div class="error-message"></div>
+            <div class="sent-message">Your message has been sent. Thank you!</div>
+          </div>
+          <div class="text-center"><button type="submit">Enviar</button></div>
+        </form>
+
+      </div>
+    </section>
 
     <footer id="footer" class="footer">
 
