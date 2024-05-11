@@ -114,29 +114,26 @@ function getReservaClientePorId($id_reserva)
     mysqli_close($conexion);
     return $reserva;
 }
-
 function listarMenuIndex()
 {
     $conexion = conectar();
     $menuItems = array();
-    
+
     if ($conexion != null) {
         $sql = "SELECT * FROM menu WHERE state = 1 ORDER BY id ASC";
         $consulta = mysqli_query($conexion, $sql);
-        
+
         if (mysqli_num_rows($consulta) > 0) {
             while ($datos = mysqli_fetch_assoc($consulta)) {
                 $menuItems[] = $datos; // Agregar datos al array
             }
         }
-        
+
         mysqli_close($conexion);
     }
-    
+
     return $menuItems;
 }
-
-
 function listarMesas()
 {
     $conexion = conectar();
@@ -162,7 +159,6 @@ function listarMesas()
         mysqli_close($conexion);
     }
 }
-
 function listarMenu()
 {
     $conexion = conectar();
@@ -171,9 +167,8 @@ function listarMenu()
         $consulta = mysqli_query($conexion, $sql);
         if (mysqli_num_rows($consulta) > 0) {
             while ($datos = mysqli_fetch_assoc($consulta)) {
-                // Determinar el estado y seleccionar el icono correspondiente
                 $estado_icono = ($datos["state"] == 1) ? 'img/verde.png' : 'img/rojo.png';
-                
+
                 echo '
                     <tr>
                         <td>' . $datos["id"] . '</td>
@@ -183,11 +178,13 @@ function listarMenu()
                         <td><img src="' . $datos["img"] . '" alt="' . $datos["name"] . '" width="50" height="50"></td>
                         <td><img src="' . $estado_icono . '" alt="' . $datos["name"] . '" width="20" height="20"></td>
                         <td>
-                            <form method="POST">
-                                <input type="hidden" name="id" value="' . $datos["id"] . '">
-                                <button class="btn btn-sm btn-outline-primary bi bi-pencil-square" name="modificarReserva"></button>
-                            </form>
+                        <form method="POST" action="modificarMenu.php">
+                        <input type="hidden" name="id" value="' . $datos["id"] . '">
+                        <button type="submit" class="btn btn-sm btn-outline-primary bi bi-pencil-square"></button>
+                    </form>
+                    
                         </td>
+
                         <td>
                             <form method="POST">
                                 <input type="hidden" name="id" value="' . $datos["id"] . '">
@@ -201,7 +198,6 @@ function listarMenu()
         mysqli_close($conexion);
     }
 }
-
 function listarUsuarios()
 {
     $conexion = conectar();
@@ -240,7 +236,6 @@ function listarUsuarios()
         mysqli_close($conexion);
     }
 }
-
 function listarReservas()
 {
     $conexion = conectar();
@@ -279,7 +274,6 @@ function listarReservas()
         mysqli_close($conexion);
     }
 }
-
 function modificarTipoUsuario($idUsuario, $nuevoTipo)
 {
     $conexion = conectar();
@@ -294,7 +288,6 @@ function modificarTipoUsuario($idUsuario, $nuevoTipo)
     }
     return false;
 }
-
 function eliminarUsuario($idUsuario)
 {
     $conexion = conectar();
@@ -309,7 +302,6 @@ function eliminarUsuario($idUsuario)
     }
     return false;
 }
-
 function eliminarMenu($idMenu)
 {
     $conexion = conectar();
@@ -324,7 +316,6 @@ function eliminarMenu($idMenu)
     }
     return false;
 }
-
 function eliminarMesa($idMesa)
 {
     $conexion = conectar();
@@ -339,7 +330,6 @@ function eliminarMesa($idMesa)
     }
     return false;
 }
-
 function eliminarReserva($idReserva)
 {
     $conexion = conectar();
@@ -355,13 +345,39 @@ function eliminarReserva($idReserva)
     return false;
 }
 
+if (isset($_POST["agregar_mesa"])) {
+    $sites = $_POST["sites"];
+
+    $conexion = conectar();
+
+    if (!$conexion) {
+        die("Error en la conexión: " . mysqli_connect_error());
+    } else {
+        $sql = "INSERT INTO tables (sites) VALUES (?)";
+        $stmt = mysqli_prepare($conexion, $sql);
+
+        mysqli_stmt_bind_param($stmt, "s", $sites);
+
+        $result = mysqli_stmt_execute($stmt);
+
+        if (!$result) {
+            echo "Error al agregar la mesa: " . mysqli_error($conexion);
+        } else {
+            echo "Mesa agregada exitosamente.";
+        }
+
+        mysqli_stmt_close($stmt);
+        mysqli_close($conexion);
+    }
+}
+
 if (isset($_POST["agregar_menu"])) {
     $name = $_POST["name"];
     $descrip = $_POST["descrip"];
     $price = $_POST["price"];
     $img = $_FILES["img"]["name"];
     $temporal_img = $_FILES["img"]["tmp_name"];
-    $state = ($_POST["state"] == "Disponible") ? 1 : 0; 
+    $state = ($_POST["state"] == "Disponible") ? 1 : 0;
 
     $rute = "img/food/" . $img;
     move_uploaded_file($temporal_img, $rute);
@@ -389,6 +405,74 @@ if (isset($_POST["agregar_menu"])) {
     }
 }
 
+if (isset($_POST["modificar_menu"])) {
+    var_dump($_POST);
+    $id = $_POST["id"];
+    $name = $_POST["name"];
+    $descrip = $_POST["descrip"];
+    $price = $_POST["price"];
+    $img = $_FILES["img"]["name"];
+    $temporal_img = $_FILES["img"]["tmp_name"];
+    $state = ($_POST["state"] == "Disponible") ? 1 : 0;
+
+    $rute = "img/food/" . $img;
+    move_uploaded_file($temporal_img, $rute);
+
+    $conexion = conectar();
+
+    if (!$conexion) {
+        die("Error en la conexión: " . mysqli_connect_error());
+    } else {
+        $sql = "UPDATE menu SET name=?, descrip=?, price=?, img=?, state=? WHERE id=?";
+        $stmt = mysqli_prepare($conexion, $sql);
+
+        mysqli_stmt_bind_param($stmt, "sssssi", $name, $descrip, $price, $rute, $state, $id);
+
+        $modificar = mysqli_stmt_execute($stmt);
+
+        if (!$modificar) {
+            $menuNoModificado = "error";
+        } else {
+            $menuModificado = "exito";
+            header("Location:indexAdmin.php");
+        }
+
+        mysqli_stmt_close($stmt);
+        var_dump($modificar);
+    }
+    mysqli_close($conexion);
+}
+
+if (isset($_POST["agregar_usuario"])) {
+    $name = $_POST["name"];
+    $pass = $_POST["pass"];
+    $mail = $_POST["mail"];
+    $phone = $_POST["phone"];
+    $type = $_POST["type"];
+
+    $conexion = conectar();
+
+    if (!$conexion) {
+        die("Error en la conexión: " . mysqli_connect_error());
+    } else {
+        $sql = "INSERT INTO users (name, pass, mail, phone, type) VALUES (?, ?, ?, ?, ?)";
+        $stmt = mysqli_prepare($conexion, $sql);
+
+        mysqli_stmt_bind_param($stmt, "sssss", $name, $pass, $mail, $phone, $type);
+
+
+        $result = mysqli_stmt_execute($stmt);
+
+        if (!$result) {
+            echo "Error al agregar el usuario: " . mysqli_error($conexion);
+        } else {
+            echo "Usuario agregado exitosamente.";
+        }
+
+        mysqli_stmt_close($stmt);
+        mysqli_close($conexion);
+    }
+}
 
 if (isset($_POST["modificar_reserva"])) {
     $id = $_POST["id"];

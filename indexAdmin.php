@@ -158,7 +158,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         Agregar Mesa
                     </a>
                     <div class="dropdown-menu dropdown-menu-end p-4" id="agregarMesaDropdown" style="width: 300px;">
-                        <form action="procesarAgregarMesa.php" method="POST" class="text-center php-email-form">
+                        <form method="POST" class="text-center php-email-form">
                             <h5 class="mb-4">Agregar Mesa</h5>
                             <div class="form-group mb-3">
                                 <label for="numeroMesa">Número de mesa:</label>
@@ -168,9 +168,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                             <div class="form-group mb-3">
                                 <label for="lugares">Lugares:</label>
-                                <input type="number" class="form-control" id="lugares" name="lugares" required>
+                                <input type="number" class="form-control" id="lugares" name="sites" required>
                             </div>
-                            <button type="submit" class="btn btn-danger btn-sm"><i></i> Agregar Mesa</button>
+                            <button type="submit" class="btn btn-danger btn-sm" name="agregar_mesa"><i></i> Agregar
+                                Mesa</button>
                         </form>
                     </div>
 
@@ -194,129 +195,136 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
         <section id="book-a-table" class="book-a-table">
-    <div class="container" data-aos="fade-up">
-        <div class="section-header d-flex justify-content-between align-items-center">
-            <h2>Agregar Menú</h2>
-            <a class="btn btn-danger btn-sm bi bi-plus" href="#" role="button" aria-haspopup="true"
-                aria-expanded="false" data-bs-toggle="dropdown">
-                Agregar Menú
-            </a>
-            <div class="dropdown-menu dropdown-menu-end p-4" id="agregarMenuDropdown" style="width: 400px;">
-                <form method="POST" enctype="multipart/form-data"
-                    class="text-center php-email-form">
-                    <h5 class="mb-4">Agregar Menú</h5>
-                    <div class="form-group mb-3">
-                        <label for="nombre">Nombre:</label>
-                        <input type="text" class="form-control" id="nombre" name="name" required>
-                    </div>
+            <div class="container" data-aos="fade-up">
+                <div class="section-header d-flex justify-content-between align-items-center">
+                    <h2>Agregar Menú</h2>
+                    <a class="btn btn-danger btn-sm bi bi-plus" href="#" role="button" aria-haspopup="true"
+                        aria-expanded="false" data-bs-toggle="dropdown">
+                        Agregar Menú
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end p-4" id="agregarMenuDropdown" style="width: 400px;">
+                        <form method="POST" enctype="multipart/form-data" class="text-center php-email-form">
+                            <h5 class="mb-4">Agregar Menú</h5>
+                            <div class="form-group mb-3">
+                                <label for="nombre">Nombre:</label>
+                                <input type="text" class="form-control" id="nombre" name="name" required>
+                            </div>
 
-                    <div class="form-group mb-3">
-                        <label for="descripcion">Descripción:</label>
-                        <textarea class="form-control" id="descripcion" name="descrip" rows="3" required></textarea>
-                    </div>
+                            <div class="form-group mb-3">
+                                <label for="descripcion">Descripción:</label>
+                                <textarea class="form-control" id="descripcion" name="descrip" rows="3"
+                                    required></textarea>
+                            </div>
 
-                    <div class="form-group mb-3">
-                        <label for="precio">Precio:</label>
-                        <input type="number" class="form-control" id="precio" name="price" required>
-                    </div>
+                            <div class="form-group mb-3">
+                                <label for="precio">Precio:</label>
+                                <input type="number" class="form-control" id="precio" name="price" required>
+                            </div>
 
-                    <div class="form-group mb-3">
-                        <label for="imagen">Imagen:</label>
-                        <input type="file" class="form-control" id="imagen" name="img" accept="image/*" required>
-                    </div>
+                            <div class="form-group mb-3">
+                                <label for="imagen">Imagen:</label>
+                                <input type="file" class="form-control" id="imagen" name="img" accept="image/*"
+                                    required>
+                            </div>
 
-                    <div class="form-group mb-3">
-                        <label for="estado">Estado:</label>
-                        <select class="form-control" id="estado" name="state" required>
-                            <option value="Disponible">Disponible</option>
-                            <option value="No Disponible">No Disponible</option>
-                        </select>
-                    </div>
+                            <div class="form-group mb-3">
+                                <label for="estado">Estado:</label>
+                                <select class="form-control" id="estado" name="state" required>
+                                    <option value="Disponible">Disponible</option>
+                                    <option value="No Disponible">No Disponible</option>
+                                </select>
+                            </div>
 
-                    <button type="submit" class="btn btn-danger btn-sm" name="agregar_menu"><i></i>Agregar Menú</button>
-                </form>
+                            <button type="submit" class="btn btn-danger btn-sm" name="agregar_menu"><i></i>Agregar
+                                Menú</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Código</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Descripción</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Imagen</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php listarMenu(); ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Código</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Descripción</th>
-                        <th scope="col">Precio</th>
-                        <th scope="col">Imagen</th>
-                        <th scope="col">Estado</th>
-                        <th scope="col">Acción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php listarMenu(); ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</section>
+        </section>
 
 
-<section id="book-a-table" class="book-a-table">
-    <div class="container" data-aos="fade-up">
-        <div class="section-header d-flex justify-content-between align-items-center">
-            <h2>Agregar Usuario</h2>
-            <a class="btn btn-danger btn-sm bi bi-plus" href="#" role="button" aria-haspopup="true"
-                aria-expanded="false" data-bs-toggle="dropdown">
-                Agregar Usuario
-            </a>
-            <div class="dropdown-menu dropdown-menu-end p-4" id="agregarUsuarioDropdown" style="width: 300px;">
-                <form action="procesarAgregarUsuario.php" method="POST" class="text-center php-email-form">
-                    <h5 class="mb-4">Agregar Usuario</h5>
-                    <div class="form-group mb-3">
-                        <label for="nombre">Nombre:</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+        <section id="book-a-table" class="book-a-table">
+            <div class="container" data-aos="fade-up">
+                <div class="section-header d-flex justify-content-between align-items-center">
+                    <h2>Agregar Usuario</h2>
+                    <a class="btn btn-danger btn-sm bi bi-plus" href="#" role="button" aria-haspopup="true"
+                        aria-expanded="false" data-bs-toggle="dropdown">
+                        Agregar Usuario
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end p-4" id="agregarUsuarioDropdown" style="width: 300px;">
+                        <form method="POST" class="text-center php-email-form">
+                            <h5 class="mb-4">Agregar Usuario</h5>
+                            <div class="form-group mb-3">
+                                <label for="nombre">Nombre:</label>
+                                <input type="text" class="form-control" id="nombre" name="name" required>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="pass">Clave:</label>
+                                <input type="text" class="form-control" id="pass" name="pass" required>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="email">Email:</label>
+                                <input type="email" class="form-control" id="email" name="mail" required>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="telefono">Teléfono:</label>
+                                <input type="text" class="form-control" id="telefono" name="phone" required>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="tipo">Tipo:</label>
+                                <select class="form-control" id="tipo" name="type" required>
+                                    <option value="Cliente">Cliente</option>
+                                    <option value="Empleado">Empleado</option>
+                                    <option value="Administrador">Administrador</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-danger btn-sm" name="agregar_usuario"><i></i> Agregar Usuario</button>
+                        </form>
                     </div>
-
-                    <div class="form-group mb-3">
-                        <label for="email">Email:</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="telefono">Teléfono:</label>
-                        <input type="text" class="form-control" id="telefono" name="telefono" required>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="tipo">Tipo:</label>
-                        <select class="form-control" id="tipo" name="tipo" required>
-                            <option value="Cliente">Cliente</option>
-                            <option value="Empleado">Empleado</option>
-                            <option value="Administrador">Administrador</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-plus"></i> Agregar Usuario</button>
-                </form>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Código</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Teléfono</th>
+                                <th scope="col">Tipo</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php listarUsuarios(); ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Código</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Teléfono</th>
-                        <th scope="col">Tipo</th>
-                        <th scope="col">Acción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php listarUsuarios(); ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</section>
+        </section>
 
 
 
