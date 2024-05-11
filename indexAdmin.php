@@ -8,17 +8,8 @@ if (!isset($_SESSION["login"])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST["modificarTipoUsuario"])) {
-        $idUsuario = $_POST["id"];
-        $nuevoTipo = $_POST["tipo_usuario"];
 
-        if (modificarTipoUsuario($idUsuario, $nuevoTipo)) {
-            header("Location: indexAdmin.php");
-            exit();
-        } else {
-            echo "Error al modificar el tipo de usuario";
-        }
-    } elseif (isset($_POST["eliminarUsuario"])) {
+    if (isset($_POST["eliminarUsuario"])) {
         $idUsuario = $_POST["id"];
 
         if (eliminarUsuario($idUsuario)) {
@@ -302,7 +293,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </select>
                             </div>
 
-                            <button type="submit" class="btn btn-danger btn-sm" name="agregar_usuario"><i></i> Agregar Usuario</button>
+                            <button type="submit" class="btn btn-danger btn-sm" name="agregar_usuario"><i></i> Agregar
+                                Usuario</button>
                         </form>
                     </div>
                 </div>

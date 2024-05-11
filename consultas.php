@@ -178,18 +178,16 @@ function listarMenu()
                         <td><img src="' . $datos["img"] . '" alt="' . $datos["name"] . '" width="50" height="50"></td>
                         <td><img src="' . $estado_icono . '" alt="' . $datos["name"] . '" width="20" height="20"></td>
                         <td>
-                        <form method="POST" action="modificarMenu.php">
-                        <input type="hidden" name="id" value="' . $datos["id"] . '">
-                        <button type="submit" class="btn btn-sm btn-outline-primary bi bi-pencil-square"></button>
-                    </form>
-                    
-                        </td>
-
-                        <td>
+                        <div class="d-flex align-items-center">
+                            <form method="POST" action="modificarMenu.php">
+                                <input type="hidden" name="id" value="' . $datos["id"] . '">
+                                <button type="submit" class="btn btn-sm btn-outline-secondary bi bi-pencil"></button>
+                            </form>
                             <form method="POST">
                                 <input type="hidden" name="id" value="' . $datos["id"] . '">
                                 <button class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminarMenu"></button>
                             </form>
+                            </div>
                         </td>
                     </tr>
                 ';
@@ -207,29 +205,26 @@ function listarUsuarios()
         if (mysqli_num_rows($consulta) > 0) {
             while ($datos = mysqli_fetch_assoc($consulta)) {
                 echo '
-                    <tr>
-                        <td>' . $datos["id"] . '</td>
-                        <td>' . $datos["name"] . '</td>
-                        <td>' . $datos["mail"] . '</td>
-                        <td>' . $datos["phone"] . '</td>
-                        <td>
-                            <form method="POST" class="d-flex align-items-center">
-                                <input type="hidden" name="id" value="' . $datos["id"] . '">
-                                <select name="tipo_usuario" class="form-select me-2" aria-label="Tipo de Usuario">
-                                    <option value="Cliente" ' . ($datos["type"] == "Cliente" ? "selected" : "") . '>Cliente</option>
-                                    <option value="Empleado" ' . ($datos["type"] == "Empleado" ? "selected" : "") . '>Empleado</option>
-                                    <option value="Administrador" ' . ($datos["type"] == "Administrador" ? "selected" : "") . '>Administrador</option>
-                                </select>
-                                <button type="submit" class="btn btn-sm btn-outline-primary bi bi-pencil-square" name="modificarTipoUsuario"></button>
-                            </form>
-                        </td>
-                        <td>
-                            <form method="POST" class="d-flex align-items-center">
-                                <input type="hidden" name="id" value="' . $datos["id"] . '">
-                                <button type="submit" class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminarUsuario"></button>
-                            </form>
-                        </td>
-                    </tr>
+                <tr>
+                <td>' . $datos["id"] . '</td>
+                <td>' . $datos["name"] . '</td>
+                <td>' . $datos["mail"] . '</td>
+                <td>' . $datos["phone"] . '</td>
+                <td>' . $datos["type"] . ' </td>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <form method="POST" action="modificarUsuario.php">
+                            <input type="hidden" name="id" value="' . $datos["id"] . '">
+                            <button type="submit" class="btn btn-sm btn-outline-secondary bi bi-pencil" name="modificarUsuario"></button>
+                        </form>
+                        <form method="POST">
+                            <input type="hidden" name="id" value="' . $datos["id"] . '">
+                            <button type="submit" class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminarUsuario"></button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            
                 ';
             }
         }
@@ -256,12 +251,11 @@ function listarReservas()
                         <td>' . $datos["msg"] . '</td>
                         <td>' . $datos["type"] . '</td>
                         <td>
-                            <form method="POST">
+                        <div class="d-flex align-items-center">
+                            <form method="POST" action="modificarReservaAdmin.php">
                                 <input type="hidden" name="id" value="' . $datos["id"] . '">
-                                <button class="btn btn-sm btn-outline-primary bi bi-pencil-square" name="modificarReserva"></button>
+                                <button class="btn btn-sm btn-outline-secondary bi bi-pencil" name="modificarReserva"></button>
                             </form>
-                        </td>
-                        <td>
                             <form method="POST">
                                 <input type="hidden" name="id" value="' . $datos["id"] . '">
                                 <button class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminarReserva"></button>
@@ -273,20 +267,6 @@ function listarReservas()
         }
         mysqli_close($conexion);
     }
-}
-function modificarTipoUsuario($idUsuario, $nuevoTipo)
-{
-    $conexion = conectar();
-    if ($conexion != null) {
-        $sql = "UPDATE users SET type = ? WHERE id = ?";
-        $consulta = mysqli_prepare($conexion, $sql);
-        mysqli_stmt_bind_param($consulta, "ss", $nuevoTipo, $idUsuario);
-        $resultado = mysqli_stmt_execute($consulta);
-        mysqli_stmt_close($consulta);
-        mysqli_close($conexion);
-        return $resultado;
-    }
-    return false;
 }
 function eliminarUsuario($idUsuario)
 {
@@ -405,6 +385,37 @@ if (isset($_POST["agregar_menu"])) {
     }
 }
 
+if (isset($_POST["agregar_usuario"])) {
+    $name = $_POST["name"];
+    $pass = $_POST["pass"];
+    $mail = $_POST["mail"];
+    $phone = $_POST["phone"];
+    $type = $_POST["type"];
+
+    $conexion = conectar();
+
+    if (!$conexion) {
+        die("Error en la conexión: " . mysqli_connect_error());
+    } else {
+        $sql = "INSERT INTO users (name, pass, mail, phone, type) VALUES (?, ?, ?, ?, ?)";
+        $stmt = mysqli_prepare($conexion, $sql);
+
+        mysqli_stmt_bind_param($stmt, "sssss", $name, $pass, $mail, $phone, $type);
+
+
+        $result = mysqli_stmt_execute($stmt);
+
+        if (!$result) {
+            echo "Error al agregar el usuario: " . mysqli_error($conexion);
+        } else {
+            echo "Usuario agregado exitosamente.";
+        }
+
+        mysqli_stmt_close($stmt);
+        mysqli_close($conexion);
+    }
+}
+
 if (isset($_POST["modificar_menu"])) {
     var_dump($_POST);
     $id = $_POST["id"];
@@ -443,7 +454,9 @@ if (isset($_POST["modificar_menu"])) {
     mysqli_close($conexion);
 }
 
-if (isset($_POST["agregar_usuario"])) {
+if (isset($_POST["modificar_usuario"])) {
+    var_dump($_POST);
+    $id = $_POST["id"];
     $name = $_POST["name"];
     $pass = $_POST["pass"];
     $mail = $_POST["mail"];
@@ -455,23 +468,24 @@ if (isset($_POST["agregar_usuario"])) {
     if (!$conexion) {
         die("Error en la conexión: " . mysqli_connect_error());
     } else {
-        $sql = "INSERT INTO users (name, pass, mail, phone, type) VALUES (?, ?, ?, ?, ?)";
+        $sql = "UPDATE users SET name=?, pass=?, mail=?, phone=?, type=? WHERE id=?";
         $stmt = mysqli_prepare($conexion, $sql);
 
-        mysqli_stmt_bind_param($stmt, "sssss", $name, $pass, $mail, $phone, $type);
+        mysqli_stmt_bind_param($stmt, "sssssi", $name, $pass, $mail, $phone, $type, $id);
 
+        $modificar = mysqli_stmt_execute($stmt);
 
-        $result = mysqli_stmt_execute($stmt);
-
-        if (!$result) {
-            echo "Error al agregar el usuario: " . mysqli_error($conexion);
+        if (!$modificar) {
+            $userNoModificado = "error";
         } else {
-            echo "Usuario agregado exitosamente.";
+            $userModificado = "exito";
+            header("Location:indexAdmin.php");
         }
 
         mysqli_stmt_close($stmt);
-        mysqli_close($conexion);
+        var_dump($modificar);
     }
+    mysqli_close($conexion);
 }
 
 if (isset($_POST["modificar_reserva"])) {
@@ -496,6 +510,41 @@ if (isset($_POST["modificar_reserva"])) {
             $usuarioNoModificado = "error";
         } else {
             $usuarioModificado = "exito";
+        }
+
+        mysqli_stmt_close($stmt);
+    }
+    mysqli_close($conexion);
+}
+
+if (isset($_POST["modificar_reserva_admin"])) {
+    $id = $_POST["id"];
+    $name = $_POST["name"];
+    $mail = $_POST["mail"];
+    $phone = $_POST["phone"];
+    $date = $_POST["date"];
+    $time = $_POST["time"];
+    $people = $_POST["people"];
+    $msg = $_POST["msg"];
+    $type = $_POST["type"];
+
+    $conexion = conectar();
+
+    if (!$conexion) {
+        die("Error en la conexión: " . mysqli_connect_error());
+    } else {
+        $sql = "UPDATE reserves SET name=?, mail=?, phone=?, date=?, time=?, people=?, msg=?, type=? WHERE id=?";
+        $stmt = mysqli_prepare($conexion, $sql);
+
+        mysqli_stmt_bind_param($stmt, "ssssssssi", $name, $mail, $phone, $date, $time, $people, $msg, $type, $id);
+
+        $modificar = mysqli_stmt_execute($stmt);
+
+        if (!$modificar) {
+            $reservaNoModificada = "error";
+        } else {
+            $reservaModificada = "exito";
+            header("Location:indexAdmin.php");
         }
 
         mysqli_stmt_close($stmt);
