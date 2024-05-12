@@ -52,7 +52,7 @@ $menuItems = listarMenuIndex();
           <li><a href="index.html#hero">Inicio</a></li>
           <li><a href="#about">Sobre Nosotros</a></li>
           <li><a href="#menu">La Carta</a></li>
-          <li><a href="reserva.php">Reservar</a></li>
+          <li><a href="#reservar">Reservar</a></li>
           <li><a href="#contact">Contacto</a></li>
         </ul>
       </nav>
@@ -199,6 +199,88 @@ $menuItems = listarMenuIndex();
           <div class="swiper-pagination"></div>
         </div>
 
+      </div>
+    </section>
+
+    <section id="reserva" class="sample-page">
+      <div class="container" data-aos="fade-up">
+
+        <section id="book-a-table" class="book-a-table">
+          <div class="container" data-aos="fade-up">
+            <div class="section-header">
+              <h2>Estás reservando como invitado.</h2>
+              <p> <span>Reserva una Mesa</span> </p>
+            </div>
+
+            <div class="row g-0">
+
+              <div class="col-lg-4 reservation-img" style="background-image: url(assets/img/reservation.jpg);"
+                data-aos="zoom-out" data-aos-delay="200"></div>
+
+              <div class="col-lg-8 d-flex align-items-center reservation-form-bg">
+                <form method="post" role="form" class="php-email-form" data-aos="fade-up" data-aos-delay="100">
+                  <div class="row gy-4">
+                    <div class="col-lg-4 col-md-6">
+                      <input type="text" name="name" class="form-control" id="name" placeholder="Nombre"
+                        data-rule="minlen:4" data-msg="Please enter at least 4 chars" required>
+                      <div class="validate"></div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                      <input type="email" class="form-control" name="mail" id="mail" placeholder="Email"
+                        data-rule="email" data-msg="Please enter a valid email" required>
+                      <div class="validate"></div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                      <input type="text" class="form-control" name="phone" id="phone" placeholder="Teléfono"
+                        data-rule="minlen:4" data-msg="Please enter at least 4 chars">
+                      <div class="validate"></div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                      <input type="date" name="date" class="form-control" id="date" placeholder="Fecha"
+                        data-rule="minlen:4" data-msg="Please enter at least 4 chars" required>
+                      <div class="validate"></div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                      <select class="form-select" name="time" id="time" aria-label="Seleccione la hora" required>
+                        <option value="" selected>Seleccione la hora</option>
+                        <option value="13:00 - 14:00">13:00 - 14:00</option>
+                        <option value="14:00 - 15:00">14:00 - 15:00</option>
+                        <option value="15:00 - 16:00">15:00 - 16:00</option>
+                      </select>
+                      <div class="validate"></div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6">
+                      <select class="form-select" name="people" id="people"
+                        aria-label="Seleccione la cantidad de personas" required>
+                        <option value="" selected>Seleccione la cantidad de personas</option>
+                        <option value="1">1 persona</option>
+                        <option value="2">2 personas</option>
+                        <option value="3">3 personas</option>
+                        <option value="4">4 personas</option>
+                        <option value="5">5 personas</option>
+                        <option value="6">6 personas</option>
+                        <option value="7">7 personas</option>
+                        <option value="8">8 personas</option>
+                      </select>
+                      <div class="validate"></div>
+                    </div>
+
+                  </div>
+                  <div class="form-group mt-3">
+                    <textarea class="form-control" name="msg" rows="5" placeholder="Mensaje"></textarea>
+                    <div class="validate"></div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="loading">Cargando</div>
+                  </div>
+                  <div class="text-center"><button type="submit">Reserva como invitado</button></div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </section>
 

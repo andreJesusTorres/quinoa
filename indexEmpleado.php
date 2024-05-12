@@ -83,11 +83,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </a>
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a href="indexCliente.php#hero">Inicio</a></li>
-                    <li><a href="#about">Sobre Nosotros</a></li>
-                    <li><a href="#menu">La Carta</a></li>
-                    <li><a href="reservaCliente.php">Reservar</a></li>
-                    <li><a href="#contact">Contacto</a></li>
+                    <li><a href="#menu"> Lista menú</a></li>
+                    <li><a href="#usuarios">Lista usuarios</a></li>
+                    <li><a href="#reservas">Lista de reservas</a></li>
                 </ul>
             </nav>
             <a class="btn-book-a-table" href="iniciosesion.php" name="logout">Cerrar Sesión</a>
@@ -140,7 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
 
-        <section id="book-a-table" class="book-a-table">
+        <section id="menu" class="book-a-table">
             <div class="container" data-aos="fade-up">
                 <div class="section-header d-flex justify-content-between align-items-center">
                     <h2>Lista Menú</h2>
@@ -167,7 +165,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </section>
 
 
-        <section id="book-a-table" class="book-a-table">
+        <section id="usuarios" class="book-a-table">
             <div class="container" data-aos="fade-up">
                 <div class="section-header d-flex justify-content-between align-items-center">
                     <h2>Lista de Usuarios</h2>
@@ -194,7 +192,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-        <section id="book-a-table" class="book-a-table">
+        <section id="reservas" class="book-a-table">
             <div class="container" data-aos="fade-up">
                 <div class="section-header d-flex justify-content-between align-items-center">
                     <h2>Lista de reservas</h2>

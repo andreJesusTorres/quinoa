@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $people = $_POST["people"];
   $msg = $_POST["msg"];
 
-  if (reservar($name, $mail, $phone, $date, $time, $people, $msg)) {
+  if (reservarCliente($name, $mail, $phone, $date, $time, $people, $msg)) {
     $sent_message = 'prueba';
   } else {
     $error_message = 'prueba 1';
@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 $reservas = getReservasCliente($_SESSION["login"]["mail"]);
 $menuItems = listarMenuIndex();
+getReservaClientePorId($mail);
 ?>
 
 <!DOCTYPE html>
@@ -59,7 +60,8 @@ $menuItems = listarMenuIndex();
       </a>
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a href="indexCliente.php#hero">Inicio</a></li>
+          <li><a href="index.html#hero">Inicio</a></li>
+          <li><a href="#about">Sobre Nosotros</a></li>
           <li><a href="#menu">La Carta</a></li>
           <li><a href="#reservar">Reservar</a></li>
           <li><a href="#contact">Contacto</a></li>
@@ -121,7 +123,7 @@ $menuItems = listarMenuIndex();
             </h2>
             <p data-aos="fade-up" data-aos-delay="100">Desde hace más de 10 años</p>
             <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
-              <a href="reservaCliente.php" class="btn-book-a-table">Reserva una mesa</a>
+              <a href="#reservar" class="btn-book-a-table">Reserva una mesa</a>
             </div>
             <p class="mt-3 text-center" data-aos="fade-up" data-aos-delay="200">
               ¿Has reservado ya? <a href="#" data-bs-toggle="modal" data-bs-target="#modalReservas">Mira aquí</a>.
@@ -133,6 +135,51 @@ $menuItems = listarMenuIndex();
         </div>
       </div>
     </section>
+
+    <section id="about" class="about">
+    <div class="container" data-aos="fade-up">
+
+      <div class="section-header">
+        <h2>Descubre Más</h2>
+        <p>Sobre Nosotros<span></span></p>
+      </div>
+
+      <div class="row gy-4">
+        <div class="col-lg-7 position-relative about-img" style="background-image: url(assets/img/about.jpg) ;"
+          data-aos="fade-up" data-aos-delay="150">
+          <div class="call-us position-absolute">
+            <h4>Reserva una mesa</h4>
+            <p>+1 5589 55488 55</p>
+          </div>
+        </div>
+        <div class="col-lg-5 d-flex align-items-end" data-aos="fade-up" data-aos-delay="300">
+          <div class="content ps-0 ps-lg-5">
+            <p class="fst-italic">
+              Nos enorgullecemos de ofrecer platos exquisitamente preparados que celebran lo mejor de la cocina local e
+              internacional. Desde nuestros ingredientes frescos y cuidadosamente seleccionados hasta nuestras técnicas
+              culinarias innovadoras, cada detalle se elabora con esmero para satisfacer tu paladar más exigente.
+            </p>
+            <ul>
+              <li><i class="bi bi-check2-all"></i> Nuestro equipo de chefs talentosos y apasionados.</li>
+              <li><i class="bi bi-check2-all"></i> Experiencia gastronómica excepcional.</li>
+              <li><i class="bi bi-check2-all"></i> Ambiente acogedor y elegante.</li>
+            </ul>
+            <p>
+              ¡Ven y únete a nosotros para una experiencia gastronómica que recordarás mucho después de haber terminado
+              tu última comida!
+            </p>
+
+            <div class="position-relative mt-4">
+              <img src="assets/img/about-2.jpg" class="img-fluid" alt="">
+              <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ" class="glightbox play-btn"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+    
     <div id="modalReservas" class="modal fade" tabindex="-1" aria-labelledby="modalReservasLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -162,8 +209,8 @@ $menuItems = listarMenuIndex();
                       <td>
                         <a href="modificarReserva.php?id=<?php echo $reserva['id']; ?>" class="btn btn-primary btn-sm"
                           style="display: inline-block;"><i class="bi bi-pencil-square"></i></a>
-                        <a href="reservaCliente.php?eliminar_reserva&id=<?php echo $reserva['id']; ?>"
-                          class="btn btn-danger btn-sm" style="display: inline-block;"><i class="bi bi-trash"></i></a>
+                          <a href="indexCliente.php?eliminar_reserva&id=<?php echo $reserva['id']; ?>" class="btn btn-danger btn-sm" style="display: inline-block;"><i class="bi bi-trash"></i></a>
+
                       </td>
                     </tr>
                   <?php endforeach; ?>
@@ -216,7 +263,7 @@ $menuItems = listarMenuIndex();
         <section id="book-a-table" class="book-a-table">
           <div class="container" data-aos="fade-up">
             <div class="section-header">
-              <h2>Estás reservando como invitado.</h2>
+              <h2>Estás reservando como cliente.</h2>
               <p> <span>Reserva una Mesa</span> </p>
             </div>
 
@@ -226,64 +273,67 @@ $menuItems = listarMenuIndex();
                 data-aos="zoom-out" data-aos-delay="200"></div>
 
               <div class="col-lg-8 d-flex align-items-center reservation-form-bg">
-                <form method="post" role="form" class="php-email-form" data-aos="fade-up" data-aos-delay="100">
-                  <div class="row gy-4">
-                    <div class="col-lg-4 col-md-6">
-                      <input type="text" name="name" class="form-control" id="name" placeholder="Nombre"
-                        data-rule="minlen:4" data-msg="Please enter at least 4 chars" required>
-                      <div class="validate"></div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                      <input type="email" class="form-control" name="mail" id="mail" placeholder="Email"
-                        data-rule="email" data-msg="Please enter a valid email" required>
-                      <div class="validate"></div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                      <input type="text" class="form-control" name="phone" id="phone" placeholder="Teléfono"
-                        data-rule="minlen:4" data-msg="Please enter at least 4 chars">
-                      <div class="validate"></div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                      <input type="date" name="date" class="form-control" id="date" placeholder="Fecha"
-                        data-rule="minlen:4" data-msg="Please enter at least 4 chars" required>
-                      <div class="validate"></div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                      <select class="form-select" name="time" id="time" aria-label="Seleccione la hora" required>
-                        <option value="" selected>Seleccione la hora</option>
-                        <option value="13:00 - 14:00">13:00 - 14:00</option>
-                        <option value="14:00 - 15:00">14:00 - 15:00</option>
-                        <option value="15:00 - 16:00">15:00 - 16:00</option>
-                      </select>
-                      <div class="validate"></div>
-                    </div>
+              <form method="post" role="form" class="php-email-form" data-aos="fade-up" data-aos-delay="100">
+              <div class="row gy-4">
+                <div class="col-lg-4 col-md-6">
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Nombre"
+                    data-rule="minlen:4" data-msg="Please enter at least 4 chars" required
+                    value="<?php echo isset($_SESSION['login']['name']) ? $_SESSION['login']['name'] : ''; ?>">
+                  <div class="validate"></div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                  <input type="email" class="form-control" name="mail" id="mail" placeholder="Email" data-rule="email"
+                    data-msg="Please enter a valid email" required
+                    value="<?php echo isset($_SESSION['login']['mail']) ? $_SESSION['login']['mail'] : ''; ?>">
+                  <div class="validate"></div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                  <input type="text" class="form-control" name="phone" id="phone" placeholder="Teléfono"
+                    data-rule="minlen:4" data-msg="Please enter at least 4 chars"
+                    value="<?php echo isset($_SESSION['login']['phone']) ? $_SESSION['login']['phone'] : ''; ?>">
+                  <div class="validate"></div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                  <input type="date" name="date" class="form-control" id="date" placeholder="Fecha" data-rule="minlen:4"
+                    data-msg="Please enter at least 4 chars" required>
+                  <div class="validate"></div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                  <select class="form-select" name="time" id="time" aria-label="Seleccione la hora" required>
+                    <option value="" selected>Seleccione la hora</option>
+                    <option value="13:00 - 14:00">13:00 - 14:00</option>
+                    <option value="14:00 - 15:00">14:00 - 15:00</option>
+                    <option value="15:00 - 16:00">15:00 - 16:00</option>
+                  </select>
+                  <div class="validate"></div>
+                </div>
 
-                    <div class="col-lg-4 col-md-6">
-                      <select class="form-select" name="people" id="people"
-                        aria-label="Seleccione la cantidad de personas" required>
-                        <option value="" selected>Seleccione la cantidad de personas</option>
-                        <option value="1">1 persona</option>
-                        <option value="2">2 personas</option>
-                        <option value="3">3 personas</option>
-                        <option value="4">4 personas</option>
-                        <option value="5">5 personas</option>
-                        <option value="6">6 personas</option>
-                        <option value="7">7 personas</option>
-                        <option value="8">8 personas</option>
-                      </select>
-                      <div class="validate"></div>
-                    </div>
+                <div class="col-lg-4 col-md-6">
+                  <select class="form-select" name="people" id="people" aria-label="Seleccione la cantidad de personas"
+                    required>
+                    <option value="" selected>Seleccione la cantidad de personas</option>
+                    <option value="1">1 persona</option>
+                    <option value="2">2 personas</option>
+                    <option value="3">3 personas</option>
+                    <option value="4">4 personas</option>
+                    <option value="5">5 personas</option>
+                    <option value="6">6 personas</option>
+                    <option value="7">7 personas</option>
+                    <option value="8">8 personas</option>
+                  </select>
+                  <div class="validate"></div>
+                </div>
 
-                  </div>
-                  <div class="form-group mt-3">
-                    <textarea class="form-control" name="msg" rows="5" placeholder="Mensaje"></textarea>
-                    <div class="validate"></div>
-                  </div>
-                  <div class="mb-3">
-                    <div class="loading">Cargando</div>
-                  </div>
-                  <div class="text-center"><button type="submit">Reserva como invitado</button></div>
-                </form>
+              </div>
+              <div class="form-group mt-3">
+                <textarea class="form-control" name="msg" rows="5" placeholder="Mensaje"></textarea>
+                <div class="validate"></div>
+              </div>
+              <div class="mb-3">
+                <div class="loading">Cargando</div>
+              </div>
+              <div class="text-center"><button type="submit">Reserva como cliente</button></div>
+            </form>
 
               </div>
             </div>

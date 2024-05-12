@@ -56,11 +56,7 @@ if (!isset($_SESSION["login"])) {
             </a>
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a href="indexCliente.php#hero">Inicio</a></li>
-                    <li><a href="#about">Sobre Nosotros</a></li>
-                    <li><a href="#menu">La Carta</a></li>
-                    <li><a href="reservaCliente.php">Reservar</a></li>
-                    <li><a href="#contact">Contacto</a></li>
+                    <li><a>No hay acciones a realizar</a></li>
                 </ul>
             </nav>
             <a class="btn-book-a-table" href="iniciosesion.php" name="logout">Cerrar Sesión</a>

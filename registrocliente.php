@@ -43,11 +43,6 @@ require_once ("consultas.php");
       <nav id="navbar" class="navbar">
         <ul>
           <li><a href="index.html">Inicio</a></li>
-          <li><a href="#about">Sobre Nosotros</a></li>
-          <li><a href="#menu">La Carta</a></li>
-          <li><a href="reserva.html">Reservar</a></li>
-          <li><a href="#contact">Contacto</a></li>
-
       </nav>
       <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
       <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
