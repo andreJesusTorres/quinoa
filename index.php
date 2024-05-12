@@ -1,6 +1,22 @@
 <?php
 require_once ("consultas.php");
 $menuItems = listarMenuIndex();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $name = $_POST["name"];
+  $mail = $_POST["mail"];
+  $phone = $_POST["phone"];
+  $date = $_POST["date"];
+  $time = $_POST["time"];
+  $people = $_POST["people"];
+  $msg = $_POST["msg"];
+
+  if (reservar($name, $mail, $phone, $date, $time, $people, $msg)) {
+    $sent_message = 'prueba';
+  } else {
+    $error_message = 'prueba 1';
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -443,7 +459,6 @@ $menuItems = listarMenuIndex();
   <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
   <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
 
   <script src="assets/js/main.js"></script>
 
