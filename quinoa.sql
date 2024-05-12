@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 10-05-2024 a las 10:31:15
+-- Tiempo de generación: 12-05-2024 a las 16:40:52
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -41,10 +41,12 @@ CREATE TABLE `menu` (
 --
 
 INSERT INTO `menu` (`id`, `name`, `descrip`, `price`, `img`, `state`) VALUES
-(1, 'Hamburguesa', 'Hamburguesa de carne con queso y lechuga', 8.99, 'img/hamburguesa.png', 1),
-(2, 'Pizza', 'Pizza de pepperoni con queso derretido', 10.99, 'img/pizza.png', 1),
-(3, 'Ensalada César', 'Ensalada fresca con aderezo César', 6.99, 'img/ensalada.png', 0),
-(4, 'Sushi', 'Rollos de sushi variados con salsa de soja', 12.99, 'img/sushi.png', 1);
+(1, 'Ensalada de Quinoa', 'Ensalada fresca con quinoa, tomate, pepino y aderezo de limón.', 10.99, 'img/food/ensalada_quinoa.png', 1),
+(2, 'Curry de Vegetales', 'Curry vegetariano con una mezcla de vegetales frescos y arroz basmati.', 12.99, 'img/food/curry_vegetales.png', 1),
+(3, 'Burger de Lentejas', 'Hamburguesa vegetariana a base de lentejas con guarnición de patatas fritas.', 8.99, 'img/food/burger_lentejas.png', 1),
+(4, 'Sushi Vegano', 'Sushi roll vegano con aguacate, pepino y zanahoria.', 14.99, 'img/food/sushi_vegano.png', 1),
+(5, 'Pizza de Verduras', 'Pizza vegetariana con una variedad de verduras frescas y queso vegano.', 11.99, 'img/food/pizza_verduras.png', 1),
+(14, 'Prueba', 'Prueba', 1.00, 'img/food/', 0);
 
 -- --------------------------------------------------------
 
@@ -72,7 +74,10 @@ INSERT INTO `reserves` (`id`, `name`, `mail`, `phone`, `date`, `time`, `people`,
 (1, 'Juan', 'juan@example.com', '123456789', '2024-05-15', '14:00 - 15:00', 4, 'Sin preferencias', 'Invitado'),
 (2, 'María', 'maria@example.com', '987654321', '2024-05-16', '13:00 - 14:00', 2, 'Cerca de la ventana', 'Invitado'),
 (4, 'Ana', 'ana@example.com', '333444555', '2024-05-18', '15:00 - 16:00', 8, 'Cumpleaños', 'Invitado'),
-(5, 'Cliente1', 'cliente1@example.com', '333333333', '2024-05-12', '13:00 - 14:00', 2, 'Sin preferencias', 'Cliente');
+(5, 'Cliente1', 'cliente1@example.com', '333333333', '2024-05-12', '13:00 - 14:00', 2, 'Sin preferencias', 'Cliente'),
+(6, 'Prueba 1', 'prueba@example.com', '12345678', '2024-05-22', '14:00 - 15:00', 4, '', 'Invitado'),
+(7, 'Prueba', 'prueba@example.com', '123456789', '2024-05-09', '14:00 - 15:00', 8, '', 'Cliente'),
+(11, 'María', 'maritaloli@gmail.com', '62355236', '2024-05-30', '14:00 - 15:00', 8, '', 'Invitado');
 
 -- --------------------------------------------------------
 
@@ -113,7 +118,8 @@ INSERT INTO `tables` (`id`, `sites`) VALUES
 (21, 8),
 (22, 8),
 (23, 8),
-(24, 8);
+(26, 8),
+(27, 8);
 
 -- --------------------------------------------------------
 
@@ -138,7 +144,8 @@ INSERT INTO `users` (`id`, `name`, `pass`, `mail`, `phone`, `type`) VALUES
 (1, 'Admin', 'adminpass', 'admin@example.com', '999888777', 'Administrador'),
 (2, 'Empleado1', 'emppass1', 'empleado1@example.com', '111111111', 'Empleado'),
 (3, 'Empleado2', 'emppass2', 'empleado2@example.com', '222222222', 'Empleado'),
-(4, 'Cliente1', 'clientepass1', 'cliente1@example.com', '333333333', 'Cliente');
+(4, 'Cliente1', 'clientepass1', 'cliente1@example.com', '333333333', 'Cliente'),
+(6, 'Prueba', '12345', 'prueba@example.com', '123456789', 'Cliente');
 
 --
 -- Índices para tablas volcadas
@@ -176,25 +183,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `reserves`
 --
 ALTER TABLE `reserves`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `tables`
 --
 ALTER TABLE `tables`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
