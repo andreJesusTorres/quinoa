@@ -25,7 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 $reservas = getReservasCliente($_SESSION["login"]["mail"]);
 $menuItems = listarMenuIndex();
-getReservaClientePorId($mail);
+getReservaClientePorId($_SESSION["login"]["mail"]);
+
 ?>
 
 <!DOCTYPE html>
@@ -207,11 +208,15 @@ getReservaClientePorId($mail);
                       <td><?php echo $reserva['time']; ?></td>
                       <td><?php echo $reserva['people']; ?></td>
                       <td>
-                        <a href="modificarReserva.php?id=<?php echo $reserva['id']; ?>" class="btn btn-primary btn-sm"
-                          style="display: inline-block;"><i class="bi bi-pencil-square"></i></a>
-                          <a href="indexCliente.php?eliminar_reserva&id=<?php echo $reserva['id']; ?>" class="btn btn-danger btn-sm" style="display: inline-block;"><i class="bi bi-trash"></i></a>
+    <div class="d-flex align-items-center">
+        <a href="modificarReserva.php?id=<?php echo $reserva['id']; ?>" class="btn btn-sm btn-outline-secondary bi bi-pencil"></a>
+        <form method="POST">
+            <input type="hidden" name="id" value="<?php echo $reserva['id']; ?>">
+            <button class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminar_reserva"></button>
+        </form>
+    </div>
+</td>
 
-                      </td>
                     </tr>
                   <?php endforeach; ?>
                 </tbody>
