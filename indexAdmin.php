@@ -206,6 +206,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     required></textarea>
                             </div>
 
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Categoría:</label>
+                                <select class="form-select" id="category" name="category" required>
+                                    <option value="Entrante">Entrante</option>
+                                    <option value="Principal">Principal</option>
+                                    <option value="Postre">Postre</option>
+                                    <option value="Bebida">Bebida</option>
+                                </select>
+                            </div>
+
                             <div class="form-group mb-3">
                                 <label for="precio">Precio:</label>
                                 <input type="number" class="form-control" id="precio" name="price" required>

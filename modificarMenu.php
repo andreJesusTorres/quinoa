@@ -5,7 +5,7 @@ session_start();
 if (!isset($_SESSION["login"])) {
     header("location: iniciosesion.php");
     exit();
-}else{
+} else {
     $conexion = conectar();
     $sql = "SELECT * FROM menu WHERE id='" . $_POST["id"] . "'";
     $buscar = mysqli_query($conexion, $sql);
@@ -78,48 +78,74 @@ if (!isset($_SESSION["login"])) {
         </div>
 
         <section id="book-a-table" class="book-a-table">
-        <div class="section-header">
-            <h2>Modificar Menú</h2>
-            <p> <span>Modifica los detalles del menú</span> </p>
-        </div>
+            <div class="section-header">
+                <h2>Modificar Menú</h2>
+                <p> <span>Modifica los detalles del menú</span> </p>
+            </div>
 
-        <?php if (isset($success_message)): ?>
-            <div class="alert alert-success"><?php echo $success_message; ?></div>
-        <?php endif; ?>
-        <?php if (isset($error_message)): ?>
-            <div class="alert alert-danger"><?php echo $error_message; ?></div>
-        <?php endif; ?>
+            <?php if (isset($success_message)): ?>
+                <div class="alert alert-success"><?php echo $success_message; ?></div>
+            <?php endif; ?>
+            <?php if (isset($error_message)): ?>
+                <div class="alert alert-danger"><?php echo $error_message; ?></div>
+            <?php endif; ?>
 
-        <form method="post" enctype="multipart/form-data" class="php-email-form" data-aos="fade-up" data-aos-delay="100">
-            <input type="hidden" name="id" value="<?php echo $menu['id']; ?>">
-            <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre:</label>
-                <input type="text" class="form-control" id="nombre" name="name" value="<?php echo $menu['name']; ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="descripcion" class="form-label">Descripción:</label>
-                <textarea class="form-control" id="descripcion" name="descrip" rows="3" required><?php echo $menu['descrip']; ?></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="precio" class="form-label">Precio:</label>
-                <input type="number" class="form-control" id="precio" name="price" value="<?php echo $menu['price']; ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="imagen" class="form-label">Imagen:</label>
-                <input type="file" class="form-control" id="imagen" name="img" accept="image/*">
-            </div>
-            <div class="mb-3">
-                <label for="estado" class="form-label">Estado:</label>
-                <select class="form-control" id="estado" name="state" required>
-                    <option value="Disponible" <?php if ($menu['state'] == 1) echo "selected"; ?>>Disponible</option>
-                    <option value="No Disponible" <?php if ($menu['state'] == 0) echo "selected"; ?>>No Disponible</option>
-                </select>
-            </div>
-            <div class="text-center mb-3">
-                <button type="submit" name="modificar_menu">Actualizar Menú</button>
-            </div>
-        </form>
-    </section>
+            <form method="post" enctype="multipart/form-data" class="php-email-form" data-aos="fade-up"
+                data-aos-delay="100">
+                <input type="hidden" name="id" value="<?php echo $menu['id']; ?>">
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre:</label>
+                    <input type="text" class="form-control" id="nombre" name="name" value="<?php echo $menu['name']; ?>"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="descripcion" class="form-label">Descripción:</label>
+                    <textarea class="form-control" id="descripcion" name="descrip" rows="3"
+                        required><?php echo $menu['descrip']; ?></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Categoría:</label>
+                    <select class="form-select" id="category" name="category" required>
+                        <option value="" selected><?php echo $menu['category']; ?></option>
+                        <option value="Entrante" <?php if ($menu['category'] === 'Entrante')
+                            echo 'selected'; ?>>Entrante
+                        </option>
+                        <option value="Principal" <?php if ($menu['category'] === 'Principal')
+                            echo 'selected'; ?>>
+                            Principal</option>
+                        <option value="Postre" <?php if ($menu['category'] === 'Postre')
+                            echo 'selected'; ?>>Postre
+                        </option>
+                        <option value="Bebida" <?php if ($menu['category'] === 'Bebida')
+                            echo 'selected'; ?>>Bebida
+                        </option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="precio" class="form-label">Precio:</label>
+                    <input type="number" class="form-control" id="precio" name="price"
+                        value="<?php echo $menu['price']; ?>" required>
+                </div>
+                <div class="mb-3">
+                    <label for="imagen" class="form-label">Imagen:</label>
+                    <input type="file" class="form-control" id="imagen" name="img" accept="image/*">
+                </div>
+                <div class="mb-3">
+                    <label for="estado" class="form-label">Estado:</label>
+                    <select class="form-control" id="estado" name="state" required>
+                        <option value="Disponible" <?php if ($menu['state'] == 1)
+                            echo "selected"; ?>>Disponible</option>
+                        <option value="No Disponible" <?php if ($menu['state'] == 0)
+                            echo "selected"; ?>>No Disponible
+                        </option>
+                    </select>
+                </div>
+                <div class="text-center mb-3">
+                    <button type="submit" name="modificar_menu">Actualizar Menú</button>
+                </div>
+            </form>
+        </section>
     </main>
 
     <footer id="footer" class="footer">

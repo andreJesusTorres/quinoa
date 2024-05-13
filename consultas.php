@@ -212,6 +212,7 @@ function listarMenuEmpleado()
                         <td>' . $datos["id"] . '</td>
                         <td>' . $datos["name"] . '</td>
                         <td>' . $datos["descrip"] . '</td>
+                        <td>' . $datos["category"] . '</td>
                         <td>' . $datos["price"] . '</td>
                         <td><img src="' . $datos["img"] . '" alt="' . $datos["name"] . '" width="50" height="50"></td>
                         <td><img src="' . $estado_icono . '" alt="' . $datos["name"] . '" width="20" height="20"></td>
@@ -419,6 +420,7 @@ if (isset($_POST["agregar_mesa"])) {
 if (isset($_POST["agregar_menu"])) {
     $name = $_POST["name"];
     $descrip = $_POST["descrip"];
+    $category = $_POST["category"];
     $price = $_POST["price"];
     $img = $_FILES["img"]["name"];
     $temporal_img = $_FILES["img"]["tmp_name"];
@@ -432,10 +434,10 @@ if (isset($_POST["agregar_menu"])) {
     if (!$conexion) {
         die("Error en la conexión: " . mysqli_connect_error());
     } else {
-        $sql = "INSERT INTO menu (name, descrip, price, img, state) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO menu (name, descrip, category, price, img, state) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($conexion, $sql);
 
-        mysqli_stmt_bind_param($stmt, "ssdis", $name, $descrip, $price, $rute, $state);
+        mysqli_stmt_bind_param($stmt, "sssdis", $name, $descrip, $category, $price, $rute, $state);
 
         $result = mysqli_stmt_execute($stmt);
 
@@ -486,6 +488,7 @@ if (isset($_POST["modificar_menu"])) {
     $id = $_POST["id"];
     $name = $_POST["name"];
     $descrip = $_POST["descrip"];
+    $category = $_POST["category"];
     $price = $_POST["price"];
     $img = $_FILES["img"]["name"];
     $temporal_img = $_FILES["img"]["tmp_name"];
@@ -499,10 +502,10 @@ if (isset($_POST["modificar_menu"])) {
     if (!$conexion) {
         die("Error en la conexión: " . mysqli_connect_error());
     } else {
-        $sql = "UPDATE menu SET name=?, descrip=?, price=?, img=?, state=? WHERE id=?";
+        $sql = "UPDATE menu SET name=?, descrip=?, category=?, price=?, img=?, state=? WHERE id=?";
         $stmt = mysqli_prepare($conexion, $sql);
 
-        mysqli_stmt_bind_param($stmt, "sssssi", $name, $descrip, $price, $rute, $state, $id);
+        mysqli_stmt_bind_param($stmt, "ssssssi", $name, $descrip, $category, $price, $rute, $state, $id);
 
         $modificar = mysqli_stmt_execute($stmt);
 
