@@ -90,6 +90,9 @@ getReservaClientePorId($_SESSION["login"]["mail"]);
               <img src="img/usuario.png" alt="Perfil" width="30" height="30">
             </a>
             <div class="dropdown-menu dropdown-menu-end p-4" id="dropdownMenu" style="width: 300px;">
+          <p class="mt-3 text-center" data-aos-delay="200">
+            Mira tus reservas <a href="#" data-bs-toggle="modal" data-bs-target="#modalReservas">aquí</a>.
+          </p>  
               <form method="POST" class="text-center php-email-form">
                 <h5 class="mb-4">Modificar datos</h5>
                 <div class="form-group mb-3">
@@ -138,49 +141,52 @@ getReservaClientePorId($_SESSION["login"]["mail"]);
     </section>
 
     <section id="about" class="about">
-    <div class="container" data-aos="fade-up">
+      <div class="container" data-aos="fade-up">
 
-      <div class="section-header">
-        <h2>Descubre Más</h2>
-        <p>Sobre Nosotros<span></span></p>
-      </div>
-
-      <div class="row gy-4">
-        <div class="col-lg-7 position-relative about-img" style="background-image: url(assets/img/about.jpg) ;"
-          data-aos="fade-up" data-aos-delay="150">
-          <div class="call-us position-absolute">
-            <h4>Reserva una mesa</h4>
-            <p>+1 5589 55488 55</p>
-          </div>
+        <div class="section-header">
+          <h2>Descubre Más</h2>
+          <p>Sobre Nosotros<span></span></p>
         </div>
-        <div class="col-lg-5 d-flex align-items-end" data-aos="fade-up" data-aos-delay="300">
-          <div class="content ps-0 ps-lg-5">
-            <p class="fst-italic">
-              Nos enorgullecemos de ofrecer platos exquisitamente preparados que celebran lo mejor de la cocina local e
-              internacional. Desde nuestros ingredientes frescos y cuidadosamente seleccionados hasta nuestras técnicas
-              culinarias innovadoras, cada detalle se elabora con esmero para satisfacer tu paladar más exigente.
-            </p>
-            <ul>
-              <li><i class="bi bi-check2-all"></i> Nuestro equipo de chefs talentosos y apasionados.</li>
-              <li><i class="bi bi-check2-all"></i> Experiencia gastronómica excepcional.</li>
-              <li><i class="bi bi-check2-all"></i> Ambiente acogedor y elegante.</li>
-            </ul>
-            <p>
-              ¡Ven y únete a nosotros para una experiencia gastronómica que recordarás mucho después de haber terminado
-              tu última comida!
-            </p>
 
-            <div class="position-relative mt-4">
-              <img src="assets/img/about-2.jpg" class="img-fluid" alt="">
-              <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ" class="glightbox play-btn"></a>
+        <div class="row gy-4">
+          <div class="col-lg-7 position-relative about-img" style="background-image: url(assets/img/about.jpg) ;"
+            data-aos="fade-up" data-aos-delay="150">
+            <div class="call-us position-absolute">
+              <h4>Reserva una mesa</h4>
+              <p>+1 5589 55488 55</p>
+            </div>
+          </div>
+          <div class="col-lg-5 d-flex align-items-end" data-aos="fade-up" data-aos-delay="300">
+            <div class="content ps-0 ps-lg-5">
+              <p class="fst-italic">
+                Nos enorgullecemos de ofrecer platos exquisitamente preparados que celebran lo mejor de la cocina local
+                e
+                internacional. Desde nuestros ingredientes frescos y cuidadosamente seleccionados hasta nuestras
+                técnicas
+                culinarias innovadoras, cada detalle se elabora con esmero para satisfacer tu paladar más exigente.
+              </p>
+              <ul>
+                <li><i class="bi bi-check2-all"></i> Nuestro equipo de chefs talentosos y apasionados.</li>
+                <li><i class="bi bi-check2-all"></i> Experiencia gastronómica excepcional.</li>
+                <li><i class="bi bi-check2-all"></i> Ambiente acogedor y elegante.</li>
+              </ul>
+              <p>
+                ¡Ven y únete a nosotros para una experiencia gastronómica que recordarás mucho después de haber
+                terminado
+                tu última comida!
+              </p>
+
+              <div class="position-relative mt-4">
+                <img src="assets/img/about-2.jpg" class="img-fluid" alt="">
+                <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ" class="glightbox play-btn"></a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-    </div>
-  </section>
-    
+      </div>
+    </section>
+
     <div id="modalReservas" class="modal fade" tabindex="-1" aria-labelledby="modalReservasLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -208,14 +214,15 @@ getReservaClientePorId($_SESSION["login"]["mail"]);
                       <td><?php echo $reserva['time']; ?></td>
                       <td><?php echo $reserva['people']; ?></td>
                       <td>
-    <div class="d-flex align-items-center">
-        <a href="modificarReserva.php?id=<?php echo $reserva['id']; ?>" class="btn btn-sm btn-outline-secondary bi bi-pencil"></a>
-        <form method="POST">
-            <input type="hidden" name="id" value="<?php echo $reserva['id']; ?>">
-            <button class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminar_reserva"></button>
-        </form>
-    </div>
-</td>
+                        <div class="d-flex align-items-center">
+                          <a href="modificarReserva.php?id=<?php echo $reserva['id']; ?>"
+                            class="btn btn-sm btn-outline-secondary bi bi-pencil"></a>
+                          <form method="POST">
+                            <input type="hidden" name="id" value="<?php echo $reserva['id']; ?>">
+                            <button class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminar_reserva"></button>
+                          </form>
+                        </div>
+                      </td>
 
                     </tr>
                   <?php endforeach; ?>
@@ -352,7 +359,7 @@ getReservaClientePorId($_SESSION["login"]["mail"]);
       </div>
     </section>
 
-    <section id="reservar"class="sample-page">
+    <section id="reservar" class="sample-page">
       <div class="container" data-aos="fade-up">
 
         <section id="book-a-table" class="book-a-table">
@@ -368,67 +375,67 @@ getReservaClientePorId($_SESSION["login"]["mail"]);
                 data-aos="zoom-out" data-aos-delay="200"></div>
 
               <div class="col-lg-8 d-flex align-items-center reservation-form-bg">
-              <form method="post" role="form" class="php-email-form" data-aos="fade-up" data-aos-delay="100">
-              <div class="row gy-4">
-                <div class="col-lg-4 col-md-6">
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Nombre"
-                    data-rule="minlen:4" data-msg="Please enter at least 4 chars" required
-                    value="<?php echo isset($_SESSION['login']['name']) ? $_SESSION['login']['name'] : ''; ?>">
-                  <div class="validate"></div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                  <input type="email" class="form-control" name="mail" id="mail" placeholder="Email" data-rule="email"
-                    data-msg="Please enter a valid email" required
-                    value="<?php echo isset($_SESSION['login']['mail']) ? $_SESSION['login']['mail'] : ''; ?>">
-                  <div class="validate"></div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                  <input type="text" class="form-control" name="phone" id="phone" placeholder="Teléfono"
-                    data-rule="minlen:4" data-msg="Please enter at least 4 chars"
-                    value="<?php echo isset($_SESSION['login']['phone']) ? $_SESSION['login']['phone'] : ''; ?>">
-                  <div class="validate"></div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                  <input type="date" name="date" class="form-control" id="date" placeholder="Fecha" data-rule="minlen:4"
-                    data-msg="Please enter at least 4 chars" required>
-                  <div class="validate"></div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                  <select class="form-select" name="time" id="time" aria-label="Seleccione la hora" required>
-                    <option value="" selected>Seleccione la hora</option>
-                    <option value="13:00 - 14:00">13:00 - 14:00</option>
-                    <option value="14:00 - 15:00">14:00 - 15:00</option>
-                    <option value="15:00 - 16:00">15:00 - 16:00</option>
-                  </select>
-                  <div class="validate"></div>
-                </div>
+                <form method="post" role="form" class="php-email-form" data-aos="fade-up" data-aos-delay="100">
+                  <div class="row gy-4">
+                    <div class="col-lg-4 col-md-6">
+                      <input type="text" name="name" class="form-control" id="name" placeholder="Nombre"
+                        data-rule="minlen:4" data-msg="Please enter at least 4 chars" required
+                        value="<?php echo isset($_SESSION['login']['name']) ? $_SESSION['login']['name'] : ''; ?>">
+                      <div class="validate"></div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                      <input type="email" class="form-control" name="mail" id="mail" placeholder="Email"
+                        data-rule="email" data-msg="Please enter a valid email" required
+                        value="<?php echo isset($_SESSION['login']['mail']) ? $_SESSION['login']['mail'] : ''; ?>">
+                      <div class="validate"></div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                      <input type="text" class="form-control" name="phone" id="phone" placeholder="Teléfono"
+                        data-rule="minlen:4" data-msg="Please enter at least 4 chars"
+                        value="<?php echo isset($_SESSION['login']['phone']) ? $_SESSION['login']['phone'] : ''; ?>">
+                      <div class="validate"></div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                      <input type="date" name="date" class="form-control" id="date" placeholder="Fecha"
+                        data-rule="minlen:4" data-msg="Please enter at least 4 chars" required>
+                      <div class="validate"></div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                      <select class="form-select" name="time" id="time" aria-label="Seleccione la hora" required>
+                        <option value="" selected>Seleccione la hora</option>
+                        <option value="13:00 - 14:00">13:00 - 14:00</option>
+                        <option value="14:00 - 15:00">14:00 - 15:00</option>
+                        <option value="15:00 - 16:00">15:00 - 16:00</option>
+                      </select>
+                      <div class="validate"></div>
+                    </div>
 
-                <div class="col-lg-4 col-md-6">
-                  <select class="form-select" name="people" id="people" aria-label="Seleccione la cantidad de personas"
-                    required>
-                    <option value="" selected>Seleccione la cantidad de personas</option>
-                    <option value="1">1 persona</option>
-                    <option value="2">2 personas</option>
-                    <option value="3">3 personas</option>
-                    <option value="4">4 personas</option>
-                    <option value="5">5 personas</option>
-                    <option value="6">6 personas</option>
-                    <option value="7">7 personas</option>
-                    <option value="8">8 personas</option>
-                  </select>
-                  <div class="validate"></div>
-                </div>
+                    <div class="col-lg-4 col-md-6">
+                      <select class="form-select" name="people" id="people"
+                        aria-label="Seleccione la cantidad de personas" required>
+                        <option value="" selected>Seleccione la cantidad de personas</option>
+                        <option value="1">1 persona</option>
+                        <option value="2">2 personas</option>
+                        <option value="3">3 personas</option>
+                        <option value="4">4 personas</option>
+                        <option value="5">5 personas</option>
+                        <option value="6">6 personas</option>
+                        <option value="7">7 personas</option>
+                        <option value="8">8 personas</option>
+                      </select>
+                      <div class="validate"></div>
+                    </div>
 
-              </div>
-              <div class="form-group mt-3">
-                <textarea class="form-control" name="msg" rows="5" placeholder="Mensaje"></textarea>
-                <div class="validate"></div>
-              </div>
-              <div class="mb-3">
-                <div class="loading">Cargando</div>
-              </div>
-              <div class="text-center"><button type="submit">Reserva como cliente</button></div>
-            </form>
+                  </div>
+                  <div class="form-group mt-3">
+                    <textarea class="form-control" name="msg" rows="5" placeholder="Mensaje"></textarea>
+                    <div class="validate"></div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="loading">Cargando</div>
+                  </div>
+                  <div class="text-center"><button type="submit">Reserva como cliente</button></div>
+                </form>
 
               </div>
             </div>
@@ -587,7 +594,7 @@ getReservaClientePorId($_SESSION["login"]["mail"]);
     <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
     <script src="assets/js/main.js"></script>
 
-    
+
 </body>
 
 </html>
