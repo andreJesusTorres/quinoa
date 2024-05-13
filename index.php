@@ -152,6 +152,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="section-header">
           <h2>Menu</h2>
           <p>Nuestra <span>Carta</span></p>
+
+          <ul class="nav nav-tabs d-flex justify-content-center" data-aos="fade-up" data-aos-delay="200">
+
+            <li class="nav-item">
+              <a class="nav-link active show" data-bs-toggle="tab" data-bs-target="#menu-starters">
+                <h4>Entrantes</h4>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-breakfast">
+                <h4>Platos Principales</h4>
+              </a>
+
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-lunch">
+                <h4>Postres</h4>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-dinner">
+                <h4>Bebidas</h4>
+              </a>
+            </li>
+
+          </ul>
         </div>
 
         <div class="tab-content" data-aos="fade-up" data-aos-delay="300">
@@ -160,18 +187,81 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="row gy-5 justify-content-center">
               <?php foreach ($menuItems as $menuItem): ?>
-                <div class="col-lg-4 menu-item">
-                  <a href="<?php echo $menuItem['img']; ?>" class="glightbox">
-                    <img src="<?php echo $menuItem['img']; ?>" class="menu-img img-fluid" alt="">
-                  </a>
-                  <h4><?php echo $menuItem['name']; ?></h4>
-                  <p class="ingredients"><?php echo $menuItem['descrip']; ?></p>
-                  <p class="price">$<?php echo $menuItem['price']; ?></p>
-                </div>
+                <?php if ($menuItem['category'] === 'Entrante'): ?>
+                  <div class="col-lg-4 menu-item">
+                    <a href="<?php echo $menuItem['img']; ?>" class="glightbox">
+                      <img src="<?php echo $menuItem['img']; ?>" class="menu-img img-fluid" alt="">
+                    </a>
+                    <h4><?php echo $menuItem['name']; ?></h4>
+                    <p class="ingredients"><?php echo $menuItem['descrip']; ?></p>
+                    <p class="price">$<?php echo $menuItem['price']; ?></p>
+                  </div>
+                <?php endif; ?>
               <?php endforeach; ?>
             </div>
+
+          </div>
+
+          <div class="tab-pane fade" id="menu-breakfast">
+
+            <div class="row gy-5 justify-content-center">
+              <?php foreach ($menuItems as $menuItem): ?>
+                <?php if ($menuItem['category'] === 'Principal'): ?>
+                  <div class="col-lg-4 menu-item">
+                    <a href="<?php echo $menuItem['img']; ?>" class="glightbox">
+                      <img src="<?php echo $menuItem['img']; ?>" class="menu-img img-fluid" alt="">
+                    </a>
+                    <h4><?php echo $menuItem['name']; ?></h4>
+                    <p class="ingredients"><?php echo $menuItem['descrip']; ?></p>
+                    <p class="price">$<?php echo $menuItem['price']; ?></p>
+                  </div>
+                <?php endif; ?>
+              <?php endforeach; ?>
+            </div>
+
           </div>
         </div>
+        <div class="tab-content" data-aos="fade-up" data-aos-delay="300">
+
+          <div class="tab-pane fade active show" id="menu-lunch">
+
+            <div class="row gy-5 justify-content-center">
+              <?php foreach ($menuItems as $menuItem): ?>
+                <?php if ($menuItem['category'] === 'Postre'): ?>
+                  <div class="col-lg-4 menu-item">
+                    <a href="<?php echo $menuItem['img']; ?>" class="glightbox">
+                      <img src="<?php echo $menuItem['img']; ?>" class="menu-img img-fluid" alt="">
+                    </a>
+                    <h4><?php echo $menuItem['name']; ?></h4>
+                    <p class="ingredients"><?php echo $menuItem['descrip']; ?></p>
+                    <p class="price">$<?php echo $menuItem['price']; ?></p>
+                  </div>
+                <?php endif; ?>
+              <?php endforeach; ?>
+            </div>
+
+          </div>
+
+          <div class="tab-pane fade" id="menu-breakfast">
+
+            <div class="row gy-5 justify-content-dinner">
+              <?php foreach ($menuItems as $menuItem): ?>
+                <?php if ($menuItem['category'] === 'Bebida'): ?>
+                  <div class="col-lg-4 menu-item">
+                    <a href="<?php echo $menuItem['img']; ?>" class="glightbox">
+                      <img src="<?php echo $menuItem['img']; ?>" class="menu-img img-fluid" alt="">
+                    </a>
+                    <h4><?php echo $menuItem['name']; ?></h4>
+                    <p class="ingredients"><?php echo $menuItem['descrip']; ?></p>
+                    <p class="price">$<?php echo $menuItem['price']; ?></p>
+                  </div>
+                <?php endif; ?>
+              <?php endforeach; ?>
+            </div>
+
+          </div>
+        </div>
+
 
       </div>
 

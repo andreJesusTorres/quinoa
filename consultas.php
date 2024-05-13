@@ -125,7 +125,7 @@ function listarMenuIndex()
 
         if (mysqli_num_rows($consulta) > 0) {
             while ($datos = mysqli_fetch_assoc($consulta)) {
-                $menuItems[] = $datos; // Agregar datos al array
+                $menuItems[] = $datos;
             }
         }
 
@@ -174,6 +174,7 @@ function listarMenu()
                         <td>' . $datos["id"] . '</td>
                         <td>' . $datos["name"] . '</td>
                         <td>' . $datos["descrip"] . '</td>
+                        <td>' . $datos["category"] . '</td>
                         <td>' . $datos["price"] . '</td>
                         <td><img src="' . $datos["img"] . '" alt="' . $datos["name"] . '" width="50" height="50"></td>
                         <td><img src="' . $estado_icono . '" alt="' . $datos["name"] . '" width="20" height="20"></td>

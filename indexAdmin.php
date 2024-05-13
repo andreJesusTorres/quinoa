@@ -237,6 +237,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <th scope="col">Código</th>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Descripción</th>
+                                <th scope="col">Categoría</th>
                                 <th scope="col">Precio</th>
                                 <th scope="col">Imagen</th>
                                 <th scope="col">Estado</th>
