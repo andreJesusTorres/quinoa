@@ -19,8 +19,7 @@ function reservar($name, $mail, $phone, $date, $time, $people, $msg)
     if (!$conexion) {
         die("Error en la conexión: " . mysqli_connect_error());
     }
-
-    // Verificar si ya existe una reserva para el mismo correo y la misma fecha
+    
     $check_reserve_query = "SELECT * FROM reserves WHERE mail = ? AND date = ?";
     $stmt_reserve = mysqli_prepare($conexion, $check_reserve_query);
     mysqli_stmt_bind_param($stmt_reserve, "ss", $mail, $date);
