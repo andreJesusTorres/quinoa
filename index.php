@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <li><a href="index.html#hero">Inicio</a></li>
           <li><a href="#about">Sobre Nosotros</a></li>
           <li><a href="#menu">La Carta</a></li>
-          <li><a href="#reservar">Reservar</a></li>
+          <li><a href="#reserva">Reservar</a></li>
           <li><a href="#contact">Contacto</a></li>
         </ul>
       </nav>
@@ -90,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           </h2>
           <p data-aos="fade-up" data-aos-delay="100">Desde hace más de 10 años</p>
           <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
-            <a href="reserva.php" class="btn-book-a-table">Reserva una mesa</a>
+            <a href="#reserva" class="btn-book-a-table">Reserva una mesa</a>
           </div>
         </div>
         <div class="col-lg-5 order-1 order-lg-2 text-center text-lg-start">
