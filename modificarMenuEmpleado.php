@@ -7,10 +7,10 @@ if (!isset($_SESSION["login"])) {
     exit();
 } else {
     $conexion = conectar();
-    $sql = "SELECT * FROM users WHERE id='" . $_POST["id"] . "'";
+    $sql = "SELECT * FROM menu WHERE id='" . $_POST["id"] . "'";
     $buscar = mysqli_query($conexion, $sql);
     if (mysqli_num_rows($buscar) > 0) {
-        $user = mysqli_fetch_assoc($buscar);
+        $menu = mysqli_fetch_assoc($buscar);
     }
     mysqli_close($conexion);
 }
@@ -56,11 +56,10 @@ if (!isset($_SESSION["login"])) {
             </a>
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a href="indexAdmin.php"> Home</a></li>
-                    <li><a href="indexAdmin.php#mesas"> Lista mesas</a></li>
-                    <li><a href="indexAdmin.php#menu"> Lista menú</a></li>
-                    <li><a href="indexAdmin.php#usuarios">Lista usuarios</a></li>
-                    <li><a href="indexAdmin.php#reservas">Lista de reservas</a></li>
+                    <li><a href="indexEmpleado.php#menu"> Home</a></li>
+                    <li><a href="indexEmpleado.php#menu"> Lista menú</a></li>
+                    <li><a href="indexEmpleado.php#usuarios">Lista usuarios</a></li>
+                    <li><a href="indexEmpleado.php#reservas">Lista de reservas</a></li>
                 </ul>
             </nav>
             <a class="btn-book-a-table" href="iniciosesion.php" name="logout">Cerrar Sesión</a>
@@ -74,7 +73,7 @@ if (!isset($_SESSION["login"])) {
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
                     <ol>
-                        <li><a href="indexAdmin.php">Home</a></li>
+                        <li><a href="indexEmpleado.php">Home</a></li>
                         <li>Bienvenido, <?php echo $_SESSION["login"]["name"]; ?></li>
                     </ol>
                 </div>
@@ -83,8 +82,8 @@ if (!isset($_SESSION["login"])) {
 
         <section id="book-a-table" class="book-a-table">
             <div class="section-header">
-                <h2>Modificar Usuario</h2>
-                <p> <span>Modifica los detalles del usuario</span> </p>
+                <h2>Modificar Menú</h2>
+                <p> <span>Modifica los detalles del menú</span> </p>
             </div>
 
             <?php if (isset($success_message)): ?>
@@ -96,40 +95,57 @@ if (!isset($_SESSION["login"])) {
 
             <form method="post" enctype="multipart/form-data" class="php-email-form" data-aos="fade-up"
                 data-aos-delay="100">
-                <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
+                <input type="hidden" name="id" value="<?php echo $menu['id']; ?>">
                 <div class="mb-3">
-                    <label for="name" class="form-label">Nombre:</label>
-                    <input type="text" class="form-control" id="name" name="name" value="<?php echo $user['name']; ?>"
+                    <label for="nombre" class="form-label">Nombre:</label>
+                    <input type="text" class="form-control" id="nombre" name="name" value="<?php echo $menu['name']; ?>"
                         required>
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label">Clave:</label>
-                    <input type="text" class="form-control" id="password" name="pass"
-                        value="<?php echo $user['pass']; ?>" required>
+                    <label for="descripcion" class="form-label">Descripción:</label>
+                    <textarea class="form-control" id="descripcion" name="descrip" rows="3"
+                        required><?php echo $menu['descrip']; ?></textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email:</label>
-                    <input type="email" class="form-control" id="email" name="mail" value="<?php echo $user['mail']; ?>"
-                        required>
-                </div>
-                <div class="mb-3">
-                    <label for="phone" class="form-label">Teléfono:</label>
-                    <input type="text" class="form-control" id="phone" name="phone"
-                        value="<?php echo $user['phone']; ?>" required>
-                </div>
-                <div class="mb-3">
-                    <label for="type" class="form-label">Tipo de usuario:</label>
-                    <input type="hidden" name="type" value="' <?php echo $user['phone']; ?> . '">
-                    <select name="type" class="form-select me-2" aria-label="Tipo de Usuario">
-                        <option value="Cliente" ' . ($datos["type"] == "Cliente" ? "selected" : "") . '>Cliente</option>
-                        <option value="Empleado" ' . ($datos["type"] == "Empleado" ? "selected" : "") . '>Empleado
+                    <label for="category" class="form-label">Categoría:</label>
+                    <select class="form-select" id="category" name="category" required>
+                        <option value="" selected><?php echo $menu['category']; ?></option>
+                        <option value="Entrante" <?php if ($menu['category'] === 'Entrante')
+                            echo 'selected'; ?>>Entrante
                         </option>
-                        <option value="Administrador" ' . ($datos["type"] == "Administrador" ? "selected" : "") . '>
-                            Administrador</option>
+                        <option value="Principal" <?php if ($menu['category'] === 'Principal')
+                            echo 'selected'; ?>>
+                            Principal</option>
+                        <option value="Postre" <?php if ($menu['category'] === 'Postre')
+                            echo 'selected'; ?>>Postre
+                        </option>
+                        <option value="Bebida" <?php if ($menu['category'] === 'Bebida')
+                            echo 'selected'; ?>>Bebida
+                        </option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="precio" class="form-label">Precio:</label>
+                    <input type="number" class="form-control" id="precio" name="price"
+                        value="<?php echo $menu['price']; ?>" required>
+                </div>
+                <div class="mb-3">
+                    <label for="imagen" class="form-label">Imagen:</label>
+                    <input type="file" class="form-control" id="imagen" name="img" accept="image/*">
+                </div>
+                <div class="mb-3">
+                    <label for="estado" class="form-label">Estado:</label>
+                    <select class="form-control" id="estado" name="state" required>
+                        <option value="Disponible" <?php if ($menu['state'] == 1)
+                            echo "selected"; ?>>Disponible</option>
+                        <option value="No Disponible" <?php if ($menu['state'] == 0)
+                            echo "selected"; ?>>No Disponible
+                        </option>
                     </select>
                 </div>
                 <div class="text-center mb-3">
-                    <button type="submit" name="modificar_usuario">Actualizar Usuario</button>
+                    <button type="submit" name="modificar_menu_empleado">Actualizar Menú</button>
                 </div>
             </form>
         </section>

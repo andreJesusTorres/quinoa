@@ -3,8 +3,6 @@ require ("config.php");
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-
-
 function conectar()
 {
     $conexion = mysqli_connect(server, usuario, clave, nombre);
@@ -93,7 +91,7 @@ function reservarCliente($name, $mail, $phone, $date, $time, $people, $msg)
         alert('Ya tiene una reserva para esa fecha.');
         window.location.href = 'indexCliente.php';
         </script>";
-        exit(); 
+        exit();
     }
 
     mysqli_stmt_close($stmt);
@@ -264,7 +262,7 @@ function listarMenuEmpleado()
                         <td><img src="' . $estado_icono . '" alt="' . $datos["name"] . '" width="20" height="20"></td>
                         <td>
                         <div class="d-flex align-items-center">
-                            <form method="POST" action="modificarMenu.php">
+                            <form method="POST" action="modificarMenuEmpleado.php">
                                 <input type="hidden" name="id" value="' . $datos["id"] . '">
                                 <button type="submit" class="btn btn-sm btn-outline-secondary bi bi-pencil"></button>
                             </form>
@@ -346,11 +344,11 @@ function listarUsuariosEmpleado()
                 <div class="d-flex align-items-center">
                     <form method="POST">
                         <input type="hidden" name="id" value="' . $datos["id"] . '">
-                        <button type="submit" class="btn btn-sm btn-outline-success bi bi-arrow-up-square" name="activarUsuario"></button>
+                        <button type="submit" class="btn btn-sm btn-outline-success bi bi-arrow-up-square" name="activarUsuarioEmpleado"></button>
                     </form>
                     <form method="POST">
                         <input type="hidden" name="id" value="' . $datos["id"] . '">
-                        <button type="submit" class="btn btn-sm btn-outline-warning bi bi-arrow-down-square" name="desactivarUsuario"></button>
+                        <button type="submit" class="btn btn-sm btn-outline-warning bi bi-arrow-down-square" name="desactivarUsuarioEmpleado"></button>
                     </form>
                 </div>
 
@@ -385,6 +383,43 @@ function listarReservas()
                         <td>
                         <div class="d-flex align-items-center">
                             <form method="POST" action="modificarReservaAdmin.php">
+                                <input type="hidden" name="id" value="' . $datos["id"] . '">
+                                <button class="btn btn-sm btn-outline-secondary bi bi-pencil" name="modificarReserva"></button>
+                            </form>
+                            <form method="POST">
+                                <input type="hidden" name="id" value="' . $datos["id"] . '">
+                                <button class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminarReserva"></button>
+                            </form>
+                        </td>
+                    </tr>
+                ';
+            }
+        }
+        mysqli_close($conexion);
+    }
+}
+function listarReservasEmpleado()
+{
+    $conexion = conectar();
+    if ($conexion != null) {
+        $sql = "SELECT * FROM reserves ORDER BY id ASC";
+        $consulta = mysqli_query($conexion, $sql);
+        if (mysqli_num_rows($consulta) > 0) {
+            while ($datos = mysqli_fetch_assoc($consulta)) {
+                echo '
+                    <tr>
+                        <td>' . $datos["id"] . '</td>
+                        <td>' . $datos["name"] . '</td>
+                        <td>' . $datos["mail"] . '</td>
+                        <td>' . $datos["phone"] . '</td>
+                        <td>' . $datos["date"] . '</td>
+                        <td>' . $datos["time"] . '</td>
+                        <td>' . $datos["people"] . '</td>
+                        <td>' . $datos["msg"] . '</td>
+                        <td>' . $datos["type"] . '</td>
+                        <td>
+                        <div class="d-flex align-items-center">
+                            <form method="POST" action="modificarReservaEmpleado.php">
                                 <input type="hidden" name="id" value="' . $datos["id"] . '">
                                 <button class="btn btn-sm btn-outline-secondary bi bi-pencil" name="modificarReserva"></button>
                             </form>
@@ -443,12 +478,12 @@ function activarUsuario($id)
         $resultado = mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
         mysqli_close($conexion);
-        if ($resultado){
-                    echo "<script>
+        if ($resultado) {
+            echo "<script>
                 alert('Usuario dado de alta.');
                 window.location.href = 'indexAdmin.php';
             </script>";
-        }else{
+        } else {
             echo "<script>
                 alert('No se pudo dar de alta al usuario.');
                 window.location.href = 'indexAdmin.php';
@@ -466,15 +501,61 @@ function desactivarUsuario($id)
         $resultado = mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
         mysqli_close($conexion);
-        if ($resultado){
-        echo "<script>
+        if ($resultado) {
+            echo "<script>
                 alert('Usuario dado de baja correctamente.');
                 window.location.href = 'indexAdmin.php';
             </script>";
-        } else{
+        } else {
             echo "<script>
                 alert('No se pudo dar de baja al usuario.');
                 window.location.href = 'indexAdmin.php';
+            </script>";
+        }
+    }
+}
+function activarUsuarioEmpleado($id)
+{
+    $conexion = conectar();
+    if ($conexion != null) {
+        $sql = "UPDATE users SET state = 1 WHERE id = ?";
+        $stmt = mysqli_prepare($conexion, $sql);
+        mysqli_stmt_bind_param($stmt, "i", $id);
+        $resultado = mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+        mysqli_close($conexion);
+        if ($resultado) {
+            echo "<script>
+                alert('Usuario dado de alta.');
+                window.location.href = 'indexEmpleado.php';
+            </script>";
+        } else {
+            echo "<script>
+                alert('No se pudo dar de alta al usuario.');
+                window.location.href = 'indexEmpleado.php';
+            </script>";
+        }
+    }
+}
+function desactivarUsuarioEmpleado($id)
+{
+    $conexion = conectar();
+    if ($conexion != null) {
+        $sql = "UPDATE users SET state = 0 WHERE id = ?";
+        $stmt = mysqli_prepare($conexion, $sql);
+        mysqli_stmt_bind_param($stmt, "i", $id);
+        $resultado = mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+        mysqli_close($conexion);
+        if ($resultado) {
+            echo "<script>
+                alert('Usuario dado de baja correctamente.');
+                window.location.href = 'indexEmpleado.php.php';
+            </script>";
+        } else {
+            echo "<script>
+                alert('No se pudo dar de baja al usuario.');
+                window.location.href = 'indexEmpleado.php';
             </script>";
         }
     }
@@ -489,7 +570,7 @@ function eliminarMenu($idMenu)
         $resultado = mysqli_stmt_execute($consulta);
         mysqli_stmt_close($consulta);
         mysqli_close($conexion);
-        if ($resultado){
+        if ($resultado) {
             echo "<script>
                 alert('Menú eliminado correctamente.');
                 window.location.href = 'indexAdmin.php';
@@ -514,7 +595,7 @@ function eliminarMesa($idMesa)
         $resultado = mysqli_stmt_execute($consulta);
         mysqli_stmt_close($consulta);
         mysqli_close($conexion);
-        if ($resultado){
+        if ($resultado) {
             echo "<script>
                 alert('Mesa eliminada correctamente.');
                 window.location.href = 'indexAdmin.php';
@@ -539,7 +620,7 @@ function eliminarReserva($idReserva)
         $resultado = mysqli_stmt_execute($consulta);
         mysqli_stmt_close($consulta);
         mysqli_close($conexion);
-        if ($resultado){
+        if ($resultado) {
             echo "<script>
                 alert('Reserva eliminada correctamente.');
                 window.location.href = 'indexAdmin.php';
@@ -709,6 +790,50 @@ if (isset($_POST["modificar_menu"])) {
     mysqli_close($conexion);
 }
 
+if (isset($_POST["modificar_menu_empleado"])) {
+    var_dump($_POST);
+    $id = $_POST["id"];
+    $name = $_POST["name"];
+    $descrip = $_POST["descrip"];
+    $category = $_POST["category"];
+    $price = $_POST["price"];
+    $img = $_FILES["img"]["name"];
+    $temporal_img = $_FILES["img"]["tmp_name"];
+    $state = ($_POST["state"] == "Disponible") ? 1 : 0;
+
+    $rute = "img/food/" . $img;
+    move_uploaded_file($temporal_img, $rute);
+
+    $conexion = conectar();
+
+    if (!$conexion) {
+        die("Error en la conexión: " . mysqli_connect_error());
+    } else {
+        $sql = "UPDATE menu SET name=?, descrip=?, category=?, price=?, img=?, state=? WHERE id=?";
+        $stmt = mysqli_prepare($conexion, $sql);
+
+        mysqli_stmt_bind_param($stmt, "ssssssi", $name, $descrip, $category, $price, $rute, $state, $id);
+
+        $modificar = mysqli_stmt_execute($stmt);
+
+        if (!$modificar) {
+            echo "<script>
+                    alert('No se pudo modificar el menù.');
+                    window.location.href = 'modificarMenuEmpleado.php';
+                </script>";
+        } else {
+            echo "<script>
+                    alert('Menú modificado correctamente.');
+                    window.location.href = 'indexEmpleado.php';
+                </script>";
+        }
+
+        mysqli_stmt_close($stmt);
+        var_dump($modificar);
+    }
+    mysqli_close($conexion);
+}
+
 if (isset($_POST["modificar_usuario"])) {
     var_dump($_POST);
     $id = $_POST["id"];
@@ -769,6 +894,46 @@ if (isset($_POST["modificar_reserva"])) {
         if (!$modificar) {
             echo "<script>
                     alert('No se pudo modificar la reserva.');
+                    window.location.href = 'indexCliente.php';
+                </script>";
+        } else {
+            echo "<script>
+                    alert('Reserva modificada correctamente.');
+                    window.location.href = 'indexCliente.php';
+                </script>";
+        }
+
+        mysqli_stmt_close($stmt);
+    }
+    mysqli_close($conexion);
+}
+
+if (isset($_POST["modificar_reserva_empleado"])) {
+    $id = $_POST["id"];
+    $name = $_POST["name"];
+    $mail = $_POST["mail"];
+    $phone = $_POST["phone"];
+    $date = $_POST["date"];
+    $time = $_POST["time"];
+    $people = $_POST["people"];
+    $msg = $_POST["msg"];
+    $type = $_POST["type"];
+
+    $conexion = conectar();
+
+    if (!$conexion) {
+        die("Error en la conexión: " . mysqli_connect_error());
+    } else {
+        $sql = "UPDATE reserves SET name=?, mail=?, phone=?, date=?, time=?, people=?, msg=?, type=? WHERE id=?";
+        $stmt = mysqli_prepare($conexion, $sql);
+
+        mysqli_stmt_bind_param($stmt, "ssssssssi", $name, $mail, $phone, $date, $time, $people, $msg, $type, $id);
+
+        $modificar = mysqli_stmt_execute($stmt);
+
+        if (!$modificar) {
+            echo "<script>
+                    alert('No se pudo modificar la reserva');
                     window.location.href = 'indexEmpleado.php';
                 </script>";
         } else {
@@ -973,12 +1138,12 @@ if (isset($_POST["modificar_datos"])) {
                     window.location.href = 'indexCliente.php';
                 </script>";
         } else {
+            session_destroy();
             echo "<script>
                     alert('Datos modificados. Vuelva a iniciar sesión.');
-                    window.location.href = 'indexCliente.php';
+                    window.location.href = 'iniciosesion.php';
                 </script>";
-            session_destroy();
-            header("Location: iniciosesion.php");
+
             exit();
         }
 

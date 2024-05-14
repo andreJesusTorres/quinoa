@@ -7,10 +7,10 @@ if (!isset($_SESSION["login"])) {
     exit();
 } else {
     $conexion = conectar();
-    $sql = "SELECT * FROM users WHERE id='" . $_POST["id"] . "'";
+    $sql = "SELECT * FROM reserves WHERE id='" . $_POST["id"] . "'";
     $buscar = mysqli_query($conexion, $sql);
     if (mysqli_num_rows($buscar) > 0) {
-        $user = mysqli_fetch_assoc($buscar);
+        $reserve = mysqli_fetch_assoc($buscar);
     }
     mysqli_close($conexion);
 }
@@ -49,18 +49,17 @@ if (!isset($_SESSION["login"])) {
 
 <body>
 
-    <header id="header" class="header fixed-top d-flex align-items-center">
+<header id="header" class="header fixed-top d-flex align-items-center">
         <div class="container d-flex align-items-center justify-content-between">
             <a href="indexCliente.php" class="logo d-flex align-items-center me-auto me-lg-0">
                 <h1>Quinoa<span>.</span></h1>
             </a>
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a href="indexAdmin.php"> Home</a></li>
-                    <li><a href="indexAdmin.php#mesas"> Lista mesas</a></li>
-                    <li><a href="indexAdmin.php#menu"> Lista menú</a></li>
-                    <li><a href="indexAdmin.php#usuarios">Lista usuarios</a></li>
-                    <li><a href="indexAdmin.php#reservas">Lista de reservas</a></li>
+                    <li><a href="indexEmpleado.php#menu"> Home</a></li>
+                    <li><a href="indexEmpleado.php#menu"> Lista menú</a></li>
+                    <li><a href="indexEmpleado.php#usuarios">Lista usuarios</a></li>
+                    <li><a href="indexEmpleado.php#reservas">Lista de reservas</a></li>
                 </ul>
             </nav>
             <a class="btn-book-a-table" href="iniciosesion.php" name="logout">Cerrar Sesión</a>
@@ -74,7 +73,7 @@ if (!isset($_SESSION["login"])) {
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
                     <ol>
-                        <li><a href="indexAdmin.php">Home</a></li>
+                        <li><a href="indexEmpleado.php">Home</a></li>
                         <li>Bienvenido, <?php echo $_SESSION["login"]["name"]; ?></li>
                     </ol>
                 </div>
@@ -83,8 +82,8 @@ if (!isset($_SESSION["login"])) {
 
         <section id="book-a-table" class="book-a-table">
             <div class="section-header">
-                <h2>Modificar Usuario</h2>
-                <p> <span>Modifica los detalles del usuario</span> </p>
+                <h2>Modificar Reserva</h2>
+                <p> <span>Modifica los detalles de la reserva</span> </p>
             </div>
 
             <?php if (isset($success_message)): ?>
@@ -96,40 +95,76 @@ if (!isset($_SESSION["login"])) {
 
             <form method="post" enctype="multipart/form-data" class="php-email-form" data-aos="fade-up"
                 data-aos-delay="100">
-                <input type="hidden" name="id" value="<?php echo $user['id']; ?>">
+                <input type="hidden" name="id" value="<?php echo $reserve['id']; ?>">
                 <div class="mb-3">
                     <label for="name" class="form-label">Nombre:</label>
-                    <input type="text" class="form-control" id="name" name="name" value="<?php echo $user['name']; ?>"
-                        required>
+                    <input type="text" class="form-control" id="name" name="name"
+                        value="<?php echo $reserve['name']; ?>" required>
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label">Clave:</label>
-                    <input type="text" class="form-control" id="password" name="pass"
-                        value="<?php echo $user['pass']; ?>" required>
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email:</label>
-                    <input type="email" class="form-control" id="email" name="mail" value="<?php echo $user['mail']; ?>"
-                        required>
+                    <label for="mail" class="form-label">Email:</label>
+                    <input type="mail" class="form-control" id="mail" name="mail"
+                        value="<?php echo $reserve['mail']; ?>" required>
                 </div>
                 <div class="mb-3">
                     <label for="phone" class="form-label">Teléfono:</label>
-                    <input type="text" class="form-control" id="phone" name="phone"
-                        value="<?php echo $user['phone']; ?>" required>
+                    <input type="number" class="form-control" id="phone" name="phone"
+                        value="<?php echo $reserve['phone']; ?>" required>
                 </div>
                 <div class="mb-3">
-                    <label for="type" class="form-label">Tipo de usuario:</label>
-                    <input type="hidden" name="type" value="' <?php echo $user['phone']; ?> . '">
-                    <select name="type" class="form-select me-2" aria-label="Tipo de Usuario">
-                        <option value="Cliente" ' . ($datos["type"] == "Cliente" ? "selected" : "") . '>Cliente</option>
-                        <option value="Empleado" ' . ($datos["type"] == "Empleado" ? "selected" : "") . '>Empleado
-                        </option>
-                        <option value="Administrador" ' . ($datos["type"] == "Administrador" ? "selected" : "") . '>
-                            Administrador</option>
+                    <label for="date" class="form-label">Fecha:</label>
+                    <input type="date" class="form-control" id="date" name="date"
+                        value="<?php echo $reserve['date']; ?>" required>
+                </div>
+                <div class="mb-3">
+                    <label for="time" class="form-label">Hora:</label>
+                    <select class="form-select" name="time" id="time" aria-label="Seleccione la hora" required>
+                        <option><?php echo $reserve['time']; ?></option>
+                        <?php
+                        $times = array("13:00 - 14:00", "14:00 - 15:00", "15:00 - 16:00");
+                        foreach ($times as $option) {
+                            $selected = ($option == $reserva['time']) ? 'selected' : '';
+                            echo "<option value='$option' $selected>$option</option>";
+                        }
+                        ?>
                     </select>
                 </div>
+                <div class="mb-3">
+                    <label for="time" class="form-label">Cantidad de personas:</label>
+                    <select class="form-select" name="people" id="people"
+                        aria-label="Seleccione la cantidad de personas" required>
+                        <option value=""><?php echo $reserve['people']; ?></option>
+                        <option value="1">1 persona</option>
+                        <option value="2">2 personas</option>
+                        <option value="3">3 personas</option>
+                        <option value="4">4 personas</option>
+                        <option value="5">5 personas</option>
+                        <option value="6">6 personas</option>
+                        <option value="7">7 personas</option>
+                        <option value="8">8 personas</option>
+                    </select>
+                    <div class="validate"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="msg" class="form-label">Mensaje:</label>
+                    <textarea type="text" class="form-control" id="msg" name="msg"
+                        required><?php echo $reserve['msg']; ?></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="type" class="form-label">Tipo de usuario:</label>
+                    <select class="form-select" id="type" name="type" required>
+                        <option value="Invitado" <?php if ($reserve['type'] == 'Invitado')
+                            echo 'selected'; ?>>Invitado
+                        </option>
+                        <option value="Cliente" <?php if ($reserve['type'] == 'Cliente')
+                            echo 'selected'; ?>>Cliente
+                        </option>
+                    </select>
+                </div>
+
                 <div class="text-center mb-3">
-                    <button type="submit" name="modificar_usuario">Actualizar Usuario</button>
+                    <button type="submit" name="modificar_reserva_empleado">Actualizar reserva</button>
                 </div>
             </form>
         </section>

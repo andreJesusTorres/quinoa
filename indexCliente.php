@@ -61,7 +61,7 @@ getReservaClientePorId($_SESSION["login"]["mail"]);
       </a>
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a href="index.html#hero">Inicio</a></li>
+          <li><a href="#hero">Inicio</a></li>
           <li><a href="#about">Sobre Nosotros</a></li>
           <li><a href="#menu">La Carta</a></li>
           <li><a href="#reservar">Reservar</a></li>

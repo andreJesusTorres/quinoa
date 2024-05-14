@@ -45,12 +45,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "Error al eliminar la reserva";
         }
-    } elseif (isset($_POST['activarUsuario'])) {
+    } elseif (isset($_POST['activarUsuarioEmpleado'])) {
         $id = $_POST['id'];
-        activarUsuario($id);
-    } elseif (isset($_POST['desactivarUsuario'])) {
+        activarUsuarioEmpleado($id);
+    } elseif (isset($_POST['desactivarUsuarioEmpleado'])) {
         $id = $_POST['id'];
-        desactivarUsuario($id);
+        desactivarUsuarioEmpleado($id);
     }
 }
 
@@ -105,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
                     <ol>
-                        <li><a href="indexCliente.php">Home</a></li>
+                        <li><a href="indexEmpleado.php">Home</a></li>
                         <li>
                             Bienvenido, <?php echo $_SESSION["login"]["name"]; ?>
                         </li>
@@ -222,7 +222,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </tr>
                         </thead>
                         <tbody>
-                            <?php listarReservas(); ?>
+                            <?php listarReservasEmpleado(); ?>
                         </tbody>
                     </table>
                 </div>

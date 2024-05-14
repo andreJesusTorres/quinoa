@@ -56,7 +56,11 @@ if (!isset($_SESSION["login"])) {
             </a>
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a>No hay acciones a realizar</a></li>
+                    <li><a href="indexAdmin.php"> Home</a></li>
+                    <li><a href="indexAdmin.php#mesas"> Lista mesas</a></li>
+                    <li><a href="indexAdmin.php#menu"> Lista menú</a></li>
+                    <li><a href="indexAdmin.php#usuarios">Lista usuarios</a></li>
+                    <li><a href="indexAdmin.php#reservas">Lista de reservas</a></li>
                 </ul>
             </nav>
             <a class="btn-book-a-table" href="iniciosesion.php" name="logout">Cerrar Sesión</a>
@@ -70,7 +74,7 @@ if (!isset($_SESSION["login"])) {
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
                     <ol>
-                        <li><a href="indexCliente.php">Home</a></li>
+                        <li><a href="indexAdmin.php">Home</a></li>
                         <li>Bienvenido, <?php echo $_SESSION["login"]["name"]; ?></li>
                     </ol>
                 </div>

@@ -11,40 +11,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (isset($_POST["eliminarUsuario"])) {
         $idUsuario = $_POST["id"];
-
-        if (eliminarUsuario($idUsuario)) {
-            header("Location: indexAdmin.php");
-            exit();
-        } else {
-            echo "Error al eliminar el usuario";
-        }
+        eliminarUsuario($idUsuario);
     } elseif (isset($_POST["eliminarMesa"])) {
         $idMesa = $_POST["codigo"];
-
-        if (eliminarMesa($idMesa)) {
-            header("Location: indexAdmin.php");
-            exit();
-        } else {
-            echo "Error al eliminar la mesa";
-        }
+        eliminarMesa($idMesa);
     } elseif (isset($_POST["eliminarMenu"])) {
         $idMenu = $_POST["id"];
-
-        if (eliminarMenu($idMenu)) {
-            header("Location: indexAdmin.php");
-            exit();
-        } else {
-            echo "Error al eliminar el menú";
-        }
+        eliminarMenu($idMenu);
     } elseif (isset($_POST["eliminarReserva"])) {
         $idReserva = $_POST["id"];
-
-        if (eliminarReserva($idReserva)) {
-            header("Location: indexAdmin.php");
-            exit();
-        } else {
-            echo "Error al eliminar la reserva";
-        }
+        eliminarReserva($idReserva);
     } elseif (isset($_POST['activarUsuario'])) {
         $id = $_POST['id'];
         activarUsuario($id);
@@ -84,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <header id="header" class="header fixed-top d-flex align-items-center">
         <div class="container d-flex align-items-center justify-content-between">
-            <a href="indexCliente.php" class="logo d-flex align-items-center me-auto me-lg-0">
+            <a href="indexAdmin.php" class="logo d-flex align-items-center me-auto me-lg-0">
                 <h1>Quinoa<span>.</span></h1>
             </a>
             <nav id="navbar" class="navbar">
@@ -106,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
                     <ol>
-                        <li><a href="indexCliente.php">Home</a></li>
+                        <li><a href="indexAdmin.php">Home</a></li>
                         <li>
                             Bienvenido, <?php echo $_SESSION["login"]["name"]; ?>
                         </li>
@@ -151,7 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <h2>Lista de mesas</h2>
                     <a class="btn btn-danger btn-sm bi bi-plus" href="#" role="button" aria-haspopup="true"
                         aria-expanded="false" data-bs-toggle="dropdown">
-                        Agregar Mesa
+                        Lista de Mesas
                     </a>
                     <div class="dropdown-menu dropdown-menu-end p-4" id="agregarMesaDropdown" style="width: 300px;">
                         <form method="POST" class="text-center php-email-form">
@@ -193,7 +169,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <section id="menu" class="book-a-table">
             <div class="container" data-aos="fade-up">
                 <div class="section-header d-flex justify-content-between align-items-center">
-                    <h2>Agregar Menú</h2>
+                    <h2>Lista de Menú</h2>
                     <a class="btn btn-danger btn-sm bi bi-plus" href="#" role="button" aria-haspopup="true"
                         aria-expanded="false" data-bs-toggle="dropdown">
                         Agregar Menú
@@ -269,10 +245,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </section>
 
 
-        <section id="usuario" class="book-a-table">
+        <section id="usuarios" class="book-a-table">
             <div class="container" data-aos="fade-up">
                 <div class="section-header d-flex justify-content-between align-items-center">
-                    <h2>Agregar Usuario</h2>
+                    <h2>Lista de Usuarios</h2>
                     <a class="btn btn-danger btn-sm bi bi-plus" href="#" role="button" aria-haspopup="true"
                         aria-expanded="false" data-bs-toggle="dropdown">
                         Agregar Usuario
