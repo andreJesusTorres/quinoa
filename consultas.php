@@ -239,6 +239,8 @@ function listarUsuarios()
         $consulta = mysqli_query($conexion, $sql);
         if (mysqli_num_rows($consulta) > 0) {
             while ($datos = mysqli_fetch_assoc($consulta)) {
+                $estado = ($datos["state"] == 1) ? "img/verde.png" : "img/rojo.png";
+
                 echo '
                 <tr>
                 <td>' . $datos["id"] . '</td>
@@ -246,6 +248,7 @@ function listarUsuarios()
                 <td>' . $datos["mail"] . '</td>
                 <td>' . $datos["phone"] . '</td>
                 <td>' . $datos["type"] . ' </td>
+                <td><img src="' . $estado . '" alt="Estado" width="20" height="20"></td> 
                 <td>
                     <div class="d-flex align-items-center">
                         <form method="POST" action="modificarUsuario.php">
@@ -257,6 +260,16 @@ function listarUsuarios()
                             <button type="submit" class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminarUsuario"></button>
                         </form>
                     </div>
+                    <div class="d-flex align-items-center">
+                    <form method="POST">
+                        <input type="hidden" name="id" value="' . $datos["id"] . '">
+                        <button type="submit" class="btn btn-sm btn-outline-success bi bi-arrow-up-square" name="activarUsuario"></button>
+                    </form>
+                    <form method="POST">
+                        <input type="hidden" name="id" value="' . $datos["id"] . '">
+                        <button type="submit" class="btn btn-sm btn-outline-warning bi bi-arrow-down-square" name="desactivarUsuario"></button>
+                    </form>
+                </div>
                 </td>
             </tr>
             
@@ -274,6 +287,7 @@ function listarUsuariosEmpleado()
         $consulta = mysqli_query($conexion, $sql);
         if (mysqli_num_rows($consulta) > 0) {
             while ($datos = mysqli_fetch_assoc($consulta)) {
+                $estado = ($datos["state"] == 1) ? "img/verde.png" : "img/rojo.png";
                 echo '
                 <tr>
                 <td>' . $datos["id"] . '</td>
@@ -281,13 +295,19 @@ function listarUsuariosEmpleado()
                 <td>' . $datos["mail"] . '</td>
                 <td>' . $datos["phone"] . '</td>
                 <td>' . $datos["type"] . ' </td>
+                <td><img src="' . $estado . '" alt="Estado" width="20" height="20"></td> 
                 <td>
-                    <div class="d-flex align-items-center">
-                        <form method="POST">
-                            <input type="hidden" name="id" value="' . $datos["id"] . '">
-                            <button type="submit" class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminarUsuario"></button>
-                        </form>
-                    </div>
+                <div class="d-flex align-items-center">
+                    <form method="POST">
+                        <input type="hidden" name="id" value="' . $datos["id"] . '">
+                        <button type="submit" class="btn btn-sm btn-outline-success bi bi-arrow-up-square" name="activarUsuario"></button>
+                    </form>
+                    <form method="POST">
+                        <input type="hidden" name="id" value="' . $datos["id"] . '">
+                        <button type="submit" class="btn btn-sm btn-outline-warning bi bi-arrow-down-square" name="desactivarUsuario"></button>
+                    </form>
+                </div>
+
                 </td>
             </tr>
             
@@ -347,6 +367,30 @@ function eliminarUsuario($idUsuario)
         return $resultado;
     }
     return false;
+}
+function activarUsuario($id)
+{
+    $conexion = conectar();
+    if ($conexion != null) {
+        $sql = "UPDATE users SET state = 1 WHERE id = ?";
+        $stmt = mysqli_prepare($conexion, $sql);
+        mysqli_stmt_bind_param($stmt, "i", $id);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+        mysqli_close($conexion);
+    }
+}
+function desactivarUsuario($id)
+{
+    $conexion = conectar();
+    if ($conexion != null) {
+        $sql = "UPDATE users SET state = 0 WHERE id = ?";
+        $stmt = mysqli_prepare($conexion, $sql);
+        mysqli_stmt_bind_param($stmt, "i", $id);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+        mysqli_close($conexion);
+    }
 }
 function eliminarMenu($idMenu)
 {
@@ -457,6 +501,7 @@ if (isset($_POST["agregar_usuario"])) {
     $pass = $_POST["pass"];
     $mail = $_POST["mail"];
     $phone = $_POST["phone"];
+    $state = '1';
     $type = $_POST["type"];
 
     $conexion = conectar();
@@ -464,11 +509,10 @@ if (isset($_POST["agregar_usuario"])) {
     if (!$conexion) {
         die("Error en la conexión: " . mysqli_connect_error());
     } else {
-        $sql = "INSERT INTO users (name, pass, mail, phone, type) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO users (name, pass, mail, phone, type, state) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($conexion, $sql);
 
-        mysqli_stmt_bind_param($stmt, "sssss", $name, $pass, $mail, $phone, $type);
-
+        mysqli_stmt_bind_param($stmt, "ssssss", $name, $pass, $mail, $phone, $type, $state);
 
         $result = mysqli_stmt_execute($stmt);
 
@@ -664,31 +708,40 @@ if (isset($_POST["login"])) {
         die("Error en la conexión: " . mysqli_connect_error());
     }
 
-    $login = "SELECT * FROM users WHERE mail = '$mail' AND pass = '$pass'";
-    $login_result = mysqli_query($conexion, $login);
+    $login = "SELECT * FROM users WHERE mail = ? AND pass = ?";
+    $stmt = mysqli_prepare($conexion, $login);
+    mysqli_stmt_bind_param($stmt, "ss", $mail, $pass);
+    mysqli_stmt_execute($stmt);
+    $login_result = mysqli_stmt_get_result($stmt);
 
     if ($login_result && mysqli_num_rows($login_result) > 0) {
         $user = mysqli_fetch_assoc($login_result);
-        mysqli_close($conexion);
-        session_start();
-        $_SESSION["login"] = $user;
 
-        // Redirigir según el tipo de usuario
-        if ($user['type'] == 'Administrador') {
-            header("Location: indexAdmin.php");
-        } elseif ($user['type'] == 'Empleado') {
-            header("Location: indexEmpleado.php");
-        } elseif ($user['type'] == 'Cliente') {
-            header("Location: indexCliente.php");
+        if ($user['state'] == 0) {
+            $error_login = 'Usuario desactivado. No puede iniciar sesión.';
         } else {
-            // Si el tipo de usuario no es ninguno de los esperados, redirigir a una página de error o manejarlo de otra manera
-            header("Location: error.html");
+            session_start();
+            $_SESSION["login"] = $user;
+
+            if ($user['type'] == 'Administrador') {
+                header("Location: indexAdmin.php");
+            } elseif ($user['type'] == 'Empleado') {
+                header("Location: indexEmpleado.php");
+            } elseif ($user['type'] == 'Cliente') {
+                header("Location: indexCliente.php");
+            } else {
+                header("Location: error.html");
+            }
+            mysqli_stmt_close($stmt);
+            mysqli_close($conexion);
+            exit();
         }
-        exit();
     } else {
-        $error_login = 'error';
+        $error_login = 'Correo electrónico o contraseña incorrectos.';
     }
 
+    mysqli_stmt_close($stmt);
+    mysqli_close($conexion);
 }
 
 if (isset($_GET["logout"])) {

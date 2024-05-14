@@ -45,6 +45,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "Error al eliminar la reserva";
         }
+    } elseif (isset($_POST['activarUsuario'])) {
+        $id = $_POST['id'];
+        activarUsuario($id);
+    } elseif (isset($_POST['desactivarUsuario'])) {
+        $id = $_POST['id'];
+        desactivarUsuario($id);
     }
 }
 
@@ -180,6 +186,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <th scope="col">Email</th>
                                 <th scope="col">Teléfono</th>
                                 <th scope="col">Tipo</th>
+                                <th scope="col">Estado</th>
                                 <th scope="col">Acción</th>
                             </tr>
                         </thead>

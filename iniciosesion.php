@@ -72,6 +72,12 @@ require_once ("consultas.php");
     <div class="container" data-aos="fade-up">
       <div class="row justify-content-center">
         <div class="col-lg-7">
+          
+    <?php if (isset($error_login)): ?>
+    <div class="alert alert-danger">
+        <?php echo $error_login; ?>
+    </div>
+<?php endif; ?>
           <div class="section-title">
             <h2>Inicia Sesión - Consulta tus reservas</h2>
           </div>
