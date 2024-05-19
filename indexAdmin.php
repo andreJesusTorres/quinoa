@@ -323,6 +323,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col">Código</th>
+                                <th scope="col">Id del usuario</th>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Teléfono</th>
@@ -331,6 +332,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <th scope="col">Personas</th>
                                 <th scope="col">Mensaje</th>
                                 <th scope="col">Tipo</th>
+                                <th scope="col">Nº de mesa</th>
                                 <th scope="col">Accion</th>
                             </tr>
                         </thead>

@@ -7,7 +7,10 @@ if (!isset($_SESSION["login"])) {
     exit();
 } else {
     $conexion = conectar();
-    $sql = "SELECT * FROM reserves WHERE id='" . $_POST["id"] . "'";
+    $sql = "SELECT reserves.*, users.name, users.mail, users.phone 
+            FROM reserves 
+            INNER JOIN users ON reserves.id_usuario = users.id 
+            WHERE reserves.id='" . $_POST["id"] . "'";
     $buscar = mysqli_query($conexion, $sql);
     if (mysqli_num_rows($buscar) > 0) {
         $reserve = mysqli_fetch_assoc($buscar);

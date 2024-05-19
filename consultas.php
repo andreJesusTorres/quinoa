@@ -364,13 +364,17 @@ function listarReservas()
 {
     $conexion = conectar();
     if ($conexion != null) {
-        $sql = "SELECT * FROM reserves ORDER BY id ASC";
+        $sql = "SELECT reserves.id, reserves.id_usuario, reserves.date, reserves.time, reserves.people, reserves.msg, reserves.type, reserves.table_num, users.name, users.mail, users.phone 
+                FROM reserves 
+                INNER JOIN users ON reserves.id_usuario = users.id 
+                ORDER BY reserves.id ASC";
         $consulta = mysqli_query($conexion, $sql);
         if (mysqli_num_rows($consulta) > 0) {
             while ($datos = mysqli_fetch_assoc($consulta)) {
                 echo '
                     <tr>
                         <td>' . $datos["id"] . '</td>
+                        <td>' . $datos["id_usuario"] . '</td>
                         <td>' . $datos["name"] . '</td>
                         <td>' . $datos["mail"] . '</td>
                         <td>' . $datos["phone"] . '</td>
@@ -379,16 +383,18 @@ function listarReservas()
                         <td>' . $datos["people"] . '</td>
                         <td>' . $datos["msg"] . '</td>
                         <td>' . $datos["type"] . '</td>
+                        <td>' . $datos["table_num"] . '</td>
                         <td>
-                        <div class="d-flex align-items-center">
-                            <form method="POST" action="modificarReservaAdmin.php">
-                                <input type="hidden" name="id" value="' . $datos["id"] . '">
-                                <button class="btn btn-sm btn-outline-secondary bi bi-pencil" name="modificarReserva"></button>
-                            </form>
-                            <form method="POST">
-                                <input type="hidden" name="id" value="' . $datos["id"] . '">
-                                <button class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminarReserva"></button>
-                            </form>
+                            <div class="d-flex align-items-center">
+                                <form method="POST" action="modificarReservaAdmin.php">
+                                    <input type="hidden" name="id" value="' . $datos["id"] . '">
+                                    <button class="btn btn-sm btn-outline-secondary bi bi-pencil" name="modificarReserva"></button>
+                                </form>
+                                <form method="POST">
+                                    <input type="hidden" name="id" value="' . $datos["id"] . '">
+                                    <button class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminarReserva"></button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 ';
@@ -401,13 +407,17 @@ function listarReservasEmpleado()
 {
     $conexion = conectar();
     if ($conexion != null) {
-        $sql = "SELECT * FROM reserves ORDER BY id ASC";
+        $sql = "SELECT reserves.id, reserves.id_usuario, reserves.date, reserves.time, reserves.people, reserves.msg, reserves.type, reserves.table_num, users.name, users.mail, users.phone 
+                FROM reserves 
+                INNER JOIN users ON reserves.id_usuario = users.id 
+                ORDER BY reserves.id ASC";
         $consulta = mysqli_query($conexion, $sql);
         if (mysqli_num_rows($consulta) > 0) {
             while ($datos = mysqli_fetch_assoc($consulta)) {
                 echo '
                     <tr>
                         <td>' . $datos["id"] . '</td>
+                        <td>' .$datos["id_usuario"] . '</td>
                         <td>' . $datos["name"] . '</td>
                         <td>' . $datos["mail"] . '</td>
                         <td>' . $datos["phone"] . '</td>
@@ -416,6 +426,7 @@ function listarReservasEmpleado()
                         <td>' . $datos["people"] . '</td>
                         <td>' . $datos["msg"] . '</td>
                         <td>' . $datos["type"] . '</td>
+                        <td>' . $datos["table_num"] . '</td>
                         <td>
                         <div class="d-flex align-items-center">
                             <form method="POST" action="modificarReservaEmpleado.php">
@@ -549,7 +560,7 @@ function desactivarUsuarioEmpleado($id)
         if ($resultado) {
             echo "<script>
                 alert('Usuario dado de baja correctamente.');
-                window.location.href = 'indexEmpleado.php.php';
+                window.location.href = 'indexEmpleado.php';
             </script>";
         } else {
             echo "<script>
