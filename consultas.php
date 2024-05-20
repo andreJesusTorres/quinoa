@@ -20,9 +20,24 @@ function reservar($name, $mail, $phone, $date, $time, $people, $msg)
         die("Error en la conexión: " . mysqli_connect_error());
     }
     
-    $check_reserve_query = "SELECT * FROM reserves WHERE mail = ? AND date = ?";
+    $check_user_query = "SELECT id FROM users WHERE mail = ?";
+    $stmt_user = mysqli_prepare($conexion, $check_user_query);
+    mysqli_stmt_bind_param($stmt_user, "s", $mail);
+    mysqli_stmt_execute($stmt_user);
+    $check_user_result = mysqli_stmt_get_result($stmt_user);
+
+    if ($check_user_result && mysqli_num_rows($check_user_result) > 0) {
+        $user_row = mysqli_fetch_assoc($check_user_result);
+        $id_usuario = $user_row['id'];
+    } else {
+        $id_usuario = NULL;
+    }
+
+    mysqli_stmt_close($stmt_user);
+
+    $check_reserve_query = "SELECT * FROM reserves WHERE id_usuario = ? AND date = ?";
     $stmt_reserve = mysqli_prepare($conexion, $check_reserve_query);
-    mysqli_stmt_bind_param($stmt_reserve, "ss", $mail, $date);
+    mysqli_stmt_bind_param($stmt_reserve, "is", $id_usuario, $date);
     mysqli_stmt_execute($stmt_reserve);
     $check_reserve_result = mysqli_stmt_get_result($stmt_reserve);
 
@@ -39,13 +54,38 @@ function reservar($name, $mail, $phone, $date, $time, $people, $msg)
 
     mysqli_stmt_close($stmt_reserve);
 
-    $type = 'Invitado';
+    // Verificar disponibilidad de mesas
+    $max_capacity = ($people <= 4) ? 4 : 8;
+
+    $table_query = "SELECT id FROM tables WHERE id NOT IN (
+                        SELECT table_num FROM reserves 
+                        WHERE date = ? AND time = ?
+                    ) AND sites >= ? AND sites <= ? ORDER BY sites ASC LIMIT 1";
+    $stmt_table = mysqli_prepare($conexion, $table_query);
+    mysqli_stmt_bind_param($stmt_table, "ssii", $date, $time, $people, $max_capacity);
+    mysqli_stmt_execute($stmt_table);
+    $table_result = mysqli_stmt_get_result($stmt_table);
+
+    if (mysqli_num_rows($table_result) == 0) {
+        mysqli_stmt_close($stmt_table);
+        mysqli_close($conexion);
+        echo "<script>
+        alert('No hay mesas disponibles para esa franja horaria.');
+        window.location.href = 'index.php';
+        </script>";
+        exit();
+    }
+
+    $table_row = mysqli_fetch_assoc($table_result);
+    $table_num = $table_row['id'];
+    mysqli_stmt_close($stmt_table);
 
     // Insertar la nueva reserva
-    $insert_query = "INSERT INTO reserves (name, mail, phone, date, time, people, msg, type) 
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $type = 'Invitado';
+    $insert_query = "INSERT INTO reserves (id_usuario, date, time, people, msg, type, table_num) 
+                     VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt_insert = mysqli_prepare($conexion, $insert_query);
-    mysqli_stmt_bind_param($stmt_insert, "ssssssss", $name, $mail, $phone, $date, $time, $people, $msg, $type);
+    mysqli_stmt_bind_param($stmt_insert, "isssssi", $id_usuario, $date, $time, $people, $msg, $type, $table_num);
 
     if (mysqli_stmt_execute($stmt_insert)) {
         mysqli_stmt_close($stmt_insert);
@@ -67,7 +107,7 @@ function reservar($name, $mail, $phone, $date, $time, $people, $msg)
         return false;
     }
 }
-function reservarCliente($name, $mail, $phone, $date, $time, $people, $msg)
+function reservarCliente($id_usuario, $date, $time, $people, $msg)
 {
     $conexion = conectar();
 
@@ -77,9 +117,9 @@ function reservarCliente($name, $mail, $phone, $date, $time, $people, $msg)
 
     $type = 'Cliente';
 
-    $check_query = "SELECT * FROM reserves WHERE mail = ? AND date = ?";
+    $check_query = "SELECT * FROM reserves WHERE id_usuario = ? AND date = ?";
     $stmt = mysqli_prepare($conexion, $check_query);
-    mysqli_stmt_bind_param($stmt, "ss", $mail, $date);
+    mysqli_stmt_bind_param($stmt, "is", $id_usuario, $date);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 
@@ -95,10 +135,33 @@ function reservarCliente($name, $mail, $phone, $date, $time, $people, $msg)
 
     mysqli_stmt_close($stmt);
 
-    $insert_query = "INSERT INTO reserves (name, mail, phone, date, time, people, msg, type) 
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $table_query = "SELECT id FROM tables WHERE id NOT IN (
+                        SELECT table_num FROM reserves 
+                        WHERE date = ? AND time = ?
+                    ) AND sites >= ? ORDER BY sites ASC LIMIT 1";
+    $stmt = mysqli_prepare($conexion, $table_query);
+    mysqli_stmt_bind_param($stmt, "sss", $date, $time, $people);
+    mysqli_stmt_execute($stmt);
+    $table_result = mysqli_stmt_get_result($stmt);
+
+    if (mysqli_num_rows($table_result) == 0) {
+        mysqli_stmt_close($stmt);
+        mysqli_close($conexion);
+        echo "<script>
+        alert('No hay mesas disponibles para esa franja horaria.');
+        window.location.href = 'indexCliente.php';
+        </script>";
+        exit();
+    }
+
+    $table_row = mysqli_fetch_assoc($table_result);
+    $table_num = $table_row['id'];
+    mysqli_stmt_close($stmt);
+
+    $insert_query = "INSERT INTO reserves (id_usuario, date, time, people, msg, type, table_num) 
+                     VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($conexion, $insert_query);
-    mysqli_stmt_bind_param($stmt, "ssssssss", $name, $mail, $phone, $date, $time, $people, $msg, $type);
+    mysqli_stmt_bind_param($stmt, "isssssi", $id_usuario, $date, $time, $people, $msg, $type, $table_num);
 
     if (mysqli_stmt_execute($stmt)) {
         mysqli_stmt_close($stmt);
@@ -120,14 +183,20 @@ function reservarCliente($name, $mail, $phone, $date, $time, $people, $msg)
 }
 function getReservasCliente($mail)
 {
-
     $conexion = conectar();
     if (!$conexion) {
         die("Error en la conexión: " . mysqli_connect_error());
     }
 
-    $query = "SELECT * FROM reserves WHERE mail = '$mail'";
-    $result = mysqli_query($conexion, $query);
+    // Ajustar la consulta para realizar un JOIN con la tabla users
+    $query = "SELECT reserves.* FROM reserves 
+              INNER JOIN users ON reserves.id_usuario = users.id 
+              WHERE users.mail = ?";
+    
+    $stmt = mysqli_prepare($conexion, $query);
+    mysqli_stmt_bind_param($stmt, "s", $mail);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
 
     $reservas = [];
     if ($result && mysqli_num_rows($result) > 0) {
@@ -136,6 +205,7 @@ function getReservasCliente($mail)
         }
     }
 
+    mysqli_stmt_close($stmt);
     mysqli_close($conexion);
     return $reservas;
 }

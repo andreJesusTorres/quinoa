@@ -127,7 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <h2>Lista de mesas</h2>
                     <a class="btn btn-danger btn-sm bi bi-plus" href="#" role="button" aria-haspopup="true"
                         aria-expanded="false" data-bs-toggle="dropdown">
-                        Lista de Mesas
+                        Agregar Mesas
                     </a>
                     <div class="dropdown-menu dropdown-menu-end p-4" id="agregarMesaDropdown" style="width: 300px;">
                         <form method="POST" class="text-center php-email-form">

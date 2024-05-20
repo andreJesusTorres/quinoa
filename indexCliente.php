@@ -1,33 +1,32 @@
 <?php
-require_once ("consultas.php");
+require_once("consultas.php");
 session_start();
 
 if (!isset($_SESSION["login"])) {
-  header("location: iniciosesion.php");
-  exit();
+    header("location: iniciosesion.php");
+    exit();
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $name = $_POST["name"];
-  $mail = $_POST["mail"];
-  $phone = $_POST["phone"];
-  $date = $_POST["date"];
-  $time = $_POST["time"];
-  $people = $_POST["people"];
-  $msg = $_POST["msg"];
+    $name = $_SESSION["login"]["name"];
+    $mail = $_SESSION["login"]["mail"];
+    $phone = $_SESSION["login"]["phone"];
+    $date = $_POST["date"];
+    $time = $_POST["time"];
+    $people = $_POST["people"];
+    $msg = $_POST["msg"];
 
-  if (reservarCliente($name, $mail, $phone, $date, $time, $people, $msg)) {
-    $sent_message = 'prueba';
-  } else {
-    $error_message = 'prueba 1';
-  }
+    if (reservarCliente($_SESSION["login"]["id"], $date, $time, $people, $msg)) {
+        $sent_message = 'Su reserva fue enviada correctamente.';
+    } else {
+        $error_message = 'Hubo un error al realizar la reserva. Inténtelo nuevamente.';
+    }
 }
 
 $reservas = getReservasCliente($_SESSION["login"]["mail"]);
 $menuItems = listarMenuIndex();
-getReservaClientePorId($_SESSION["login"]["mail"]);
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
