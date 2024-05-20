@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 14-05-2024 a las 17:11:24
+-- Tiempo de generación: 20-05-2024 a las 14:03:22
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -56,9 +56,7 @@ INSERT INTO `menu` (`id`, `name`, `descrip`, `category`, `price`, `img`, `state`
 
 CREATE TABLE `reserves` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `mail` varchar(255) DEFAULT NULL,
-  `phone` varchar(20) DEFAULT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
   `date` date DEFAULT NULL,
   `time` varchar(255) DEFAULT NULL,
   `people` int(11) DEFAULT NULL,
@@ -71,15 +69,10 @@ CREATE TABLE `reserves` (
 -- Volcado de datos para la tabla `reserves`
 --
 
-INSERT INTO `reserves` (`id`, `name`, `mail`, `phone`, `date`, `time`, `people`, `msg`, `type`, `table_num`) VALUES
-(1, 'Juan', 'juan@example.com', '123456789', '2024-05-15', '14:00 - 15:00', 4, 'Sin preferencias', 'Invitado', NULL),
-(2, 'María', 'maria@example.com', '987654321', '2024-05-16', '13:00 - 14:00', 2, 'Cerca de la ventana', 'Invitado', NULL),
-(4, 'Ana', 'ana@example.com', '333444555', '2024-05-18', '15:00 - 16:00', 8, 'Cumpleaños', 'Invitado', NULL),
-(5, 'Cliente1', 'cliente1@example.com', '333333333', '2024-05-12', '13:00 - 14:00', 4, 'Sin preferencias', 'Cliente', NULL),
-(6, 'Prueba 1', 'prueba@example.com', '12345678', '2024-05-22', '14:00 - 15:00', 4, '', 'Invitado', NULL),
-(7, 'Prueba', 'prueba@example.com', '123456789', '2024-05-09', '14:00 - 15:00', 8, '', 'Cliente', NULL),
-(11, 'María', 'maritaloli@gmail.com', '62355236', '2024-05-30', '14:00 - 15:00', 8, '', 'Invitado', NULL),
-(13, 'Cliente1', 'cliente1@example.com', '333333333', '2024-05-15', '15:00 - 16:00', 3, '', 'Cliente', NULL);
+INSERT INTO `reserves` (`id`, `id_usuario`, `date`, `time`, `people`, `msg`, `type`, `table_num`) VALUES
+(14, 4, '2024-05-20', '13:00 - 14:00', 4, '', 'Cliente', 20),
+(16, NULL, '2024-05-23', '13:00 - 14:00', 3, '', 'Invitado', 20),
+(17, NULL, '2024-05-23', '13:00 - 14:00', 3, '', 'Invitado', 19);
 
 -- --------------------------------------------------------
 
@@ -100,15 +93,15 @@ INSERT INTO `tables` (`id`, `sites`) VALUES
 (1, 4),
 (2, 4),
 (3, 4),
-(4, 4),
+(4, 8),
 (5, 4),
-(6, 4),
+(6, 8),
 (7, 4),
 (8, 4),
-(9, 4),
-(10, 4),
+(9, 8),
+(10, 8),
 (11, 4),
-(12, 4),
+(12, 8),
 (13, 4),
 (14, 4),
 (15, 4),
@@ -140,7 +133,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `pass`, `mail`, `phone`, `type`, `state`) VALUES
 (1, 'Admin', 'adminpass', 'admin@example.com', '999888777', 'Administrador', 1),
-(2, 'Empleado1', 'emppass1', 'empleado1@example.com', '111111111', 'Empleado', 0),
+(2, 'Empleado1', 'emppass1', 'empleado1@example.com', '111111111', 'Empleado', 1),
 (3, 'Empleado2', 'emppass2', 'empleado2@example.com', '22222222', 'Empleado', 1),
 (4, 'Cliente1', 'clientepass1', 'cliente1@example.com', '333333333', 'Cliente', 1);
 
@@ -158,7 +151,9 @@ ALTER TABLE `menu`
 -- Indices de la tabla `reserves`
 --
 ALTER TABLE `reserves`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_usuario` (`id_usuario`),
+  ADD KEY `table_num` (`table_num`);
 
 --
 -- Indices de la tabla `tables`
@@ -186,19 +181,18 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT de la tabla `reserves`
 --
 ALTER TABLE `reserves`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- AUTO_INCREMENT de la tabla `tables`
+-- Restricciones para tablas volcadas
 --
-ALTER TABLE `tables`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
--- AUTO_INCREMENT de la tabla `users`
+-- Filtros para la tabla `reserves`
 --
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+ALTER TABLE `reserves`
+  ADD CONSTRAINT `reserves_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `reserves_ibfk_2` FOREIGN KEY (`table_num`) REFERENCES `tables` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
