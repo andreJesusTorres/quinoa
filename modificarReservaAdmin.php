@@ -7,10 +7,7 @@ if (!isset($_SESSION["login"])) {
     exit();
 } else {
     $conexion = conectar();
-    $sql = "SELECT reserves.*, users.name, users.mail, users.phone 
-            FROM reserves 
-            INNER JOIN users ON reserves.id_usuario = users.id 
-            WHERE reserves.id='" . $_POST["id"] . "'";
+    $sql = "SELECT * FROM reserves WHERE id='" . $_POST["id"] . "'";
     $buscar = mysqli_query($conexion, $sql);
     if (mysqli_num_rows($buscar) > 0) {
         $reserve = mysqli_fetch_assoc($buscar);
@@ -37,7 +34,7 @@ if (!isset($_SESSION["login"])) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Amatic+SC:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Amatic+SC:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
         rel="stylesheet">
 
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -101,19 +98,9 @@ if (!isset($_SESSION["login"])) {
                 data-aos-delay="100">
                 <input type="hidden" name="id" value="<?php echo $reserve['id']; ?>">
                 <div class="mb-3">
-                    <label for="name" class="form-label">Nombre:</label>
-                    <input type="text" class="form-control" id="name" name="name"
-                        value="<?php echo $reserve['name']; ?>" required>
-                </div>
-                <div class="mb-3">
-                    <label for="mail" class="form-label">Email:</label>
-                    <input type="mail" class="form-control" id="mail" name="mail"
-                        value="<?php echo $reserve['mail']; ?>" required>
-                </div>
-                <div class="mb-3">
-                    <label for="phone" class="form-label">Teléfono:</label>
-                    <input type="number" class="form-control" id="phone" name="phone"
-                        value="<?php echo $reserve['phone']; ?>" required>
+                    <label for="id_usuario" class="form-label">Código de Usuario:</label>
+                    <input type="text" class="form-control" id="id_usuario" name="id_usuario"
+                        value="<?php echo $reserve['id_usuario']; ?>" required>
                 </div>
                 <div class="mb-3">
                     <label for="date" class="form-label">Fecha:</label>
@@ -127,14 +114,14 @@ if (!isset($_SESSION["login"])) {
                         <?php
                         $times = array("13:00 - 14:00", "14:00 - 15:00", "15:00 - 16:00");
                         foreach ($times as $option) {
-                            $selected = ($option == $reserva['time']) ? 'selected' : '';
+                            $selected = ($option == $reserve['time']) ? 'selected' : '';
                             echo "<option value='$option' $selected>$option</option>";
                         }
                         ?>
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="time" class="form-label">Cantidad de personas:</label>
+                    <label for="people" class="form-label">Cantidad de personas:</label>
                     <select class="form-select" name="people" id="people"
                         aria-label="Seleccione la cantidad de personas" required>
                         <option value=""><?php echo $reserve['people']; ?></option>
@@ -147,7 +134,6 @@ if (!isset($_SESSION["login"])) {
                         <option value="7">7 personas</option>
                         <option value="8">8 personas</option>
                     </select>
-                    <div class="validate"></div>
                 </div>
                 <div class="mb-3">
                     <label for="msg" class="form-label">Mensaje:</label>
@@ -213,7 +199,7 @@ if (!isset($_SESSION["login"])) {
                 </div>
 
                 <div class="col-lg-3 col-md-6 footer-links">
-                    <h4>Follow Us</h4>
+                    <h4>Síguenos</h4>
                     <div class="social-links d-flex">
                         <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
                         <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>

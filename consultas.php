@@ -920,9 +920,7 @@ if (isset($_POST["modificar_reserva"])) {
 
 if (isset($_POST["modificar_reserva_empleado"])) {
     $id = $_POST["id"];
-    $name = $_POST["name"];
-    $mail = $_POST["mail"];
-    $phone = $_POST["phone"];
+    $id_usuario = $_POST["id_usuario"];
     $date = $_POST["date"];
     $time = $_POST["time"];
     $people = $_POST["people"];
@@ -934,10 +932,10 @@ if (isset($_POST["modificar_reserva_empleado"])) {
     if (!$conexion) {
         die("Error en la conexión: " . mysqli_connect_error());
     } else {
-        $sql = "UPDATE reserves SET name=?, mail=?, phone=?, date=?, time=?, people=?, msg=?, type=? WHERE id=?";
+        $sql = "UPDATE reserves SET id_usuario=?, date=?, time=?, people=?, msg=?, type=? WHERE id=?";
         $stmt = mysqli_prepare($conexion, $sql);
 
-        mysqli_stmt_bind_param($stmt, "ssssssssi", $name, $mail, $phone, $date, $time, $people, $msg, $type, $id);
+        mysqli_stmt_bind_param($stmt, "ssssssi", $id_usuario, $date, $time, $people, $msg, $type, $id);
 
         $modificar = mysqli_stmt_execute($stmt);
 
@@ -960,9 +958,7 @@ if (isset($_POST["modificar_reserva_empleado"])) {
 
 if (isset($_POST["modificar_reserva_admin"])) {
     $id = $_POST["id"];
-    $name = $_POST["name"];
-    $mail = $_POST["mail"];
-    $phone = $_POST["phone"];
+    $id_usuario = $_POST["id_usuario"];
     $date = $_POST["date"];
     $time = $_POST["time"];
     $people = $_POST["people"];
@@ -974,10 +970,10 @@ if (isset($_POST["modificar_reserva_admin"])) {
     if (!$conexion) {
         die("Error en la conexión: " . mysqli_connect_error());
     } else {
-        $sql = "UPDATE reserves SET name=?, mail=?, phone=?, date=?, time=?, people=?, msg=?, type=? WHERE id=?";
+        $sql = "UPDATE reserves SET id_usuario=?, date=?, time=?, people=?, msg=?, type=? WHERE id=?";
         $stmt = mysqli_prepare($conexion, $sql);
 
-        mysqli_stmt_bind_param($stmt, "ssssssssi", $name, $mail, $phone, $date, $time, $people, $msg, $type, $id);
+        mysqli_stmt_bind_param($stmt, "isssssi", $id_usuario, $date, $time, $people, $msg, $type, $id);
 
         $modificar = mysqli_stmt_execute($stmt);
 

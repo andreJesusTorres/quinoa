@@ -97,19 +97,9 @@ if (!isset($_SESSION["login"])) {
                 data-aos-delay="100">
                 <input type="hidden" name="id" value="<?php echo $reserve['id']; ?>">
                 <div class="mb-3">
-                    <label for="name" class="form-label">Nombre:</label>
-                    <input type="text" class="form-control" id="name" name="name"
-                        value="<?php echo $reserve['name']; ?>" required>
-                </div>
-                <div class="mb-3">
-                    <label for="mail" class="form-label">Email:</label>
-                    <input type="mail" class="form-control" id="mail" name="mail"
-                        value="<?php echo $reserve['mail']; ?>" required>
-                </div>
-                <div class="mb-3">
-                    <label for="phone" class="form-label">Teléfono:</label>
-                    <input type="number" class="form-control" id="phone" name="phone"
-                        value="<?php echo $reserve['phone']; ?>" required>
+                    <label for="id_usuario" class="form-label">Código de Usuario:</label>
+                    <input type="text" class="form-control" id="id_usuario" name="id_usuario"
+                        value="<?php echo $reserve['id_usuario']; ?>" required>
                 </div>
                 <div class="mb-3">
                     <label for="date" class="form-label">Fecha:</label>
