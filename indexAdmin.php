@@ -139,8 +139,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
 
                             <div class="form-group mb-3">
-                                <label for="lugares">Lugares:</label>
-                                <input type="number" class="form-control" id="lugares" name="sites" required>
+                                <label for="sitios">    :</label>
+                                <input type="number" class="form-control" id="sitios" name="sites" required>
                             </div>
                             <button type="submit" class="btn btn-danger btn-sm" name="agregar_mesa"><i></i> Agregar
                                 Mesa</button>

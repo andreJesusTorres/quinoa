@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 function conectar()
 {
-    $conexion = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+    $conexion = mysqli_connect(server, username, password, name);
     if (mysqli_connect_errno()) {
         require ("error.php");
         return null;
@@ -1065,11 +1065,11 @@ if (isset($_POST["modificar_reserva_admin"])) {
 }
 
 if (isset($_POST["registro"])) {
-
     $name = $_POST["name"];
     $pass = $_POST["pass"];
     $mail = $_POST["mail"];
     $phone = isset($_POST["phone"]) ? $_POST["phone"] : null;
+    $state = '1';
 
     $conexion = conectar();
 
@@ -1077,32 +1077,48 @@ if (isset($_POST["registro"])) {
         die("Error en la conexión: " . mysqli_connect_error());
     }
 
-    if (strlen($name) >= 5 && strlen($name) <= 15 && strlen($pass) >= 5 && strlen($pass) <= 15) {
-        $type = 'Cliente';
-        if ($phone !== null) {
-            $register = "INSERT INTO users (name, pass, mail, phone,type) VALUES ('$name', '$pass', '$mail', '$phone', '$type')";
-        } else {
-            $register = "INSERT INTO users (name, pass, mail) VALUES ('$name', '$pass', '$mail','$type')";
-        }
+    $check_email_query = "SELECT * FROM users WHERE mail = '$mail'";
+    $check_email_result = mysqli_query($conexion, $check_email_query);
 
-        $register_result = mysqli_query($conexion, $register);
-
-        if ($register_result) {
-            echo "<script>
-                    alert('Cliente registrado correctamente.');
-                    window.location.href = 'indexCliente.php';
-                </script>";
-        } else {
-            echo "<script>
-                    alert('No se pudo registrar el cliente.');
-                    window.location.href = 'registrocliente.php';
-                </script>";
-        }
-    } else {
+    if (mysqli_num_rows($check_email_result) > 0) {
         echo "<script>
+                alert('El correo electrónico ya está registrado.');
+                window.location.href = 'registrocliente.php';
+              </script>";
+    } else {
+        if (strlen($name) >= 5 && strlen($name) <= 15 && strlen($pass) >= 5 && strlen($pass) <= 15) {
+            $type = 'Cliente';
+            if ($phone !== null) {
+                $register = "INSERT INTO users (name, pass, mail, phone, type, state) VALUES ('$name', '$pass', '$mail', '$phone', '$type', '$state')";
+            } else {
+                $register = "INSERT INTO users (name, pass, mail, type, state) VALUES ('$name', '$pass', '$mail', '$type', '$state')";
+            }
+
+            $register_result = mysqli_query($conexion, $register);
+
+            if ($register_result) {
+                $user_id = mysqli_insert_id($conexion);
+
+                $_SESSION['user_id'] = $user_id;
+                $_SESSION['user_name'] = $name;
+                $_SESSION['user_type'] = $type;
+
+                echo "<script>
+                        alert('Cliente registrado correctamente.');
+                        window.location.href = 'indexCliente.php';
+                      </script>";
+            } else {
+                echo "<script>
+                        alert('No se pudo registrar el cliente.');
+                        window.location.href = 'registrocliente.php';
+                      </script>";
+            }
+        } else {
+            echo "<script>
                     alert('Ingrese otros datos correctamente.');
                     window.location.href = 'registrocliente.php';
-                </script>";
+                  </script>";
+        }
     }
 
     mysqli_close($conexion);
