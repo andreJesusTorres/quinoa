@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 function conectar()
 {
-    $conexion = mysqli_connect(server, username, password, name);
+    $conexion = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
     if (mysqli_connect_errno()) {
         require ("error.php");
         return null;
