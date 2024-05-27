@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 20-05-2024 a las 14:03:22
+-- Tiempo de generación: 27-05-2024 a las 20:42:07
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -70,9 +70,7 @@ CREATE TABLE `reserves` (
 --
 
 INSERT INTO `reserves` (`id`, `id_usuario`, `date`, `time`, `people`, `msg`, `type`, `table_num`) VALUES
-(14, 4, '2024-05-20', '13:00 - 14:00', 4, '', 'Cliente', 20),
-(16, NULL, '2024-05-23', '13:00 - 14:00', 3, '', 'Invitado', 20),
-(17, NULL, '2024-05-23', '13:00 - 14:00', 3, '', 'Invitado', 19);
+(18, 4, '2024-05-28', '14:00 - 15:00', 4, '', 'Cliente', 2);
 
 -- --------------------------------------------------------
 
@@ -108,8 +106,7 @@ INSERT INTO `tables` (`id`, `sites`) VALUES
 (16, 4),
 (17, 4),
 (18, 4),
-(19, 4),
-(20, 4);
+(20, 5);
 
 -- --------------------------------------------------------
 
@@ -134,7 +131,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `name`, `pass`, `mail`, `phone`, `type`, `state`) VALUES
 (1, 'Admin', 'adminpass', 'admin@example.com', '999888777', 'Administrador', 1),
 (2, 'Empleado1', 'emppass1', 'empleado1@example.com', '111111111', 'Empleado', 1),
-(3, 'Empleado2', 'emppass2', 'empleado2@example.com', '22222222', 'Empleado', 1),
+(3, 'Empleado2', 'emppass2', 'empleado2@example.com', '22222222', 'Empleado', 0),
 (4, 'Cliente1', 'clientepass1', 'cliente1@example.com', '333333333', 'Cliente', 1);
 
 --
@@ -152,8 +149,8 @@ ALTER TABLE `menu`
 --
 ALTER TABLE `reserves`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_usuario` (`id_usuario`),
-  ADD KEY `table_num` (`table_num`);
+  ADD KEY `reserves_ibfk_2` (`table_num`),
+  ADD KEY `reserves_ibfk_1` (`id_usuario`);
 
 --
 -- Indices de la tabla `tables`
@@ -181,7 +178,19 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT de la tabla `reserves`
 --
 ALTER TABLE `reserves`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT de la tabla `tables`
+--
+ALTER TABLE `tables`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT de la tabla `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Restricciones para tablas volcadas
@@ -192,7 +201,7 @@ ALTER TABLE `reserves`
 --
 ALTER TABLE `reserves`
   ADD CONSTRAINT `reserves_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `reserves_ibfk_2` FOREIGN KEY (`table_num`) REFERENCES `tables` (`id`);
+  ADD CONSTRAINT `reserves_ibfk_2` FOREIGN KEY (`id`) REFERENCES `tables` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
