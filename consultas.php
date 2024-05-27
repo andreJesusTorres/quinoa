@@ -727,7 +727,7 @@ if (isset($_POST["agregar_mesa"])) {
         $sql = "INSERT INTO tables (sites) VALUES (?)";
         $stmt = mysqli_prepare($conexion, $sql);
 
-        mysqli_stmt_bind_param($stmt, "s", $sites);
+        mysqli_stmt_bind_param($stmt, "i", $sites);
 
         $result = mysqli_stmt_execute($stmt);
 
@@ -1099,9 +1099,11 @@ if (isset($_POST["registro"])) {
             if ($register_result) {
                 $user_id = mysqli_insert_id($conexion);
 
-                $_SESSION['user_id'] = $user_id;
-                $_SESSION['user_name'] = $name;
-                $_SESSION['user_type'] = $type;
+                session_start();
+
+                $_SESSION["login"]['id'] = $user_id;
+                $_SESSION["login"]['name'] = $name;
+                $_SESSION["login"]['type'] = $type;
 
                 echo "<script>
                         alert('Cliente registrado correctamente.');
@@ -1178,6 +1180,7 @@ if (isset($_POST["login"])) {
 if (isset($_GET["logout"])) {
     session_destroy();
     header("Location: iniciosesion.php");
+    
     exit();
 }
 
