@@ -1101,7 +1101,7 @@ if (isset($_POST["registro"])) {
 
                 session_start();
 
-                $_SESSION["login"]['id'] = $user_id;
+                $_SESSION["login"]['id'] = $id_usuario;
                 $_SESSION["login"]['name'] = $name;
                 $_SESSION["login"]['mail'] = $mail;
                 $_SESSION["login"]['phone'] = $phone;
