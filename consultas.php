@@ -188,7 +188,6 @@ function getReservasCliente($mail)
         die("Error en la conexión: " . mysqli_connect_error());
     }
 
-    // Ajustar la consulta para realizar un JOIN con la tabla users
     $query = "SELECT reserves.* FROM reserves 
               INNER JOIN users ON reserves.id_usuario = users.id 
               WHERE users.mail = ?";
