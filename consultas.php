@@ -1103,6 +1103,8 @@ if (isset($_POST["registro"])) {
 
                 $_SESSION["login"]['id'] = $user_id;
                 $_SESSION["login"]['name'] = $name;
+                $_SESSION["login"]['mail'] = $mail;
+                $_SESSION["login"]['phone'] = $phone;
                 $_SESSION["login"]['type'] = $type;
 
                 echo "<script>
