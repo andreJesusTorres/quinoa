@@ -78,7 +78,7 @@ require_once ("consultas.php");
               <?php echo $error_login; ?>
             </div>
           <?php endif; ?>
-          <div class="section-title">
+          <div class="section-title margin-tio:50px">
             <h2>Inicia Sesión - Consulta tus reservas</h2>
           </div>
           <form action="consultas.php" method="post" class="form-signin">

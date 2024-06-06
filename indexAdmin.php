@@ -1,6 +1,5 @@
 <?php
 require_once ("consultas.php");
-
 session_start();
 
 if (!isset($_SESSION["login"])) {
@@ -111,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="form-group mb-3">
                                     <input type="text" class="form-control" id="floatingPhone" name="phone"
                                         placeholder="Teléfono" value="<?php echo $_SESSION['login']['phone']; ?>"
-                                        required>
+                                        >
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-block"
                                     name="modificar_datos">Guardar</button>
@@ -126,9 +125,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="container" data-aos="fade-up">
                 <div class="section-header d-flex justify-content-between align-items-center">
                     <h2>Lista de mesas</h2>
-                    <a class="btn btn-danger btn-sm bi bi-plus" href="#" role="button" aria-haspopup="true"
+                    <a class="btn-book-a-table" href="#" role="button" aria-haspopup="true"
                         aria-expanded="false" data-bs-toggle="dropdown">
-                        Agregar Mesas
+                        + Agregar Mesas
                     </a>
                     <div class="dropdown-menu dropdown-menu-end p-4" id="agregarMesaDropdown" style="width: 300px;">
                         <form method="POST" class="text-center php-email-form">
@@ -140,7 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
 
                             <div class="form-group mb-3">
-                                <label for="sitios">    :</label>
+                                <label for="sitios">Sitios:</label>
                                 <input type="number" class="form-control" id="sitios" name="sites" required>
                             </div>
                             <button type="submit" class="btn btn-danger btn-sm" name="agregar_mesa"><i></i> Agregar
@@ -171,9 +170,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="container" data-aos="fade-up">
                 <div class="section-header d-flex justify-content-between align-items-center">
                     <h2>Lista de Menú</h2>
-                    <a class="btn btn-danger btn-sm bi bi-plus" href="#" role="button" aria-haspopup="true"
+                    <a class="btn-book-a-table" href="#" role="button" aria-haspopup="true"
                         aria-expanded="false" data-bs-toggle="dropdown">
-                        Agregar Menú
+                        + Agregar Menú
                     </a>
                     <div class="dropdown-menu dropdown-menu-end p-4" id="agregarMenuDropdown" style="width: 400px;">
                         <form method="POST" enctype="multipart/form-data" class="text-center php-email-form">
@@ -201,7 +200,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                             <div class="form-group mb-3">
                                 <label for="precio">Precio:</label>
-                                <input type="number" class="form-control" id="precio" name="price" required>
+                                <input type="number" class="form-control" id="precio" name="price" step="0.01" min="0" required>
                             </div>
 
                             <div class="form-group mb-3">
@@ -250,9 +249,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="container" data-aos="fade-up">
                 <div class="section-header d-flex justify-content-between align-items-center">
                     <h2>Lista de Usuarios</h2>
-                    <a class="btn btn-danger btn-sm bi bi-plus" href="#" role="button" aria-haspopup="true"
+                    <a class="btn-book-a-table" href="#" role="button" aria-haspopup="true"
                         aria-expanded="false" data-bs-toggle="dropdown">
-                        Agregar Usuario
+                        + Agregar Usuario
                     </a>
                     <div class="dropdown-menu dropdown-menu-end p-4" id="agregarUsuarioDropdown" style="width: 300px;">
                         <form method="POST" class="text-center php-email-form">
@@ -274,7 +273,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                             <div class="form-group mb-3">
                                 <label for="telefono">Teléfono:</label>
-                                <input type="text" class="form-control" id="telefono" name="phone" required>
+                                <input type="text" class="form-control" id="telefono" name="phone">
                             </div>
 
                             <div class="form-group mb-3">

@@ -103,11 +103,6 @@ if (!isset($_SESSION["login"])) {
                         required>
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label">Clave:</label>
-                    <input type="text" class="form-control" id="password" name="pass"
-                        value="<?php echo $user['pass']; ?>" required>
-                </div>
-                <div class="mb-3">
                     <label for="email" class="form-label">Email:</label>
                     <input type="email" class="form-control" id="email" name="mail" value="<?php echo $user['mail']; ?>"
                         required>
@@ -115,7 +110,7 @@ if (!isset($_SESSION["login"])) {
                 <div class="mb-3">
                     <label for="phone" class="form-label">Teléfono:</label>
                     <input type="text" class="form-control" id="phone" name="phone"
-                        value="<?php echo $user['phone']; ?>" required>
+                        value="<?php echo $user['phone']; ?>" >
                 </div>
                 <div class="mb-3">
                     <label for="type" class="form-label">Tipo de usuario:</label>

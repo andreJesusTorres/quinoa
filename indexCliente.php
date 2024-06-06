@@ -9,6 +9,7 @@ if (!isset($_SESSION["login"])) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $user_id = $_SESSION["login"]["id"]; 
     $name = $_SESSION["login"]["name"];
     $mail = $_SESSION["login"]["mail"];
     $phone = $_SESSION["login"]["phone"];
@@ -22,6 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $error_message = 'Hubo un error al realizar la reserva. Inténtelo nuevamente.';
     }
+    
 }
 
 $reservas = getReservasCliente($_SESSION["login"]["mail"]);
@@ -64,7 +66,7 @@ $menuItems = listarMenuIndex();
           <li><a href="#hero">Inicio</a></li>
           <li><a href="#about">Sobre Nosotros</a></li>
           <li><a href="#menu">La Carta</a></li>
-          <li><a href="#reservar">Reservar</a></li>
+          <li><a href="#reserva">Reservar</a></li>
           <li><a href="#contact">Contacto</a></li>
         </ul>
       </nav>
@@ -127,7 +129,7 @@ $menuItems = listarMenuIndex();
             </h2>
             <p data-aos="fade-up" data-aos-delay="100">Desde hace más de 10 años</p>
             <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
-              <a href="#reservar" class="btn-book-a-table">Reserva una mesa</a>
+              <a href="#reserva" class="btn-book-a-table">Reserva una mesa</a>
             </div>
             <p class="mt-3 text-center" data-aos="fade-up" data-aos-delay="200">
               ¿Has reservado ya? <a href="#" data-bs-toggle="modal" data-bs-target="#modalReservas">Mira aquí</a>.
@@ -145,7 +147,7 @@ $menuItems = listarMenuIndex();
 
         <div class="section-header">
           <h2>Descubre Más</h2>
-          <p>Sobre Nosotros<span></span></p>
+          <p><span>Sobre Nosotros</span></p>
         </div>
 
         <div class="row gy-4">
@@ -153,33 +155,23 @@ $menuItems = listarMenuIndex();
             data-aos="fade-up" data-aos-delay="150">
             <div class="call-us position-absolute">
               <h4>Reserva una mesa</h4>
-              <p>+1 5589 55488 55</p>
-            </div>
+            <p>+34  666 000 111</p>
           </div>
-          <div class="col-lg-5 d-flex align-items-end" data-aos="fade-up" data-aos-delay="300">
-            <div class="content ps-0 ps-lg-5">
-              <p class="fst-italic">
-                Nos enorgullecemos de ofrecer platos exquisitamente preparados que celebran lo mejor de la cocina local
-                e
-                internacional. Desde nuestros ingredientes frescos y cuidadosamente seleccionados hasta nuestras
-                técnicas
-                culinarias innovadoras, cada detalle se elabora con esmero para satisfacer tu paladar más exigente.
-              </p>
-              <ul>
-                <li><i class="bi bi-check2-all"></i> Nuestro equipo de chefs talentosos y apasionados.</li>
-                <li><i class="bi bi-check2-all"></i> Experiencia gastronómica excepcional.</li>
-                <li><i class="bi bi-check2-all"></i> Ambiente acogedor y elegante.</li>
-              </ul>
-              <p>
-                ¡Ven y únete a nosotros para una experiencia gastronómica que recordarás mucho después de haber
-                terminado
-                tu última comida!
-              </p>
-
-              <div class="position-relative mt-4">
-                <img src="assets/img/about-2.jpg" class="img-fluid" alt="">
-                <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ" class="glightbox play-btn"></a>
-              </div>
+        </div>
+        <div class="col-lg-5 d-flex align-items-end" data-aos="fade-up" data-aos-delay="300">
+          <div class="content ps-0 ps-lg-5">
+            <p>
+              En Quinoa, nos dedicamos a ofrecer una experiencia gastronómica única y memorable que celebra la diversidad y riqueza de la cocina vegana y vegetariana. Nuestro compromiso con la calidad comienza con la selección de ingredientes frescos, 100% ecológicos y orgánicos, asegurándonos de que cada plato no solo sea delicioso, sino también nutritivo y sostenible. Nos enorgullece que el 50% de nuestros productos sean de origen local, apoyando así a los agricultores y productores de nuestra comunidad.
+            </p>
+            <p>
+                Nuestros chefs talentosos y apasionados son verdaderos artistas culinarios, que combinan técnicas innovadoras con recetas tradicionales para crear platos que deleitan todos los sentidos. Cada creación es una obra maestra que refleja nuestra filosofía de respetar el medio ambiente mientras promovemos un estilo de vida saludable.
+            </p>
+            <p>
+                En Quinoa, hemos creado un ambiente acogedor y elegante donde cada detalle está diseñado para tu comodidad y disfrute. Desde la decoración hasta el servicio, nos esforzamos por hacer de cada visita una experiencia especial que va más allá de una simple comida.
+            </p>
+            <p>
+                Te invitamos a descubrir el placer de una cocina vegana y vegetariana excepcional en Quinoa. Ven y únete a nosotros para una experiencia gastronómica que recordarás mucho después de haber terminado tu última comida. Aquí, cada bocado es una celebración de sabor, salud y bienestar.
+            </p>
             </div>
           </div>
         </div>
@@ -219,7 +211,7 @@ $menuItems = listarMenuIndex();
                             class="btn btn-sm btn-outline-secondary bi bi-pencil"></a>
                           <form method="POST">
                             <input type="hidden" name="id" value="<?php echo $reserva['id']; ?>">
-                            <button class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminar_reserva"></button>
+                            <button class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminar_reserva_cliente"></button>
                           </form>
                         </div>
                       </td>
@@ -253,18 +245,18 @@ $menuItems = listarMenuIndex();
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-breakfast">
+              <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-main">
                 <h4>Platos Principales</h4>
               </a>
 
             <li class="nav-item">
-              <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-lunch">
+              <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-desserts">
                 <h4>Postres</h4>
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-dinner">
+              <a class="nav-link" data-bs-toggle="tab" data-bs-target="#menu-drinks">
                 <h4>Bebidas</h4>
               </a>
             </li>
@@ -275,82 +267,90 @@ $menuItems = listarMenuIndex();
         <div class="tab-content" data-aos="fade-up" data-aos-delay="300">
 
           <div class="tab-pane fade active show" id="menu-starters">
-
-            <div class="row gy-5 justify-content-center">
-              <?php foreach ($menuItems as $menuItem): ?>
-                <?php if ($menuItem['category'] === 'Entrante'): ?>
-                  <div class="col-lg-4 menu-item">
-                    <a href="<?php echo $menuItem['img']; ?>" class="glightbox">
-                      <img src="<?php echo $menuItem['img']; ?>" class="menu-img img-fluid" alt="">
-                    </a>
-                    <h4><?php echo $menuItem['name']; ?></h4>
-                    <p class="ingredients"><?php echo $menuItem['descrip']; ?></p>
-                    <p class="price">$<?php echo $menuItem['price']; ?></p>
-                  </div>
-                <?php endif; ?>
-              <?php endforeach; ?>
+            <div class="tab-header text-center">
+              <p>Menu</p>
+              <h3>Entrantes</h3>
             </div>
-
+            <div class="row gy-5">
+              <?php
+              foreach ($menuItems as $item) {
+                if ($item['category'] === 'Entrante') {
+                  echo '<div class="col-lg-4 menu-item">';
+                  echo '<a href="' . $item["img"] . '" class="glightbox"><img src="' . $item["img"] . '" class="menu-img img-fluid" alt=""></a>';
+                  echo '<h4>' . $item["name"] . '</h4>';
+                  echo '<p class="ingredients">' . $item["descrip"] . '</p>';
+                  echo '<p class="price">' . $item["price"] . '€</p>';
+                  echo '</div>';
+                }
+              }
+              ?>
+            </div>
           </div>
 
-          <div class="tab-pane fade" id="menu-breakfast">
-
-            <div class="row gy-5 justify-content-center">
-              <?php foreach ($menuItems as $menuItem): ?>
-                <?php if ($menuItem['category'] === 'Principal'): ?>
-                  <div class="col-lg-4 menu-item">
-                    <a href="<?php echo $menuItem['img']; ?>" class="glightbox">
-                      <img src="<?php echo $menuItem['img']; ?>" class="menu-img img-fluid" alt="">
-                    </a>
-                    <h4><?php echo $menuItem['name']; ?></h4>
-                    <p class="ingredients"><?php echo $menuItem['descrip']; ?></p>
-                    <p class="price">$<?php echo $menuItem['price']; ?></p>
-                  </div>
-                <?php endif; ?>
-              <?php endforeach; ?>
+          <div class="tab-pane fade" id="menu-main">
+            <div class="tab-header text-center">
+              <p>Menu</p>
+              <h3>Platos Principales</h3>
             </div>
-
-          </div>
-        </div>
-        <div class="tab-content" data-aos="fade-up" data-aos-delay="300">
-
-          <div class="tab-pane fade active show" id="menu-lunch">
-
-            <div class="row gy-5 justify-content-center">
-              <?php foreach ($menuItems as $menuItem): ?>
-                <?php if ($menuItem['category'] === 'Postre'): ?>
-                  <div class="col-lg-4 menu-item">
-                    <a href="<?php echo $menuItem['img']; ?>" class="glightbox">
-                      <img src="<?php echo $menuItem['img']; ?>" class="menu-img img-fluid" alt="">
-                    </a>
-                    <h4><?php echo $menuItem['name']; ?></h4>
-                    <p class="ingredients"><?php echo $menuItem['descrip']; ?></p>
-                    <p class="price">$<?php echo $menuItem['price']; ?></p>
-                  </div>
-                <?php endif; ?>
-              <?php endforeach; ?>
+            <div class="row gy-5">
+              <?php
+              foreach ($menuItems as $item) {
+                if ($item['category'] === 'Principal') {
+                  echo '<div class="col-lg-4 menu-item">';
+                  echo '<a href="' . $item["img"] . '" class="glightbox"><img src="' . $item["img"] . '" class="menu-img img-fluid" alt=""></a>';
+                  echo '<h4>' . $item["name"] . '</h4>';
+                  echo '<p class="ingredients">' . $item["descrip"] . '</p>';
+                  echo '<p class="price">' . $item["price"] . '€</p>';
+                  echo '</div>';
+                }
+              }
+              ?>
             </div>
-
           </div>
 
-          <div class="tab-pane fade" id="menu-breakfast">
-
-            <div class="row gy-5 justify-content-dinner">
-              <?php foreach ($menuItems as $menuItem): ?>
-                <?php if ($menuItem['category'] === 'Bebida'): ?>
-                  <div class="col-lg-4 menu-item">
-                    <a href="<?php echo $menuItem['img']; ?>" class="glightbox">
-                      <img src="<?php echo $menuItem['img']; ?>" class="menu-img img-fluid" alt="">
-                    </a>
-                    <h4><?php echo $menuItem['name']; ?></h4>
-                    <p class="ingredients"><?php echo $menuItem['descrip']; ?></p>
-                    <p class="price">$<?php echo $menuItem['price']; ?></p>
-                  </div>
-                <?php endif; ?>
-              <?php endforeach; ?>
+          <div class="tab-pane fade" id="menu-desserts">
+            <div class="tab-header text-center">
+              <p>Menu</p>
+              <h3>Postres</h3>
             </div>
-
+            <div class="row gy-5">
+              <?php
+              foreach ($menuItems as $item) {
+                if ($item['category'] === 'Postre') {
+                  echo '<div class="col-lg-4 menu-item">';
+                  echo '<a href="' . $item["img"] . '" class="glightbox"><img src="' . $item["img"] . '" class="menu-img img-fluid" alt=""></a>';
+                  echo '<h4>' . $item["name"] . '</h4>';
+                  echo '<p class="ingredients">' . $item["descrip"] . '</p>';
+                  echo '<p class="price">' . $item["price"] . '€</p>';
+                  echo '</div>';
+                }
+              }
+              ?>
+            </div>
           </div>
+
+          <div class="tab-pane fade" id="menu-drinks">
+            <div class="tab-header text-center">
+              <p>Menu</p>
+              <h3>Bebidas</h3>
+            </div>
+            <div class="row gy-5">
+              <?php
+              foreach ($menuItems as $item) {
+                if ($item['category'] === 'Bebida') {
+                  echo '<div class="col-lg-4 menu-item">';
+                  echo '<a href="' . $item["img"] . '" class="glightbox"><img src="' . $item["img"] . '" class="menu-img img-fluid" alt=""></a>';
+                  echo '<h4>' . $item["name"] . '</h4>';
+                  echo '<p class="ingredients">' . $item["descrip"] . '</p>';
+                  echo '<p class="price">' . $item["price"] . '€</p>';
+                  echo '</div>';
+                }
+              }
+              ?>
+            </div>
+          </div>
+
+        
         </div>
 
 
@@ -443,8 +443,8 @@ $menuItems = listarMenuIndex();
         </section>
       </div>
     </section>
-
-    <section id="contact" class="contact">
+    
+  <section id="contact" class="contact">
       <div class="container" data-aos="fade-up">
 
         <div class="section-header">
@@ -529,63 +529,54 @@ $menuItems = listarMenuIndex();
       </div>
     </section>
 
-    <footer id="footer" class="footer">
-
-      <div class="container">
-        <div class="row gy-3">
-          <div class="col-lg-3 col-md-6 d-flex">
-            <i class="bi bi-geo-alt icon"></i>
-            <div>
-              <h4>Dirección</h4>
-              <p>
-                Elche, Alicante<br>
-                <br>
-              </p>
-            </div>
-
+  <footer id="footer" class="footer">
+    <div class="container">
+      <div class="row gy-3">
+        <div class="col-lg-3 col-md-6 d-flex">
+          <i class="bi bi-geo-alt icon"></i>
+          <div>
+            <h4>Dirección</h4>
+            <p>
+              A108 Adam Street <br>
+              New York, NY 535022 - US<br>
+            </p>
           </div>
-
-          <div class="col-lg-3 col-md-6 footer-links d-flex">
-            <i class="bi bi-telephone icon"></i>
-            <div>
-              <h4>Reservas</h4>
-              <p>
-                <strong>Teléfono:</strong> +34 666000111<br>
-                <strong>Email:</strong> quinoa@quinoa.com<br>
-              </p>
-            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 footer-links d-flex">
+          <i class="bi bi-telephone icon"></i>
+          <div>
+            <h4>Reservas</h4>
+            <p>
+              <strong>Teléfono:</strong> +34 666 000 111<br>
+              <strong>Email:</strong> quinoa@ejemplo.com<br>
+            </p>
           </div>
-
-          <div class="col-lg-3 col-md-6 footer-links d-flex">
-            <i class="bi bi-clock icon"></i>
-            <div>
-              <h4>Horario</h4>
-              <p>
-                <strong>Lunes a Sábado de 13:00 a 16:00</strong><br>
-                Domingos: Cerrado
-              </p>
-            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 footer-links d-flex">
+          <i class="bi bi-clock icon"></i>
+          <div>
+            <h4>Horarios</h4>
+            <p>
+              <strong>Lunes-Sábado: 11AM</strong> - 23PM<br>
+              Domingo: Cerrado
+            </p>
           </div>
-
-          <div class="col-lg-3 col-md-6 footer-links">
-            <h4>Follow Us</h4>
+        </div>
+        <div class="col-lg-3 col-md-6 footer-links d-flex">
+          <i class="bi bi-share icon"></i>
+          <div>
+            <h4>Redes Sociales</h4>
             <div class="social-links d-flex">
               <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
               <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
               <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+              <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
             </div>
           </div>
-
         </div>
       </div>
-
-      <div class="container">
-        <div class="copyright">
-          &copy; <strong><span>Quinoa</span></strong>.
-        </div>
-      </div>
-
-    </footer>
+    </div>
+  </footer>
 
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="assets/vendor/aos/aos.js"></script>

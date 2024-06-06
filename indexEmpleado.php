@@ -1,6 +1,5 @@
 <?php
 require_once ("consultas.php");
-
 session_start();
 
 if (!isset($_SESSION["login"])) {
@@ -12,40 +11,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (isset($_POST["eliminarUsuario"])) {
         $idUsuario = $_POST["id"];
-
-        if (eliminarUsuario($idUsuario)) {
-            header("Location: indexAdmin.php");
-            exit();
-        } else {
-            echo "Error al eliminar el usuario";
-        }
+        eliminarUsuario($idUsuario);
     } elseif (isset($_POST["eliminarMesa"])) {
         $idMesa = $_POST["codigo"];
-
-        if (eliminarMesa($idMesa)) {
-            header("Location: indexAdmin.php");
-            exit();
-        } else {
-            echo "Error al eliminar la mesa";
-        }
+        eliminarMesa($idMesa);
     } elseif (isset($_POST["eliminarMenu"])) {
         $idMenu = $_POST["id"];
-
-        if (eliminarMenu($idMenu)) {
-            header("Location: indexAdmin.php");
-            exit();
-        } else {
-            echo "Error al eliminar el menú";
-        }
-    } elseif (isset($_POST["eliminarReserva"])) {
+        eliminarMenu($idMenu);
+    } elseif (isset($_POST["eliminarReservaEmpleado"])) {
         $idReserva = $_POST["id"];
-
-        if (eliminarReserva($idReserva)) {
-            header("Location: indexAdmin.php");
-            exit();
-        } else {
-            echo "Error al eliminar la reserva";
-        }
+        eliminarReservaEmpleado($idReserva);
     } elseif (isset($_POST['activarUsuarioEmpleado'])) {
         $id = $_POST['id'];
         activarUsuarioEmpleado($id);

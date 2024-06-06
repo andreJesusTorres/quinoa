@@ -158,6 +158,9 @@ function reservarCliente($id_usuario, $date, $time, $people, $msg)
     $table_num = $table_row['id'];
     mysqli_stmt_close($stmt);
 
+    // Mensaje de depuración
+    echo "Mesa seleccionada: " . $table_num;
+
     $insert_query = "INSERT INTO reserves (id_usuario, date, time, people, msg, type, table_num) 
                      VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($conexion, $insert_query);
@@ -172,6 +175,9 @@ function reservarCliente($id_usuario, $date, $time, $people, $msg)
         </script>";
         exit();
     } else {
+        // Mensaje de depuración
+        echo "Error al insertar reserva: " . mysqli_error($conexion);
+        
         mysqli_stmt_close($stmt);
         mysqli_close($conexion);
         echo "<script>
@@ -188,6 +194,7 @@ function getReservasCliente($mail)
         die("Error en la conexión: " . mysqli_connect_error());
     }
 
+    // Ajustar la consulta para realizar un JOIN con la tabla users
     $query = "SELECT reserves.* FROM reserves 
               INNER JOIN users ON reserves.id_usuario = users.id 
               WHERE users.mail = ?";
@@ -504,7 +511,7 @@ function listarReservasEmpleado()
                             </form>
                             <form method="POST">
                                 <input type="hidden" name="id" value="' . $datos["id"] . '">
-                                <button class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminarReserva"></button>
+                                <button class="btn btn-sm btn-outline-danger bi bi-trash" name="eliminarReservaEmpleado"></button>
                             </form>
                         </td>
                     </tr>
@@ -518,6 +525,25 @@ function eliminarUsuario($idUsuario)
 {
     $conexion = conectar();
     if ($conexion != null) {
+        // Verificar si el usuario tiene reservas asociadas
+        $sql_verificar_reservas = "SELECT COUNT(*) FROM reserves WHERE id_usuario = ?";
+        $consulta_verificar_reservas = mysqli_prepare($conexion, $sql_verificar_reservas);
+        mysqli_stmt_bind_param($consulta_verificar_reservas, "i", $idUsuario);
+        mysqli_stmt_execute($consulta_verificar_reservas);
+        mysqli_stmt_bind_result($consulta_verificar_reservas, $count);
+        mysqli_stmt_fetch($consulta_verificar_reservas);
+        mysqli_stmt_close($consulta_verificar_reservas);
+        
+        if ($count > 0) {
+            // Si el usuario tiene reservas, mostrar mensaje y no proceder con la eliminación
+            echo "<script>
+                alert('No se puede eliminar el usuario porque tiene reservas asociadas. Por favor, elimine sus reservas primero.');
+                window.location.href = 'indexAdmin.php';
+            </script>";
+            return false;
+        }
+        
+        // Si el usuario no tiene reservas asociadas, proceder con la eliminación
         $sql = "DELETE FROM users WHERE id = ?";
         $consulta = mysqli_prepare($conexion, $sql);
         mysqli_stmt_bind_param($consulta, "i", $idUsuario);
@@ -547,6 +573,7 @@ function eliminarUsuario($idUsuario)
 
     return false;
 }
+
 function activarUsuario($id)
 {
     $conexion = conectar();
@@ -714,6 +741,31 @@ function eliminarReserva($idReserva)
     }
     return false;
 }
+function eliminarReservaEmpleado($idReserva)
+{
+    $conexion = conectar();
+    if ($conexion != null) {
+        $sql = "DELETE FROM reserves WHERE id = ?";
+        $consulta = mysqli_prepare($conexion, $sql);
+        mysqli_stmt_bind_param($consulta, "i", $idReserva);
+        $resultado = mysqli_stmt_execute($consulta);
+        mysqli_stmt_close($consulta);
+        mysqli_close($conexion);
+        if ($resultado) {
+            echo "<script>
+                alert('Reserva eliminada correctamente.');
+                window.location.href = 'indexEmpleado.php';
+            </script>";
+        } else {
+            echo "<script>
+                alert('No se pudo eliminar la reserva.');
+                window.location.href = 'indexEmpleado.php';
+            </script>";
+        }
+        return $resultado;
+    }
+    return false;
+}
 
 if (isset($_POST["agregar_mesa"])) {
     $sites = $_POST["sites"];
@@ -756,18 +808,15 @@ if (isset($_POST["agregar_menu"])) {
     $temporal_img = $_FILES["img"]["tmp_name"];
     $state = ($_POST["state"] == "Disponible") ? 1 : 0;
 
-    $rute = "img/food/" . $img;
-    move_uploaded_file($temporal_img, $rute);
-
     $conexion = conectar();
 
     if (!$conexion) {
         die("Error en la conexión: " . mysqli_connect_error());
     } else {
-        $sql = "INSERT INTO menu (name, descrip, category, price, img, state) VALUES (?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO menu (name, descrip, category, price, state) VALUES (?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($conexion, $sql);
 
-        mysqli_stmt_bind_param($stmt, "sssdis", $name, $descrip, $category, $price, $rute, $state);
+        mysqli_stmt_bind_param($stmt, "sssdi", $name, $descrip, $category, $price, $state);
 
         $result = mysqli_stmt_execute($stmt);
 
@@ -776,14 +825,47 @@ if (isset($_POST["agregar_menu"])) {
                     alert('No se pudo agregar el menú.');
                     window.location.href = 'indexAdmin.php';
                 </script>";
-        } else {
-            echo "<script>
-                    alert('Menú agregado correctamente.');
-                    window.location.href = 'indexAdmin.php';
-                </script>";
+            mysqli_stmt_close($stmt);
+            mysqli_close($conexion);
+            exit;
         }
 
-        mysqli_stmt_close($stmt);
+        $menu_id = mysqli_insert_id($conexion);
+
+        $rute = "img/food/" . $menu_id . "_" . $img;
+        if (!move_uploaded_file($temporal_img, $rute)) {
+            echo "<script>
+                    alert('Error al subir la imagen.');
+                    window.history.back();
+                </script>";
+            mysqli_stmt_close($stmt);
+            mysqli_close($conexion);
+            exit;
+        }
+
+        $sql_update = "UPDATE menu SET img = ? WHERE id = ?";
+        $stmt_update = mysqli_prepare($conexion, $sql_update);
+
+        mysqli_stmt_bind_param($stmt_update, "si", $rute, $menu_id);
+
+        $result_update = mysqli_stmt_execute($stmt_update);
+
+        if (!$result_update) {
+            echo "<script>
+                    alert('No se pudo agregar la ruta de la imagen.');
+                    window.location.href = 'indexAdmin.php';
+                </script>";
+            mysqli_stmt_close($stmt_update);
+            mysqli_close($conexion);
+            exit;
+        }
+
+        echo "<script>
+                alert('Menú agregado correctamente.');
+                window.location.href = 'indexAdmin.php';
+            </script>";
+
+        mysqli_stmt_close($stmt_update);
         mysqli_close($conexion);
     }
 }
@@ -796,6 +878,8 @@ if (isset($_POST["agregar_usuario"])) {
     $state = '1';
     $type = $_POST["type"];
 
+    $hashed_pass = password_hash($pass, PASSWORD_DEFAULT);
+
     $conexion = conectar();
 
     if (!$conexion) {
@@ -804,7 +888,7 @@ if (isset($_POST["agregar_usuario"])) {
         $sql = "INSERT INTO users (name, pass, mail, phone, type, state) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($conexion, $sql);
 
-        mysqli_stmt_bind_param($stmt, "ssssss", $name, $pass, $mail, $phone, $type, $state);
+        mysqli_stmt_bind_param($stmt, "ssssss", $name, $hashed_pass, $mail, $phone, $type, $state);
 
         $result = mysqli_stmt_execute($stmt);
 
@@ -825,8 +909,8 @@ if (isset($_POST["agregar_usuario"])) {
     }
 }
 
+
 if (isset($_POST["modificar_menu"])) {
-    var_dump($_POST);
     $id = $_POST["id"];
     $name = $_POST["name"];
     $descrip = $_POST["descrip"];
@@ -854,7 +938,7 @@ if (isset($_POST["modificar_menu"])) {
         if (!$modificar) {
             echo "<script>
                     alert('No se pudo modificar el menù.');
-                    window.location.href = 'modificarMenu.php';
+                    window.location.href = 'indexAdmin.php';
                 </script>";
         } else {
             echo "<script>
@@ -864,13 +948,11 @@ if (isset($_POST["modificar_menu"])) {
         }
 
         mysqli_stmt_close($stmt);
-        var_dump($modificar);
     }
     mysqli_close($conexion);
 }
 
 if (isset($_POST["modificar_menu_empleado"])) {
-    var_dump($_POST);
     $id = $_POST["id"];
     $name = $_POST["name"];
     $descrip = $_POST["descrip"];
@@ -908,16 +990,13 @@ if (isset($_POST["modificar_menu_empleado"])) {
         }
 
         mysqli_stmt_close($stmt);
-        var_dump($modificar);
     }
     mysqli_close($conexion);
 }
 
 if (isset($_POST["modificar_usuario"])) {
-    var_dump($_POST);
     $id = $_POST["id"];
     $name = $_POST["name"];
-    $pass = $_POST["pass"];
     $mail = $_POST["mail"];
     $phone = $_POST["phone"];
     $type = $_POST["type"];
@@ -927,10 +1006,10 @@ if (isset($_POST["modificar_usuario"])) {
     if (!$conexion) {
         die("Error en la conexión: " . mysqli_connect_error());
     } else {
-        $sql = "UPDATE users SET name=?, pass=?, mail=?, phone=?, type=? WHERE id=?";
+        $sql = "UPDATE users SET name=?, mail=?, phone=?, type=? WHERE id=?";
         $stmt = mysqli_prepare($conexion, $sql);
 
-        mysqli_stmt_bind_param($stmt, "sssssi", $name, $pass, $mail, $phone, $type, $id);
+        mysqli_stmt_bind_param($stmt, "ssssi", $name, $mail, $phone, $type, $id);
 
         $modificar = mysqli_stmt_execute($stmt);
 
@@ -947,7 +1026,6 @@ if (isset($_POST["modificar_usuario"])) {
         }
 
         mysqli_stmt_close($stmt);
-        var_dump($modificar);
     }
     mysqli_close($conexion);
 }
@@ -1087,20 +1165,22 @@ if (isset($_POST["registro"])) {
     } else {
         if (strlen($name) >= 5 && strlen($name) <= 15 && strlen($pass) >= 5 && strlen($pass) <= 15) {
             $type = 'Cliente';
+            $hashed_pass = password_hash($pass, PASSWORD_DEFAULT);
+
             if ($phone !== null) {
-                $register = "INSERT INTO users (name, pass, mail, phone, type, state) VALUES ('$name', '$pass', '$mail', '$phone', '$type', '$state')";
+                $register = "INSERT INTO users (name, pass, mail, phone, type, state) VALUES ('$name', '$hashed_pass', '$mail', '$phone', '$type', '$state')";
             } else {
-                $register = "INSERT INTO users (name, pass, mail, type, state) VALUES ('$name', '$pass', '$mail', '$type', '$state')";
+                $register = "INSERT INTO users (name, pass, mail, type, state) VALUES ('$name', '$hashed_pass', '$mail', '$type', '$state')";
             }
 
             $register_result = mysqli_query($conexion, $register);
 
             if ($register_result) {
-                $user_id = mysqli_insert_id($conexion);
+                $id = mysqli_insert_id($conexion);
 
                 session_start();
 
-                $_SESSION["login"]['id'] = $id_usuario;
+                $_SESSION["login"]['id'] = $id;
                 $_SESSION["login"]['name'] = $name;
                 $_SESSION["login"]['mail'] = $mail;
                 $_SESSION["login"]['phone'] = $phone;
@@ -1127,6 +1207,7 @@ if (isset($_POST["registro"])) {
     mysqli_close($conexion);
 }
 
+
 if (isset($_POST["login"])) {
     $mail = $_POST["mail"];
     $pass = $_POST["pass"];
@@ -1136,42 +1217,49 @@ if (isset($_POST["login"])) {
         die("Error en la conexión: " . mysqli_connect_error());
     }
 
-    $login = "SELECT * FROM users WHERE mail = ? AND pass = ?";
+    $login = "SELECT * FROM users WHERE mail = ?";
     $stmt = mysqli_prepare($conexion, $login);
-    mysqli_stmt_bind_param($stmt, "ss", $mail, $pass);
+    mysqli_stmt_bind_param($stmt, "s", $mail);
     mysqli_stmt_execute($stmt);
     $login_result = mysqli_stmt_get_result($stmt);
 
     if ($login_result && mysqli_num_rows($login_result) > 0) {
         $user = mysqli_fetch_assoc($login_result);
 
-        if ($user['state'] == 0) {
-            echo "<script>
-                    alert('Cliente dado de baja. No se puede inciar sesión');
-                    window.location.href = 'index.php';
-                </script>";
-        } else {
-            session_start();
-            $_SESSION["login"] = $user;
-
-            if ($user['type'] == 'Administrador') {
-                header("Location: indexAdmin.php");
-            } elseif ($user['type'] == 'Empleado') {
-                header("Location: indexEmpleado.php");
-            } elseif ($user['type'] == 'Cliente') {
-                header("Location: indexCliente.php");
+        if (password_verify($pass, $user['pass'])) {
+            if ($user['state'] == 0) {
+                echo "<script>
+                        alert('Cliente dado de baja. No se puede iniciar sesión');
+                        window.location.href = 'index.php';
+                    </script>";
             } else {
-                header("Location: error.html");
+                session_start();
+                $_SESSION["login"] = $user;
+
+                if ($user['type'] == 'Administrador') {
+                    header("Location: indexAdmin.php");
+                } elseif ($user['type'] == 'Empleado') {
+                    header("Location: indexEmpleado.php");
+                } elseif ($user['type'] == 'Cliente') {
+                    header("Location: indexCliente.php");
+                } else {
+                    header("Location: error.html");
+                }
+                mysqli_stmt_close($stmt);
+                mysqli_close($conexion);
+                exit();
             }
-            mysqli_stmt_close($stmt);
-            mysqli_close($conexion);
-            exit();
+        } else {
+            echo "<script>
+                    alert('Contraseña incorrecta.');
+                    window.location.href = 'iniciosesion.php';
+                  </script>";
         }
     } else {
         echo "<script>
-                    alert('No se encontró el usuario.');
-                    window.location.href = 'iniciosesion.php';
-                </script>";
+                alert('No se encontró el usuario.');
+                window.location.href = 'iniciosesion.php';
+              </script>";
     }
 
     mysqli_stmt_close($stmt);
@@ -1234,10 +1322,14 @@ if (isset($_POST["modificar_datos"])) {
                     window.location.href = 'indexCliente.php';
                 </script>";
         } else {
-            session_destroy();
+            if ($modificar) {
+                $_SESSION['login']['name'] = $name;
+                $_SESSION['login']['mail'] = $mail;
+                $_SESSION['login']['phone'] = $phone;
+            }
             echo "<script>
-                    alert('Datos modificados. Vuelva a iniciar sesión.');
-                    window.location.href = 'iniciosesion.php';
+                    alert('Datos modificados correctamente.');
+                    window.location.href = 'indexCliente.php';
                 </script>";
 
             exit();
