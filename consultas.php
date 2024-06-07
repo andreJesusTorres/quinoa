@@ -1142,11 +1142,18 @@ if (isset($_POST["modificar_reserva_admin"])) {
 }
 
 if (isset($_POST["registro"])) {
+    
     $name = $_POST["name"];
     $pass = $_POST["pass"];
     $mail = $_POST["mail"];
     $phone = isset($_POST["phone"]) ? $_POST["phone"] : null;
     $state = '1';
+    
+    setcookie("form_name", $name, time() + 10, "/");
+    setcookie("form_mail", $mail, time() + 10, "/");
+    if (!empty($phone)) {
+        setcookie("form_phone", $phone, time() + 10, "/");
+    }
 
     $conexion = conectar();
 
@@ -1163,7 +1170,7 @@ if (isset($_POST["registro"])) {
                 window.location.href = 'registrocliente.php';
               </script>";
     } else {
-        if (strlen($name) >= 5 && strlen($name) <= 15 && strlen($pass) >= 5 && strlen($pass) <= 15) {
+        if (strlen($name) >= 5 && strlen($pass) >= 5 && strlen($pass) <= 15) {
             $type = 'Cliente';
             $hashed_pass = password_hash($pass, PASSWORD_DEFAULT);
 
@@ -1185,7 +1192,11 @@ if (isset($_POST["registro"])) {
                 $_SESSION["login"]['mail'] = $mail;
                 $_SESSION["login"]['phone'] = $phone;
                 $_SESSION["login"]['type'] = $type;
-
+                
+                setcookie("form_name", "", time() - 3600, "/");
+                setcookie("form_mail", "", time() - 3600, "/");
+                setcookie("form_phone", "", time() - 3600, "/");
+                
                 echo "<script>
                         alert('Cliente registrado correctamente.');
                         window.location.href = 'indexCliente.php';
@@ -1198,7 +1209,7 @@ if (isset($_POST["registro"])) {
             }
         } else {
             echo "<script>
-                    alert('Ingrese otros datos correctamente.');
+                    alert('Ingrese un nombre mayor a 5 caracteres o una clave de hasta 15 caracteres');
                     window.location.href = 'registrocliente.php';
                   </script>";
         }

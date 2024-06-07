@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="container d-flex align-items-center justify-content-between">
 
-      <a href="index.html" class="logo d-flex align-items-center me-auto me-lg-0">
+      <a href="index.php" class="logo d-flex align-items-center me-auto me-lg-0">
         <h1>Quinoa<span>.</span></h1>
       </a>
 
@@ -270,7 +270,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <section id="reserva" class="sample-page">
       <div class="container" data-aos="fade-up">
-
         <section id="book-a-table" class="book-a-table">
           <div class="container" data-aos="fade-up">
             <div class="section-header">
@@ -489,7 +488,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
   <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
   <script src="assets/js/main.js"></script>
 
 </body>

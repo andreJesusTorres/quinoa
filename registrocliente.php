@@ -1,7 +1,7 @@
+<!DOCTYPE html>
 <?php
 require_once ("consultas.php");
 ?>
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -18,7 +18,7 @@ require_once ("consultas.php");
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Amatic+SC:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Amatic+SC:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap"
     rel="stylesheet">
 
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -28,6 +28,15 @@ require_once ("consultas.php");
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
   <link href="assets/css/main.css" rel="stylesheet">
+  
+  <style>
+    .form-signin {
+      margin-top: 5rem !important;
+    }
+    .btn-book-a-table {
+      margin-top: 1rem !important;
+    }
+  </style>
 
 </head>
 
@@ -47,7 +56,7 @@ require_once ("consultas.php");
           <li><a href="index.php#menu">La Carta</a></li>
           <li><a href="index.php#reservar">Reservar</a></li>
           <li><a href="index.php#contact">Contacto</a></li>
-
+        </ul>
       </nav>
       <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
       <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
@@ -67,38 +76,38 @@ require_once ("consultas.php");
         </div>
       </div>
     </div>
-    <div class="container" data-aos="fade-up">
+    <div class="container mt-5" data-aos="fade-up">
       <div class="row justify-content-center">
         <div class="col-lg-8">
           <div class="section-title">
             <h2>Registrarse - Obten descuentos y beneficios</h2>
           </div>
           <form method="post" class="form-signin">
-            <div class="mb-3">
-              <label for="username" class="form-label">Nombre y apellido:<span>*</span></label>
-              <input type="text" class="form-control" id="username" name="name" required>
-            </div>
-            <div class="mb-3 php-email-form">
-              <label for="password" class="form-label">Clave:<span>*</span></label>
-              <input type="password" class="form-control" id="password" name="pass" required>
-            </div>
-            <div class="mb-3">
-              <label for="email" class="form-label">Email:<span>*</span></label>
-              <input type="email" class="form-control" id="email" name="mail" required>
-            </div>
-            <div class="mb-3">
-              <label for="phone" class="form-label">Telefono:</label>
-              <input type="tel" class="form-control" id="phone" name="phone">
-            </div>
-            <button type="submit" class="btn-book-a-table btn btn-primary btn-center"
-              name="registro">Registrarse</button>
-          </form>
+    <div class="mb-3">
+        <label for="username" class="form-label">Nombre y apellido:<span>*</span></label>
+        <input type="text" class="form-control" id="username" name="name" value="<?php echo isset($_COOKIE['form_name']) ? $_COOKIE['form_name'] : ''; ?>" required>
+    </div>
+    <div class="mb-3 php-email-form">
+        <label for="password" class="form-label">Clave:<span>*</span></label>
+        <input type="password" class="form-control" id="password" name="pass" value="" required>
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email:<span>*</span></label>
+        <input type="email" class="form-control" id="email" name="mail" value="<?php echo isset($_COOKIE['form_mail']) ? $_COOKIE['form_mail'] : ''; ?>" required>
+    </div>
+    <div class="mb-3">
+        <label for="phone" class="form-label">Telefono:</label>
+        <input type="tel" class="form-control" id="phone" name="phone" value="<?php echo isset($_COOKIE['form_phone']) ? $_COOKIE['form_phone'] : ''; ?>">
+    </div>
+    <button type="submit" class="btn-book-a-table btn btn-primary btn-center mt-3" name="registro">Registrarse</button>
+</form>
+
         </div>
       </div>
     </div>
   </main>
 
-  <footer id="footer" class="footer">
+  <footer id="footer" class="footer mt-5">
 
     <div class="container">
       <div class="row gy-3">
@@ -168,59 +177,6 @@ require_once ("consultas.php");
   <script src="assets/vendor/php-email-form/validate.js"></script>
 
   <script src="assets/js/main.js"></script>
-
-  <?php if (isset($save_register)): ?>
-    <div id="successAlert" class="alert alert-success alert-dismissible fade show" role="alert">
-      <strong>¡Registro exitoso!</strong> El usuario se registró correctamente.
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  <?php endif; ?>
-
-  <?php if (isset($error_register)): ?>
-    <div id="errorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
-      <strong>Error:</strong> Hubo un problema al realizar el registro.
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  <?php endif; ?>
-
-  <?php if (isset($error_conexion)): ?>
-    <div id="connectionErrorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
-      <strong>Error!</strong> Hubo un problema con la conexión.
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  <?php endif; ?>
-
-  <?php if (isset($characters)): ?>
-    <div id="characterErrorAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
-      <strong>Error!</strong> Coloque entre 5 y 15 caracteres.
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  <?php endif; ?>
-
-  <script>
-    function showAlertAndRedirect(alertId, redirectUrl) {
-      var alertElement = document.getElementById(alertId);
-      if (alertElement) {
-        alert(alertElement.textContent.trim());
-        window.location.href = redirectUrl;
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-      if (document.getElementById("successAlert")) {
-        showAlertAndRedirect("successAlert", "indexCliente.php");
-      }
-      if (document.getElementById("errorAlert")) {
-        showAlertAndRedirect("errorAlert", "registrocliente.php");
-      }
-      if (document.getElementById("connectionErrorAlert")) {
-        showAlertAndRedirect("connectionErrorAlert", "registrocliente.php");
-      }
-      if (document.getElementById("characterErrorAlert")) {
-        showAlertAndRedirect("characterErrorAlert", "registrocliente.php");
-      }
-    });
-  </script>
 
 </body>
 
