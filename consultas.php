@@ -683,12 +683,31 @@ function eliminarMesa($idMesa)
 {
     $conexion = conectar();
     if ($conexion != null) {
+        // Verificar si la mesa está siendo usada en una reserva
+        $sql_verificar_reservas = "SELECT COUNT(*) FROM reserves WHERE table_num = ?";
+        $consulta_verificar_reservas = mysqli_prepare($conexion, $sql_verificar_reservas);
+        mysqli_stmt_bind_param($consulta_verificar_reservas, "i", $idMesa);
+        mysqli_stmt_execute($consulta_verificar_reservas);
+        mysqli_stmt_bind_result($consulta_verificar_reservas, $count);
+        mysqli_stmt_fetch($consulta_verificar_reservas);
+        mysqli_stmt_close($consulta_verificar_reservas);
+        
+        if ($count > 0) {
+            echo "<script>
+                alert('No se puede eliminar la mesa porque está siendo usada en una reserva. Por favor, elimine las reservas asociadas primero.');
+                window.location.href = 'indexAdmin.php';
+            </script>";
+            return false;
+        }
+        
+        // Proceder a eliminar la mesa si no está asociada a ninguna reserva
         $sql = "DELETE FROM tables WHERE id = ?";
         $consulta = mysqli_prepare($conexion, $sql);
         mysqli_stmt_bind_param($consulta, "i", $idMesa);
         $resultado = mysqli_stmt_execute($consulta);
         mysqli_stmt_close($consulta);
         mysqli_close($conexion);
+
         if ($resultado) {
             echo "<script>
                 alert('Mesa eliminada correctamente.');
@@ -700,10 +719,18 @@ function eliminarMesa($idMesa)
                 window.location.href = 'indexAdmin.php';
             </script>";
         }
+        
         return $resultado;
     }
+
+    echo "<script>
+        alert('Error en la conexión a la base de datos.');
+        window.location.href = 'indexAdmin.php';
+    </script>";
+
     return false;
 }
+
 function eliminarReserva($idReserva)
 {
     $conexion = conectar();

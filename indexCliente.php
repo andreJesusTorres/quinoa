@@ -208,7 +208,7 @@ $menuItems = listarMenuIndex();
                       <td><?php echo $reserva['people']; ?></td>
                       <td>
                         <div class="d-flex align-items-center">
-                          <a href=""
+                          <a href="modificarReserva.php?id=<?php echo $reserva['id']; ?>"
                             class="btn btn-sm btn-outline-secondary bi bi-pencil"></a>
                           <form method="POST">
                             <input type="hidden" name="id" value="<?php echo $reserva['id']; ?>">
