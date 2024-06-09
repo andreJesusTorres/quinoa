@@ -132,6 +132,7 @@ if (!isset($_SESSION["login"])) {
                         value="<?php echo $menu['price']; ?>" required>
                 </div>
                 <div class="mb-3">
+                    <input type="hidden" name="img_actual" value="<?php echo $menu['img']; ?>">
                     <label for="imagen" class="form-label">Imagen:</label>
                     <input type="file" class="form-control" id="imagen" name="img" accept="image/*">
                 </div>

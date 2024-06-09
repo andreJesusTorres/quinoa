@@ -80,23 +80,24 @@ require_once ("consultas.php");
       <div class="row justify-content-center">
         <div class="col-lg-8">
           <div class="section-title">
-            <h2>Registrarse - Obten descuentos y beneficios</h2>
+            <h2>Regístrate</h2>
           </div>
           <form method="post" class="form-signin">
     <div class="mb-3">
-        <label for="username" class="form-label">Nombre y apellido:<span>*</span></label>
+        <label for="username" class="form-label">Nombre y apellido/s:<span>*</span></label>
         <input type="text" class="form-control" id="username" name="name" value="<?php echo isset($_COOKIE['form_name']) ? $_COOKIE['form_name'] : ''; ?>" required>
-    </div>
-    <div class="mb-3 php-email-form">
-        <label for="password" class="form-label">Clave:<span>*</span></label>
-        <input type="password" class="form-control" id="password" name="pass" value="" required>
     </div>
     <div class="mb-3">
         <label for="email" class="form-label">Email:<span>*</span></label>
         <input type="email" class="form-control" id="email" name="mail" value="<?php echo isset($_COOKIE['form_mail']) ? $_COOKIE['form_mail'] : ''; ?>" required>
     </div>
+    <div class="mb-3 php-email-form">
+        <label for="password" class="form-label">Contraseña:<span>*</span></label>
+        <input type="password" class="form-control" id="password" name="pass" value="" required>
+    </div>
+    
     <div class="mb-3">
-        <label for="phone" class="form-label">Telefono:</label>
+        <label for="phone" class="form-label">Teléfono:</label>
         <input type="tel" class="form-control" id="phone" name="phone" value="<?php echo isset($_COOKIE['form_phone']) ? $_COOKIE['form_phone'] : ''; ?>">
     </div>
     <button type="submit" class="btn-book-a-table btn btn-primary btn-center mt-3" name="registro">Registrarse</button>
@@ -116,8 +117,8 @@ require_once ("consultas.php");
           <div>
             <h4>Dirección</h4>
             <p>
-              Elche, Alicante<br>
-              <br>
+              Carrer Francisco Rabal, 3 <br>
+              03202 Elx, Alicante<br>
             </p>
           </div>
 
@@ -129,7 +130,7 @@ require_once ("consultas.php");
             <h4>Reservas</h4>
             <p>
               <strong>Teléfono:</strong> +34 666000111<br>
-              <strong>Email:</strong> quinoa@quinoa.com<br>
+              <strong>Email:</strong> contacto@quinoa.com<br>
             </p>
           </div>
         </div>

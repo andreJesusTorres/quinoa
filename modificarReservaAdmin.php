@@ -7,7 +7,7 @@ if (!isset($_SESSION["login"])) {
     exit();
 } else {
     $conexion = conectar();
-    $sql = "SELECT * FROM reserves WHERE id='" . $_POST["id"] . "'";
+    $sql = "SELECT r.*, u.mail AS email_usuario, u.name AS nombre_usuario FROM reserves r INNER JOIN users u ON r.id_usuario = u.id WHERE r.id='" . $_POST["id"] . "'";
     $buscar = mysqli_query($conexion, $sql);
     if (mysqli_num_rows($buscar) > 0) {
         $reserve = mysqli_fetch_assoc($buscar);
@@ -101,6 +101,14 @@ if (!isset($_SESSION["login"])) {
                     <label for="id_usuario" class="form-label">Código de Usuario:</label>
                     <input type="text" class="form-control" id="id_usuario" name="id_usuario"
                         value="<?php echo $reserve['id_usuario']; ?>" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email_usuario" class="form-label">Correo Electrónico del Usuario:</label>
+                    <input type="email" class="form-control" id="email_usuario" name="email_usuario" value="<?php echo $reserve['email_usuario']; ?>" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="nombre_usuario" class="form-label">Nombre del Usuario:</label>
+                    <input type="text" class="form-control" id="nombre_usuario" name="nombre_usuario" value="<?php echo $reserve['nombre_usuario']; ?>" readonly>
                 </div>
                 <div class="mb-3">
                     <label for="date" class="form-label">Fecha:</label>

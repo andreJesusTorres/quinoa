@@ -110,8 +110,8 @@ require_once ("consultas.php");
           <div>
             <h4>Dirección</h4>
             <p>
-              Elche, Alicante<br>
-              <br>
+              Carrer Francisco Rabal, 3 <br>
+              03202 Elx, Alicante<br>
             </p>
           </div>
 
@@ -123,7 +123,7 @@ require_once ("consultas.php");
             <h4>Reservas</h4>
             <p>
               <strong>Teléfono:</strong> +34 666000111<br>
-              <strong>Email:</strong> quinoa@quinoa.com<br>
+              <strong>Email:</strong> contacto@quinoa.com<br>
             </p>
           </div>
         </div>

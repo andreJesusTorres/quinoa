@@ -17,6 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $time = $_POST["time"];
     $people = $_POST["people"];
     $msg = $_POST["msg"];
+    
 
     if (reservarCliente($_SESSION["login"]["id"], $date, $time, $people, $msg)) {
         $sent_message = 'Su reserva fue enviada correctamente.';
@@ -111,7 +112,7 @@ $menuItems = listarMenuIndex();
                   <input type="text" class="form-control" id="floatingPhone" name="phone" placeholder="Teléfono"
                     value="<?php echo $_SESSION['login']['phone']; ?>" required>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block" name="modificar_datos">Guardar</button>
+                <button type="submit" class="btn btn-primary btn-block" name="modificar_datos_cliente">Guardar</button>
               </form>
             </div>
           </div>
@@ -155,7 +156,7 @@ $menuItems = listarMenuIndex();
             data-aos="fade-up" data-aos-delay="150">
             <div class="call-us position-absolute">
               <h4>Reserva una mesa</h4>
-            <p>+34  666 000 111</p>
+            <p><a href="tel:+34666000111">+34 666 000 111</a></p>
           </div>
         </div>
         <div class="col-lg-5 d-flex align-items-end" data-aos="fade-up" data-aos-delay="300">
@@ -207,7 +208,7 @@ $menuItems = listarMenuIndex();
                       <td><?php echo $reserva['people']; ?></td>
                       <td>
                         <div class="d-flex align-items-center">
-                          <a href="modificarReserva.php?id=<?php echo $reserva['id']; ?>"
+                          <a href=""
                             class="btn btn-sm btn-outline-secondary bi bi-pencil"></a>
                           <form method="POST">
                             <input type="hidden" name="id" value="<?php echo $reserva['id']; ?>">
@@ -359,9 +360,8 @@ $menuItems = listarMenuIndex();
       </div>
     </section>
 
-    <section id="reservar" class="sample-page">
+    <section id="reserva" class="sample-page">
       <div class="container" data-aos="fade-up">
-
         <section id="book-a-table" class="book-a-table">
           <div class="container" data-aos="fade-up">
             <div class="section-header">
@@ -379,25 +379,25 @@ $menuItems = listarMenuIndex();
                   <div class="row gy-4">
                     <div class="col-lg-4 col-md-6">
                       <input type="text" name="name" class="form-control" id="name" placeholder="Nombre"
-                        data-rule="minlen:4" data-msg="Please enter at least 4 chars" required
+                        data-rule="minlen:4" data-msg="Por favor introduce al menos 4 caracteres" required
                         value="<?php echo isset($_SESSION['login']['name']) ? $_SESSION['login']['name'] : ''; ?>">
                       <div class="validate"></div>
                     </div>
                     <div class="col-lg-4 col-md-6">
                       <input type="email" class="form-control" name="mail" id="mail" placeholder="Email"
-                        data-rule="email" data-msg="Please enter a valid email" required
+                        data-rule="email" data-msg="Por favor introduce un email válido" required
                         value="<?php echo isset($_SESSION['login']['mail']) ? $_SESSION['login']['mail'] : ''; ?>">
                       <div class="validate"></div>
                     </div>
                     <div class="col-lg-4 col-md-6">
                       <input type="text" class="form-control" name="phone" id="phone" placeholder="Teléfono"
-                        data-rule="minlen:4" data-msg="Please enter at least 4 chars"
+                        data-rule="minlen:9" data-msg="Por favor introduce al menos 9 caracteres"
                         value="<?php echo isset($_SESSION['login']['phone']) ? $_SESSION['login']['phone'] : ''; ?>">
                       <div class="validate"></div>
                     </div>
                     <div class="col-lg-4 col-md-6">
                       <input type="date" name="date" class="form-control" id="date" placeholder="Fecha"
-                        data-rule="minlen:4" data-msg="Please enter at least 4 chars" required>
+                        data-rule="minlen:4" data-msg="Elige una fecha" required>
                       <div class="validate"></div>
                     </div>
                     <div class="col-lg-4 col-md-6">
@@ -434,7 +434,7 @@ $menuItems = listarMenuIndex();
                   <div class="mb-3">
                     <div class="loading">Cargando</div>
                   </div>
-                  <div class="text-center"><button type="submit">Reserva como cliente</button></div>
+                  <div class="text-center"><button type="submit">Reserva</button></div>
                 </form>
 
               </div>
@@ -453,7 +453,7 @@ $menuItems = listarMenuIndex();
 
         <div class="mb-3">
           <iframe style="border:0; width: 100%; height: 350px;"
-            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621"
+            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12528.659662422711!2d-0.6787203!3d38.2756698!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd63b688a219583f%3A0xec764dd7f58dd298!2sRestaurante%20Vegetariano%20Quinoa!5e0!3m2!1ses!2ses!4v1717768996067!5m2!1ses!2ses"
             frameborder="0" allowfullscreen></iframe>
         </div>
 
@@ -464,7 +464,8 @@ $menuItems = listarMenuIndex();
               <i class="icon bi bi-map flex-shrink-0"></i>
               <div>
                 <h3>Dirección</h3>
-                <p>Elche, Alicante</p>
+                <p>Carrer Francisco Rabal, 3 <br>
+              03202 Elx, Alicante<br></p>
               </div>
             </div>
           </div>
@@ -474,7 +475,7 @@ $menuItems = listarMenuIndex();
               <i class="icon bi bi-envelope flex-shrink-0"></i>
               <div>
                 <h3>Email</h3>
-                <p>contacto@quinoa.com</p>
+                <p><a href="mailto:contacto@quinoa.com">contacto@quinoa.com</a></p>
               </div>
             </div>
           </div>
@@ -484,7 +485,7 @@ $menuItems = listarMenuIndex();
               <i class="icon bi bi-telephone flex-shrink-0"></i>
               <div>
                 <h3>Llámanos</h3>
-                <p>+34 600 123 123</p>
+                <p><a href="tel:+34666000111">+34 666 000 111</a></p>
               </div>
             </div>
           </div>
@@ -506,22 +507,22 @@ $menuItems = listarMenuIndex();
         <form action="forms/contact.php" method="post" role="form" class="php-email-form p-3 p-md-4">
           <div class="row">
             <div class="col-xl-6 form-group">
-              <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+              <input type="text" name="name" class="form-control" id="name" placeholder="Nombre" required>
             </div>
             <div class="col-xl-6 form-group">
-              <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+              <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
             </div>
           </div>
           <div class="form-group">
-            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+            <input type="text" class="form-control" name="subject" id="subject" placeholder="Asunto" required>
           </div>
           <div class="form-group">
-            <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+            <textarea class="form-control" name="message" rows="5" placeholder="Mensaje" required></textarea>
           </div>
           <div class="my-3">
-            <div class="loading">Loading</div>
+            <div class="loading">Cargando</div>
             <div class="error-message"></div>
-            <div class="sent-message">Your message has been sent. Thank you!</div>
+            <div class="sent-message">Se ha enviado tu mensaje correctamente.</div>
           </div>
           <div class="text-center"><button type="submit">Enviar</button></div>
         </form>
@@ -537,8 +538,8 @@ $menuItems = listarMenuIndex();
           <div>
             <h4>Dirección</h4>
             <p>
-              A108 Adam Street <br>
-              New York, NY 535022 - US<br>
+              Carrer Francisco Rabal, 3 <br>
+              03202 Elx, Alicante<br>
             </p>
           </div>
         </div>
@@ -548,7 +549,7 @@ $menuItems = listarMenuIndex();
             <h4>Reservas</h4>
             <p>
               <strong>Teléfono:</strong> +34 666 000 111<br>
-              <strong>Email:</strong> quinoa@ejemplo.com<br>
+              <strong>Email:</strong> contacto@quinoa.com<br>
             </p>
           </div>
         </div>
